@@ -1,0 +1,31 @@
+<div class="panel panel-default empData">
+    <div class="panel-heading"><h2 class="panel-title font16">New Skill<a class="btn btn-link pull-right" href="" ng-click="back()" ng-bind="backText? backText: 'Back'"></a></h2></div>
+    <div class="panel-body">
+         <div ng-include="'pages/message-alert-modal.html'"></div>
+        <form class="col-sm-12" name="form">
+            <div class="col-xs-12">
+                <div class="panel panel-default img-responsive">
+                    <div class="panel-heading"><h3 class="panel-title">Add Certification Information</h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>Name:</span></td><td><input class="form-control" ng-model="skill.name" type="text" required ng-required="true"/> </td></tr>
+                            <tr><td><span>Certification Type:</span></td><td><input class="form-control" ng-model="skill.type" type="text"/></td></tr>
+                            <tr><td><span>Date Achieved:</span></td><td>
+                                <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="skill.date" name="date" is-open="dateopened" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock">
+                                <button type="button" class="btn btn-default" ng-click="open($event, 'dateopened')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </td></tr>
+                            <tr><td><span>Skill Level:</span></td><td><select required ng-model="skill.level" name="level" ng-options="i for i in constants.skills track by i" class="form-control"></select></td></tr>
+                        </table>
+                        <div class="form-group">
+                            <div align="center">
+                                <input value="{{savingskill? 'Saving Details':'Save Details'}}" ng-disabled="form.$invalid || savingskill" class="btn btn-default" type="button" ng-click="saveData()" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

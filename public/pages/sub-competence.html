@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Subordinate Competence Appraisal</h3></div>
+    <div class="panel-body" ng-if="data.isOpen">
+        <p class="well">            
+            Click on a row to view/rate each employee's competence
+        </p>
+        <table class="table table-bordered">
+            <thead>
+                <tr class="header-bg"><th></th><th>Name</th><th>Department</th><th>Designation</th><th>Mark(%)</th></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in data.subs" class="clickable" ng-click="appraiseComp(row)">
+                    <td ng-bind="$index + 1"></td>
+                    <td ng-bind="row.emp.name"></td>
+                    <td ng-bind="row.emp.dept"></td>
+                    <td ng-bind="row.emp.desig"></td>
+                    <td ng-bind="row.appraised?row.text:'N\A'"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-body" ng-if="!data.isOpen">
+        <p class="well" ng-bind="'The appraisal time period has already elapsed. You may contact Practice Director for an extension.'"></p>
+    </div>
+</div>

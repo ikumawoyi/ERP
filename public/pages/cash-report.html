@@ -1,0 +1,31 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Cash Report</h3></div>
+    <div class="panel-body">
+        <div class="row" style="margin-bottom: 4px;">
+            <div class="col-md-6 text-right"><label class="control-label">Select Month and Year:</label></div>
+            <div class="col-md-6">
+                <select style="width: 108px; float:left; margin-right: 5px;" ng-required="true" ng-change="ichanged(m)"
+                        ng-model="ft.m"
+                        ng-options="m.name for m in (ft.y? globals.indexMonths.slice(ft.y.min-1, ft.y.max) :[])"
+                        class="form-control"></select>
+                <select style="width: 108px;" ng-required="true" ng-model="ft.y" ng-options="i._id for i in cashreport"
+                        class="form-control"></select>
+            </div>
+        </div>
+        <div style="margin-bottom:5px;border:thin solid #D2C3C3;" class="header-bg col-md-6 col-lg-6 "
+             ng-if="ft.m.name">
+            <h4 class="text-center">
+                <span style=" font-weight: bold;text-decoration:underline; margin-bottom:0;"
+                      ng-bind="'Financial Report for '+ft.m.name+ ' ' + ft.y._id"></span>
+            </h4>
+            <canvas id="line" class="chart chart-line" data="chartData" labels="chartLabels"
+                    series="chartSeries"></canvas>
+        </div>
+        <div style="margin-bottom:5px;border:thin solid #D2C3C3;" class="header-bg col-md-6 col-lg-6 " ng-if="ft.y._id">
+            <h4 class="text-center"><span style="text-decoration:underline; margin-bottom:0; font-weight: bold;"
+                                          ng-bind="ft.y._id+' Financial Report' "></span></h4>
+            <canvas id="bar" class="chart chart-bar" data="yChartData" labels="yChartLabels"
+                    series="yChartSeries"></canvas>
+        </div>
+    </div>
+</div>

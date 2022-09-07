@@ -1,0 +1,164 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Training Management<a class="btn btn-link pull-right" ng-click="editTraining('new')" ng-bind="'Setup new Training.'"></a>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="header-bg"><th colspan="6" ng-bind="'Pending Trainings'"></th></tr>
+                <tr class="header-bg"><th></th><th width="30%">Title</th><th>Invited</th><th>Date</th><th>Time</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr ng-class="{'text-red': areEqual(AsDate(item.date) , today)}" ng-repeat="item in trainings.pending">
+                    <td ng-bind="$index + 1"></td>
+                    <td ng-bind="item.title"></td>
+                    <td ng-bind="item.invited.length + ' employees'"></td>
+                    <td ng-bind="item.date|date:'shortDate'"></td>
+                    <td ng-bind="item.start+ ' - ' + item.end"></td>
+                    <td ng-if="AsDate(item.date) > today">
+                        <!--<span class="btn btn-link" title="Edit Training" ng-click="editTraining(item)">edit</span>-->
+                        <span class="btn btn-link" title="View more details" ng-click="viewTraining(item)">details</span>
+                    </td>
+                <tr ng-if="AsDate(item.date) <= today">
+                    <td><span class="btn btn-link" title="View more details" ng-click="viewTraining(item)">details</span></td>
+                </tr>
+                </tr>
+            </tbody>
+            <tfoot ng-if="!trainings.pending.length">
+                <tr><td colspan="6" class="text-center" ng-bind="'No trainings added'"></td></tr>
+            </tfoot>
+        </table>
+        <table class="table table-bordered" ng-if="trainings.past.length >0">
+            <thead>
+                <tr class="header-bg"><th colspan="6" ng-bind="'Past Trainings'"></th></tr>
+                <tr class="header-bg"><th></th><th width="30%">Title</th><th>Invited</th><th>Date</th><th>Time</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr ng-class="{'text-red': areEqual(AsDate(item.date) , today)}" ng-repeat="item in trainings.past">
+                    <td ng-bind="$index + 1"></td>
+                    <td ng-bind="item.title"></td>
+                    <td ng-bind="item.invited.length + ' employees'"></td>
+                    <td ng-bind="item.date|date:'shortDate'"></td>
+                    <td ng-bind="item.start+ ' - ' + item.end"></td>
+                    <td ng-if="AsDate(item.date) > today">
+                        <!--<span class="btn btn-link" title="Edit Training" ng-click="editTraining(item)">edit</span>-->
+                        <span class="btn btn-link" title="View more details" ng-click="viewTraining(item)">details</span>
+                    </td>
+                </tr>
+                <tr ng-if="AsDate(item.date) <= today">
+                    <td><span class="btn btn-link" title="View more details" ng-click="viewTraining(item)">details</span></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script id="pages/edit-training.html" type="text/ng-template">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span ng-bind="(training._id?'Modify':'New') +' Training'"></span><button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="modTraining">
+                <div class="col-md-6">
+                    <table class="table table-bordered table-responsive">
+                        <tr>
+                            <th>Title:</th>
+                            <td>
+                                <input type="text" class="form-control" ng-model="training.title" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Description:</th>
+                            <td>
+                                <textarea class="form-control" ng-model="training.description" placeholder="More details about the training" style="resize: vertical;" rows="6"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>Date:</span></td>
+                            <td>
+                                <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="training.date" is-open="eduend" close-text="Close" />
+                                <span class="input-group-btn unblock">
+                                    <button type="button" class="btn btn-default" ng-click="open($event, 'eduend')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>Start Time:</span></td>
+                            <td>
+                                <div ng-model="training.start" ng-change="setStartTime()" hour-step="1" minute-step="15" show-meridian="true" timepicker></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>End Time:</span></td>
+                            <td>
+                                <timepicker ng-model="training.end" ng-change="setEndTime()" hour-step="1" minute-step="15" show-meridian="true"></timepicker>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Invite Employees</label>
+                    <ul class="kra-list" style="height: 425px;" ng-init="training.invited = training.invited||[]">
+                        <li ng-repeat="i in globals.employees|orderBy:['firstName','lastName'] track by i._id">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-checked="training.invited.indexOf(i._id) > -1" ng-click="toggleSelection(i)"> <span ng-bind="i.firstName +' '+ i.lastName"></span>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </form>
+            <div align="center"><button type="button" class="btn btn-default" ng-disabled="modTraining.$invalid || updatingD" ng-click="saveTraining()" ng-bind="updatingD?'Saving Training':'Initiate'"></button></div>
+        </div>
+    </div>
+</script>
+<script id="pages/view-training.html" type="text/ng-template">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span ng-bind="(training._id?'Modify':'New') +' Training'"></span><button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="modTraining">
+                <table class="table table-bordered table-responsive">
+                    <tr><th>Title:</th><td><span ng-bind="training.title"></span></td></tr>
+                    <tr><th>Description:</th> <td><p ng-bind="training.description"></p></td></tr>
+                    <tr><th><span>Date:</span></th><td><span ng-bind="training.date | date:'mediumDate'"</td></tr>
+                    <tr><th><span>Time:</span></th><td><span ng-bind="training.start"></span> - <span ng-bind="training.end"></span></td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="header-bg"><th colspan="3" ng-bind="'Invited Employees'"></th></tr>
+                                    <tr class="header-bg"><th></th><th>Name</th><th>Department</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="emp in training.invited">
+                                        <td width="10px" ng-bind="$index +1"></td>
+                                        <td ng-bind="emp.firstName +' '+ emp.lastName"></td>
+                                        <td ng-bind="emp.department.name"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>                
+            </form>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,26 @@
+<hr />
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">{{isCatEdit? 'Manage Category': 'New Category'}}</h3></div>
+    <div class="panel-body">
+        <form name="appForm" class="form-inline cat">
+            <label class="control-label">Header:<span class="is-required">*</span></label>
+            <input class="form-control" ng-required="true" ng-minlength="3" type="text" ng-model="newCategory.header" placeholder="New Category">
+            <input class="form-control" type="number" ng-model="newCategory.weight" placeholder="Category Weight">
+            <input class="form-control" type="button" ng-disabled="appForm.$invalid" value="Add Filter" ng-click="addFilter('Category')">
+            <button type="button" class="form-control" ng-disabled="!newCategory.header || newCategory.title.length < 3" ng-click="submitAction(false,newCategory)">{{savingCat?'Saving Category':'Save Category'}}</button>
+            <button type="button" class="form-control" ng-disabled="!newCategory.header" ng-click="clearInput(false)">Clear Input</button>
+        </form>
+        <div class="col-xs-12 margin10top">
+            <details ng-repeat="(dep,item) in newCategory.filter" ng-if="newCategory.filter" >
+                <summary class="kra-area-header">Dept: {{dep}} <span ng-if="getDefault(dep, newCategory) > 0">, default: {{getDefault(dep, newCategory)}}</span></summary>
+                <table class="table table-bordered" ng-if="hasSubs(item)">
+                    <tr ng-repeat="(des, value) in item">
+                        <td width="10%"><a class="btn btn-link" ng-click="deleteFilter(des,item)">*</a></td>
+                        <td width="60%">{{des}}</td>
+                        <td width="10%">{{value}}</td>
+                    </tr>
+                </table>
+            </details>
+        </div>
+    </div>
+</div>

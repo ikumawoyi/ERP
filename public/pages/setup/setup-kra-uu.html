@@ -1,0 +1,74 @@
+<div class="panel panel-default kra-settings margin10top">
+    <div class="panel-heading"><h3 class="panel-title">KRAs for {{globals.year}}</span> <a class="btn btn-default pull-right" ng-if="areas.length > 0" ng-click="exportToX('/download/kradefs')">export </a></h3></div>
+    <div class="panel-body">
+        <p>This screen allows you to specify all details about a specific KRA for particular designation.
+            Use the form below to add new KRA. Employees in the selected designation(s) will be attached to this KRA.
+            Click on ‘View’ link to view the entire employee attached to that particular KRA. You may click on ‘Modify’
+            link to either edit or delete KRA.</p>
+        <div class="panel panel-default">
+            <div class="panel-body content">
+                <table class="table table-bordered">
+                    <tr style="padding: 0;" class="kra-header">
+                        <!--<td width="2%"></td>-->
+                        <td width="4%"></td>
+                        <td width="85%">Description</td>
+                        <td width="10%"></td>
+                    </tr>
+                </table>
+                <div class="restrict">
+                    <details ng-repeat="area in areas" ng-if="area.kras.length > 0" ng-open="{{area.kras.length > 0}}" >
+                        <summary class="kra-area-header">Area: {{area.name}}</summary>
+                        <table class="table table-bordered">
+                            <tr ng-repeat="kra in area.kras">
+                                <!--<td width="2%"></td>-->
+                                <td width="4%"><a class="btn btn-link" ng-click="editKra(kra, area)">edit</a></td>
+                                <td width="85%">{{kra.description}}</td>
+                                <td width="10%"><a class="btn btn-link" ng-click="showDesignations(kra, area)">{{kra.designations.length}} designations</a></td>
+                            </tr>
+                        </table>
+                    </details>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Add to KRA</h3></div>
+            <div class="panel-body">
+                <form name="newKraForm">
+                    <table class="table table-bordered table-responsive">
+                        <tr><th width="40%">Area:<span class="is-required">*</span></th><td>
+                            <select ng-required="true" required ng-model="modified.area" style="width:70%;float: left;" ng-options="i.name for i in areas track by i._id" class="form-control"></select>
+                            <a class="btn btn-link" ng-click="addArea()">Add New Area</a>
+                        </td></tr>
+                        <tr><th>KRA Description:<span class="is-required">*</span><br>
+                            <span>(The details of the KRA can be specified here in multiple lines. You can enter the details in 500 characters.)</span>
+                        </th><td><textarea ng-required="true" required ng-minlength="7" ng-model="modified.description" rows="5" style="resize: none" class="form-control"></textarea></td></tr>
+                        <tr><th width="40%">Department:<span class="is-required">*</span></th><td>
+                            <select ng-required="true" required ng-model="modified.department" style="width:70%;float: left;" ng-options="i.name for i in globals.constants.organisations|orderBy:'name' track by i._id" class="form-control"></select>
+                        </td></tr>
+                        <tr><th>Select Designation(s):<span class="is-required">*</span>
+                        </th>
+                            <td>
+                                <ul class="kra-list">
+                                    <li ng-repeat="desig in modified.department.designations">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="modified.designations[]" ng-checked="selection.indexOf(desig) > -1" ng-click="toggleSelection(desig)"> {{desig}}
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr><th>KRA Weight:<span class="is-required">*</span><br>
+                            <span>(This specified the weight of a particular kra. The default value for all kras is 1(one) which means they all carry equal weight.)</span>
+                        </th><td><input type="number" class="form-control" ng-min="1" ng-init="modified.weight = 1" ng-model="modified.weight"> </td></tr>
+
+                    </table>
+                    <div align="center"><button type="button" class="btn btn-default" ng-disabled="newKraForm.$invalid || modified.designations.length < 1 || savingkra" ng-click="saveKra()">{{savingkra?'Saving KRA':'Add KRA'}}</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

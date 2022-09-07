@@ -1,0 +1,61 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Initiate Appraisal</h3></div>
+    <div class="panel-body"style="max-width: 700px;">
+        <p>You can initiate appraisal for employees by specifying the time period.
+            To extend the appraisal period: Click on the 'Extend Appraisal Period' link and specify extension date then click on submit button.</p>
+        <hr/>
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr class="header-bg"><td width="25%">Period</td><td width="25%">Start Date</td><td width="25%">End Date</td><td></td></tr>
+            </thead>
+            <tbody>
+                <tr ng-if="period">
+                    <td ng-bind="period.name + ' ' + period.year"></td>
+                    <td ng-bind="period.start|date:'EEE, MMMM dd, yyyy'"></td>
+                    <td ng-bind="period.end|date:'EEE, MMMM dd, yyyy'"></td>
+                    <td><a class="btn btn-default" ng-click="extendApp()" ng-bind="'Extend Appraisal Period'"></a></td>
+                </tr>
+            </tbody>
+            <tfoot ng-if="!period">
+                <tr>
+                    <td colspan="4" class="text-center">No appraisal record</td>
+                </tr>
+            </tfoot>
+        </table>
+        <hr />
+        <form name="appForm">
+        <table class="table table-bordered table-responsive" ng-if="!period || showNew">
+            <thead>
+            <tr class="header-bg"><th colspan="2">Appraisal Time Period</th></tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th width="40%">Select Period:</th>
+                <td width="60%"><select required ng-model="appraisal.name" style="width:70%;float: left;" ng-options="i +' '+ globals.year for i in globals.constants.quarters track by i" class="form-control"></select></td>
+            </tr>
+            <tr>
+                <th>Start Date:</th>
+                <td><input ng-disabled="disable" type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="appraisal.start" is-open="startOpen" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock">
+                              <button ng-disabled="disable" type="button" class="btn btn-default" ng-click="open($event, 'startOpen')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                </td>
+            </tr>
+            <tr>
+                <th>End Date:</th>
+                <td><input ng-disabled="disable" type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="appraisal.end" is-open="endOpened" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock">
+                              <button ng-disabled="disable" type="button" class="btn btn-default" ng-click="open($event, 'endOpened')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span><span ng-if="appraisal.end < appraisal.start" style="display: -webkit-inline-box;color: red;padding-top: 1px;">End date must be after start date</span></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <button type="button" class="btn btn-default" ng-disabled="!appraisal.name || !appraisal.end || !appraisal.start || initiatingApp || !validDate" ng-click="initiate()" ng-bind="initiatingApp?'Initiating Appraisal Period':'Initiate'"></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</div>

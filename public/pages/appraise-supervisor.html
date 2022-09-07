@@ -1,0 +1,55 @@
+<div ng-if="eval.isOpen && !eval.appraised && lax && !eval.cantEval" class="panel panel-default kra-settings margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Supervisor Feedback Evaluation</h3></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="pull-left">
+                <div class="pull-left" style="margin: 5px"><img src="images/profile.png" width="112" height="113"></div>
+                <div class="pull-right" style="margin: 5px; height: 113px;">
+                    <div><font face="Tahoma" size="6">{{eval.super.name}}</font></div>
+                    <div><font face="Tahoma" size="3" color="#CCCCCC">{{eval.super.desig}}</font></div>
+                    <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333">{{eval.super.department}}</font></div>
+                </div>
+            </div>
+        </div>
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <form name="achForm">
+            <table class="table table-bordered">
+                <tr class="header-bg">
+                    <td colspan="2">Select the appropriate competence level from below</td>
+                </tr>
+                <tr ng-repeat="(key,value) in eval.evaluations.details">
+                    <td class="header-bg">{{key}}</td>
+                    <td style="text-align: -webkit-center;"><label ng-repeat="g in globals.constants.appLevels" class="radio-inline">
+                        <input type="radio" ng-if="$last" ng-init ="$parent.eval.evaluations.details[key].scoreText = g" ng-model="$parent.eval.evaluations.details[key].scoreText"value="{{g}}"><span ng-if="$last" > {{g}}</span>
+                        <input type="radio" ng-if="!$last" ng-model="$parent.eval.evaluations.details[key].scoreText" value="{{g}}"><span ng-if="!$last" > {{g}}</span>
+                    </label></td>
+                </tr>
+                <tr> <td colspan="2" class="text-center"><button type="button" class="btn btn-default" ng-disabled="achForm.$invalid || savingAch" ng-click="evaluateSup()">{{savingAch?'Submiting Assessment':'Submit'}}</button> </td></tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<div ng-if="!eval.isOpen && lax && !eval.cantEval">
+    <p>The appraisal time period has already elapsed. You may contact Practice Director for an extension.</p>
+</div>
+
+<div ng-if="eval.cantEval">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Supervisor Evaluation</h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <p>You are currently not attached to any supervisor. Please contact Practice Director for futher details.</p>
+        </div>
+    </div>
+</div>
+<div ng-if="eval.isOpen && lax &&eval.appraised">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Supervisor Evaluation</h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <p ng-bind="eval.message + '.'"></p>
+        </div>
+    </div>
+</div>
+

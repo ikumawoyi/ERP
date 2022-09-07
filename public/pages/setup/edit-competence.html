@@ -1,0 +1,41 @@
+<hr />
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">{{isQuestEdit? 'Modify':'New'}} Performance Competence Question</h3></div>
+    <div class="panel-body">
+        <form name="compForm">
+            <div class="form-group row">
+                <label class="col-sm-3 col-md-3">Question Category:<span class="is-required">*</span></label>
+                <div class="col-sm-9  col-md-9"><select ng-required="true" required ng-model="newQuestion.category" style="width:70%;float: left;" ng-options="i.header for i in competenceCats track by i._id" class="form-control"></select></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-md-3">Question title:<span class="is-required">*</span></label>
+                <div class="col-sm-9  col-md-9"><input ng-required="true" class="form-control" type="text" ng-model="newQuestion.name" placeholder="New question title"></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-md-3" for="questText">Question text:<span class="is-required">*</span></label>
+                <div class="col-sm-9 col-md-9"><textarea rows="2" ng-required="true" style="resize: none;" ng-model="newQuestion.description" class="form-control emoData" id="questText" placeholder="Enter question text here"></textarea></div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-md-3">Question Weight:<span class="is-required">*</span></label>
+                <div class="col-sm-9  col-md-9"><input class="form-control" type="number" ng-required="true" ng-model="newQuestion.weight" placeholder="Default weight"></div>
+            </div>
+            <div class="col-sm-offset-3 col-md-offset-3  col-sm-9 col-md-9">
+                <button type="button" class="btn btn-default" ng-disabled="!newQuestion.category || !newQuestion.name || newQuestion.name.length < 3||!newQuestion.description || newQuestion.description.length < 5" ng-click="submitAction(true,newQuestion)">{{savingQuest?'Saving Question':'Save Question'}}</button>
+                <button type="button" class="btn btn-default" ng-disabled="!newQuestion.name || !newQuestion.description" ng-click="clearInput(true)">Clear Input</button>
+                <button class="btn btn-default" type="button" ng-disabled="compForm.$invalid"ng-click="addFilter('Question')">Add Filter</button>
+            </div>
+            <div class="col-xs-12 margin10top">
+                <details ng-repeat="(dep,item) in newQuestion.filter" ng-if="newQuestion.filter" >
+                    <summary class="kra-area-header">Dept: {{dep}} <span ng-if="getQDefault(dep, newQuestion) > 0">, default: {{getQDefault(dep, newQuestion)}}</span></summary>
+                    <table class="table table-bordered" ng-if="hasSubs(item)">
+                        <tr ng-repeat="(des, value) in item">
+                            <td width="4%"><a class="btn btn-link">*</a></td>
+                            <td width="85%">{{des}}</td>
+                            <td width="10%">{{value}}</td>
+                        </tr>
+                    </table>
+                </details>
+            </div>
+        </form>
+    </div>
+</div>

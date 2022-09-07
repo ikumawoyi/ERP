@@ -1,0 +1,3 @@
+<div ng-controller="msgCtrl" class="padding">
+    <alert ng-repeat="a in alerts" type="{{a.type}}" close="closeAlert($index);"><span ng-bind-html="a.text"></span></alert>
+</div>

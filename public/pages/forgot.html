@@ -1,0 +1,39 @@
+﻿<div>
+    <form name="form" novalidate>
+        <div class="modal-header">
+            <h2>Password Recovery</h2>
+        </div>
+
+        <div class="panel panel-primary modal-body" style="margin:5px 10px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Reset my password</h3>
+            </div>
+            <fieldset>
+                <div class="form-group" ng-class="{'has-error': form.UserName.$invalid && !form.UserName.$pristine}">
+                    <label class="control-label" for="UserName">Email Address</label>
+                    <div class="controls">
+                        <input class="form-control" ng-model="user.UserName" name="UserName" type="email" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': form.Token.$invalid && !form.Token.$pristine}" ng-show="ready">
+                    <label class="control-label" for="Token">Secret Code</label>
+                    <div class="controls">
+                        <textarea class="form-control" ng-model="user.Token" name="Token" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': form.Password.$invalid && !form.Password.$pristine}" ng-show="ready">
+                    <label class="control-label" for="Password">New Password</label>
+                    <div class="controls">
+                        <input class="form-control" ng-model="user.Password" name="Password" type="password" required />
+                    </div>
+                </div>
+                <a ng-click="beready()" ng-hide="ready" style="margin-top:15px">I have a reset code</a>
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="send()" ng-disabled="form.UserName.$invalid" ng-if="!ready">Send</button>
+            <button class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid" ng-if="ready">Save</button>
+            <a class="btn btn-info" ng-click="cancel()">Back</a>
+        </div>
+    </form>
+</div>

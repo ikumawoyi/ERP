@@ -1,0 +1,16 @@
+{
+    "skills": [ "Advanced", "Beginner", "Expert", "Intermediate", "Novice" ],
+    "relationships": [ "Brother", "Child", "Grand Parent", "Parent", "Sister", "Spouse" ],
+    "priorities": [ "Normal", "Urgent" ],
+    "suppriority": [ "Low", "Medium", "High" ],
+    "loginStatus": [ "Successfull", "Failed" ],
+    "levels": [ "Level 1", "Level 2" ],
+    "leaveConfig": [ "Only Working Days", "All Days" ],
+    "leaveTypes": [ "Annual", "Casual", "Sick", "Parenting" ],
+    "msgTypes": [ "Cash", "Leave", "Normal","Support","Attendance","Confirmation","Training","Query" ],
+    "quarters": [ "1st Quarter", "2nd Quarter", "3rd Quarter", "4th Quarter" ],
+    "appLevels": [ "Exceptional", "Excellent", "Very Good", "Good", "Satisfactory" ],
+    "assetStates": {
+        "y":"4"
+    }
+}

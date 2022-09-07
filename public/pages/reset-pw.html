@@ -1,0 +1,23 @@
+﻿<div class="panel panel-default kra-settings margin10top" ng-controller="employeesCtrl" style="max-width:600px;">
+    <div class="panel-heading"><h3 class="panel-title">Reset Employee Password</h3></div>
+    <div class="panel-body">
+        <div class="padding">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <table class="table">
+                <thead>
+                    <tr style="border-bottom:1px solid grey">
+                        <td colspan="2" style="vertical-align:middle;" class="text-right">
+                            <label class="control-label">Select Employee:</label>
+                        </td>
+                        <td colspan="2">
+                            <select style="width: 228px;" ng-model="sel" ng-options="getName(i) for i in employees" class="form-control"></select>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+            <div class="text-center">
+                <button class="btn btn-default" type="submit" ng-disabled="!sel" ng-click="resetPassword(sel._id)">Reset Password</button>
+            </div>
+        </div>
+    </div>
+</div>

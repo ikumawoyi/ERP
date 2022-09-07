@@ -1,0 +1,231 @@
+﻿<div ng-controller="profileCtrl">
+    <div class="slide-animate-container">
+        <div class="slide-animate" ng-include="'pages/employee-header.html'"></div>
+    </div>
+    <tabset ng-if="employee._id">
+        <tab heading="General">
+            <table class="table">
+                <tr>
+                    <td>
+                        <table class="table table-bordered table-condensed table-responsive">
+                            <caption>Personal Information</caption>
+                            <tr>
+                                <th width="45%">First Name:</th>
+                                <td>{{employee.firstName}}</td>
+                            </tr>
+                            <tr>
+                                <th>Middle Name:</th>
+                                <td>{{employee.middleName}}</td>
+                            </tr>
+                            <tr>
+                                <th>Last Name:</th>
+                                <td>{{employee.lastName}}</td>
+                            </tr>
+                            <tr>
+                                <th>Date of Birth:</th>
+                                <td>{{employee.dob | date: 'd MMM yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <th>Gender:</th>
+                                <td>{{employee.gender}}</td>
+                            </tr>
+                            <tr>
+                                <th>Marital Status:</th>
+                                <td>{{employee.maritalStatus}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="table table-bordered table-condensed table-responsive">
+                            <caption>
+                                Employment Information<button class="btn btn-sm btn-default pull-right" ng-click="editProfile()">Edit Profile</button>
+                            </caption>
+                            <tr>
+                                <th width="45%">Employee ID:</th>
+                                <td>{{employee.employeeId}}</td>
+                            </tr>
+                            <tr>
+                                <th>Hired On:</th>
+                                <td>{{employee.hired | date:'d MMM yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <th>Confirmation Date:</th>
+                                <td>{{employee.confirmed | date:'d MMM yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <th>Designation:</th>
+                                <td>{{employee.designation}}</td>
+                            </tr>
+                            <tr>
+                                <th>Department:</th>
+                                <td>{{employee.department.name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Access Type:</th>
+                                <td>{{employee.access}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="table table-bordered table-condensed table-responsive">
+                            <caption>Address &amp; Contact Information</caption>
+                            <tr>
+                                <th width="45%">Street:</th>
+                                <td>{{employee.street}}</td>
+                            </tr>
+                            <tr>
+                                <th>City:</th>
+                                <td>{{employee.city}}</td>
+                            </tr>
+                            <tr>
+                                <th>State:</th>
+                                <td>{{employee.state}}</td>
+                            </tr>
+                            <tr>
+                                <th>Zip Code:</th>
+                                <td>{{employee.zipCode}}</td>
+                            </tr>
+                            <tr>
+                                <th>Personal Email:</th>
+                                <td>{{employee.pEmail}}</td>
+                            </tr>
+                            <tr>
+                                <th>Mobile Phone:</th>
+                                <td>{{employee.pPhone}}</td>
+                            </tr>
+                            <tr>
+                                <th>Work Email:</th>
+                                <td>{{employee.wEmail}}</td>
+                            </tr>
+                            <tr>
+                                <th>Work Phone:</th>
+                                <td>Ext: {{employee.wPhone}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="table table-bordered table-condensed table-responsive">
+                            <caption>Emergency Contact</caption>
+                            <tr>
+                                <th width="45%">Full Name:</th>
+                                <td>{{employee.nokName}}</td>
+                            </tr>
+                            <tr>
+                                <th>Relationship:</th>
+                                <td>{{employee.nokRelationship}}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td>{{employee.nokPhone}}</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>{{employee.nokEmail}}</td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td>{{employee.nokAddress}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </tab>
+        <tab heading="Experience">
+            <table class="table table-bordered table-condensed table-responsive">
+                <caption>
+                    <button class="btn btn-sm btn-default pull-right" ng-click="addExperience()">Add Experience</button>
+                </caption>
+                <thead>
+                <tr>
+                    <th>Employer</th>
+                    <th>Designation</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="exp in employee.experiences">
+                    <td><a href="" class="btn btn-link" ng-click="editExperience(exp)">{{exp.employer}}</a></td>
+                    <td>{{exp.designation}}</td>
+                    <td>{{exp.startDate | date: 'd MMM yyyy'}}</td>
+                    <td>{{exp.endDate | date: 'd MMM yyyy'}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </tab>
+        <tab heading="Education">
+            <table class="table table-bordered table-condensed table-responsive">
+                <caption>
+                    <button class="btn btn-sm btn-default pull-right" ng-click="addEducation()">Add Education History</button>
+                </caption>
+                <thead>
+                <tr>
+                    <th>School</th>
+                    <th>Qualification</th>
+                    <th>Major</th>
+                    <th>Grade</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="ed in employee.educations">
+                    <td><a href="" class="btn btn-link" ng-click="editEducation(ed)">{{ed.school}}</a></td>
+                    <td>{{ed.qualification}}</td>
+                    <td>{{ed.major}}</td>
+                    <td>{{ed.grade}}</td>
+                    <td>{{ed.dateAwarded | date: 'd MMM yyyy'}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-condensed table-responsive">
+                <caption>
+                    <button class="btn btn-sm btn-default pull-right" ng-click="addSkill()">Add New Skill</button>
+                </caption>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Skill Level</th>
+                    <th>Date Achieved</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="sk in employee.skills">
+                    <td><a href="" class="btn btn-link" ng-click="editSkill(exp)">{{sk.name}}</a></td>
+                    <td>{{sk.type}}</td>
+                    <td>{{sk.level}}</td>
+                    <td>{{sk.date | date: 'd MMM yyyy'}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </tab>
+        <tab heading="Dependants">
+            <table class="table table-bordered table-condensed table-responsive">
+                <caption>
+                    <button class="btn btn-sm btn-default pull-right" ng-click="addDependant()">Add New Dependant</button>
+                </caption>
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Relationship</th>
+                    <th>Policy No.</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="dep in employee.dependants">
+                    <td><a href="" class="btn btn-link" ng-click="editDependant(dep)">{{dep.firstName}}</a></td>
+                    <td>{{dep.lastName}}</td>
+                    <td>{{dep.gender}}</td>
+                    <td>{{dep.relationship}}</td>
+                    <td>{{dep.policyNumber}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </tab>
+    </tabset>
+</div>

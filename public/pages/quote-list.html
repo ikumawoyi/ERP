@@ -1,0 +1,52 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Quote Management<a class="btn btn-link pull-right" ng-click="editQuote('new')" ng-bind="'New Quote.'"></a>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered" ng-if="quotes">
+            <thead><tr class="header-bg"><th></th><th width="30%">Title</th><th>Content</th><th>Date</th><th></th></tr></thead>
+            <tbody>
+            <tr ng-class="{'text-red': areEqual(AsDate(item.date) , today)}" ng-repeat="item in quotes |orderBy:'date':true">
+                <td ng-bind="$index + 1"></td>
+                <td ng-bind="item.title"></td>
+                <td ng-bind="item.text"></td>
+                <td ng-bind="item.date|date:'shortDate'"></td>
+                <td class="editCol" ng-if="AsDate(item.date) > today">
+                    <span class="btn btn-link" title="Edit Quote" ng-click="editQuote(item)">edit</span>
+                </td>
+                <td ng-if="AsDate(item.date) <= today" class="text-red" ng-bind="areEqual(AsDate(item.date) , today)?'Live':'Published'"></td>
+            </tr>
+            </tbody>
+            <tfoot ng-if="quotes && !quotes.length">
+                <tr><td colspan="5" class="text-center" ng-bind="'No quotes added'"></td></tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script id="pages/edit-quote.html" type="text/ng-template">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title"> <span ng-bind="(quote._id?'Modify':'New') +' Quote'"></span><button type="button" class="close" ng-click="back()">
+            <span aria-hidden="true">×</span><span class="sr-only">Close</span></button></h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="modQuote">
+            <table class="table table-bordered table-responsive">
+                <tr><th>Title:</th><td>
+                    <input type="text" class="form-control" ng-model="quote.title" required></td></tr>
+                <tr><th>Content:</th><td>
+                    <textarea class="form-control" ng-model="quote.text" style="resize: vertical;" ng-required="true" rows="6"></textarea>
+                </td></tr>
+                <tr><td><span>Date:</span></td><td>
+                <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="quote.date" is-open="eduend"  close-text="Close" />
+                            <span class="input-group-btn unblock">
+                                <button type="button" class="btn btn-default" ng-click="open($event, 'eduend')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+            </td></tr>
+            </table>
+            </form>
+            <div align="center"><button type="button" class="btn btn-default" ng-disabled="modQuote.$invalid || updatingD" ng-click="saveQuote()">{{updatingD?'Saving Quote':'Submit'}}</button></div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,28 @@
+<div class="panel panel-default margin10top" ng-controller="employeesCtrl"
+     ng-init="columns = [{ Text: 'First Name', prop: 'firstName' },
+     { Text: 'Last Name', prop: 'lastName' }, { Text: 'Designation', prop: 'designation' },
+     { Text: 'Department', prop: 'department' }, { Text: 'Level Type', prop: 'access' }]">
+    <div class="panel-heading"><h2 class="panel-title">Exited Employees Record</h2></div>
+    <div class="panel-body">
+        <table class="table table-responsive table-striped table-condensed" ng-if="employeesInactive.length <= 15">
+            <thead><tr><th>Employee Id</th><th ng-repeat="col in columns">{{col.Text}}</th><th width="50px">Photo</th></tr></thead>
+            <tbody ng-init="ggPrev='';">
+            <tr ng-repeat="emp in employeesInactive | orderBy:'access'"  ng-click="editEmployee(emp)" class="clickable">
+                <td><a href="" class="btn btn-link">{{emp.employeeId}}</a></td><td ng-repeat="col in columns">{{col.prop == 'department'? emp[col.prop].name: emp[col.prop]}}</td><td><img class="img-thumbnail" src="img/{{emp.employeeId}}.jpg"></td>
+            </tr>
+            <tr ng-if="employeesInactive && !employeesInactive.length"><td colspan="{{columns.length + 2}}">No record to display</td> </tr>
+            </tbody>
+        </table>
+        <div ng-if="employeesInactive.length > 15">
+            <details ng-repeat="dept in employeesInactiveGroups" ng-if="dept[0]" ng-open="dept.length > 0">
+                <summary class="kra-area-header" style="color:#333; padding: 5px 0;">Department: <span ng-bind="dept[0].department.name + ' ('+ dept.length+ ')'"></span></summary>
+                <table class="table table-responsive table-striped table-condensed">
+                    <thead><tr class="header-bg"><th>Employee Id</th><th ng-repeat="col in columns">{{col.Text}}</th><th width="50px">Photo</th></tr></thead>
+                    <tbody>
+                    <tr ng-repeat="emp in dept | orderBy:'access'" ng-click="editEmployee(emp)" class="clickable">
+                        <td><a href="" class="btn btn-link">{{emp.employeeId}}</a></td><td ng-repeat="col in columns">{{col.prop == 'department'? emp[col.prop].name: emp[col.prop]}}</td><td><img class="img-thumbnail" src="img/{{emp.employeeId}}.jpg"></td> </tr></tbody>
+                </table>
+            </details>
+        </div>
+    </div>
+</div>

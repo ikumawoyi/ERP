@@ -1,0 +1,115 @@
+﻿<div class="panel panel-default kra-settings margin10top" style="max-width:600px;">
+    <div class="panel-heading"><h3 class="panel-title">Task Delegation</h3></div>
+    <div class="panel-body">
+        <div class="padding">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr><th></th><th>Name</th><th>Designation</th><th>Modified</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="d in delegations" ng-dblclick="viewDelegation(d)" class="clickable">
+                        <td ng-bind="$index + 1"></td>
+                        <td ng-bind="d.employee.firstName + ' ' + d.employee.lastName"></td>
+                        <td ng-bind="d.employee.designation"></td>
+                        <td ng-bind="d.modified"></td>
+                        <td ng-bind="d.status"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default kra-settings margin10top" style="max-width:700px;">
+    <div class="panel-heading"><h3 class="panel-title">Task Delegation</h3></div>
+    <div class="panel-body" style="max-width:700px;">
+        <form name="newDelForm">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th width="40%" class="text-right">Select Employee:</th>
+                        <td>
+                            <select ng-focus="isLeft = false" ng-required="true" ng-model="newDel.employee" ng-options="(i.firstName +' '+ i.lastName) for i in employees|orderBy:['firstName','lastName'] track by i._id" class="form-control"></select>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><th colspan="2">Grant access permission(s) to the selected employee</th></tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="col-md-4" ng-repeat="(key, value) in delTasks" style="border:thin solid #D5D5D5;">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-checked="newDel.tasks.indexOf(value) > -1" ng-click="toggleSelection(value)">
+                                        <span ng-bind="key"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <button type="button" class="btn btn-default" ng-disabled="newDelForm.$invalid ||!newDel.tasks.length || savingDel" ng-click="assignTask()" ng-bind="savingDel?'Assigning Tasks':'Assign Tasks'"></button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
+
+<script type="text/ng-template" id="pages/delegation-details.html">
+    <div class="panel panel-default kra-settings margin10top" style="max-width:600px;">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Assigned Employee<button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">x</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td colspan="2">
+                            <div class="pull-left">
+                                <div class="pull-left" style="margin: 5px"><img src="images/profile.png" width="112" height="113"></div>
+                                <div class="pull-right" style="margin: 5px; height: 113px;">
+                                    <div><font face="Tahoma" size="6" ng-bind="tsk.employee.firstName + ' '+ qr.employee.lastName"></font></div>
+                                    <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="tsk.employee.designation"></font></div>
+                                    <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="tsk.employee.department.name"></font></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><th colspan="2" class="header-bg">Grant access permission(s)</th></tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="col-md-6" ng-repeat="(key, value) in delTasks" style="border:thin solid #D5D5D5;">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-checked="tsk.tasks.indexOf(value) > -1" ng-click="toggleSelection(value)">
+                                        <span ng-bind="key"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <button type="button" ng-if="tsk.status == 'Active'" class="btn btn-default" ng-disabled="!tsk.tasks.length || deactivating" ng-click="deactivateTsk()" ng-bind="deactivating?'Deactivating':'Deactivate'"></button>
+                            <button type="button" class="btn btn-default" ng-disabled="!tsk.tasks.length || updating" ng-click="updateTsk()" ng-bind="savingDel?'Updating':'Update'"></button>
+                            <button ng-if="tsk.status == 'Stopped'" type="button" class="btn btn-default" ng-disabled="!tsk.tasks.length || activating" ng-click="activateTsk()" ng-bind="activating?'Activating':'Activate'"></button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</script>

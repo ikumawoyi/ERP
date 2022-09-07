@@ -1,0 +1,34 @@
+<div class="panel panel-default empData">
+    <div class="panel-heading"><h2 class="panel-title font16">Holiday Information<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h2></div>
+    <div class="panel-body">
+        <form class="col-sm-12" name="form">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">{{holiday.id?'Modify Holiday':'Add New Holiday'}}</h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>Name:</span><span class="is-required"> *</span></td><td><input class="form-control" ng-model="holiday.name" type="text" required ng-required="true"/> </td></tr>
+                            <tr><td><span>Start Date:</span></td><td>
+                                <input type="text" class="form-control unblock" datepicker-popup="EEE,dd MMM yyyy" ng-model="holiday.start" is-open="holstart" ng-required="true" close-text="Close" date-disabled="disabled(date, mode)" />
+                            <span class="input-group-btn unblock">
+                                <button type="button" class="btn btn-default" ng-click="open($event, 'holstart')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </td></tr>
+                            <tr><td><span>Number of Days:</span><span class="is-required"> *</span></td><td><input class="form-control" ng-model="holiday.days" type="text" required ng-required="true"/></td></tr>
+                            <tr><td><span>Resumption Date:</span></td><td disabled>
+                                <input disabled type="text" class="form-control unblock" ng-model="holiday.resume" ng-required="true" />
+                            </td></tr>
+                            <tr><td><span>Short Message:</span><span class="is-required"> *</span></td><td><textarea class="form-control extra" style="resize: vertical;" rows="5" cols="20" ng-model="holiday.message"></textarea></td></tr>
+                            <tr><td><span>Image mesage:</span></td><td><input type="file" onchange="angular.element(this).scope().uploadFile(this.files)" /></td></tr>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <div align="center">
+                            <input value="Save Details" class="btn btn-default" type="button" ng-click="saveHoliday()" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<style class="ng-scope">
+    thead{
+        background-image: -webkit-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
+        background-image: -o-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
+        background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#e8e8e8));
+        background-image: linear-gradient(to bottom,#f5f5f5 0,#e8e8e8 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
+        background-repeat: repeat-x;
+        color: #333;
+        background-color: #f5f5f5;
+        border-color: #ddd;
+    }
+</style>
+<div class="panel panel-default margin10top" ng-controller="leaveCtrl">
+    <div class="panel-heading"><h3 class="panel-title">Leave Entitlement Setting</h3></div>
+    <div class="panel-body">
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <table class="table table-bordered table-responsive" ng-init="columns = [{text:'Leave Type', prop:'name'}, {text:'Entitlement', prop:'days'}, {text:'Type Of Count', prop:'countType'}, {text:'Level', prop:'level'}]">
+            <thead><tr><th ng-repeat="col in columns">{{col.text}}</th> </tr></thead>
+            <tbody><tr class="clickable" ng-repeat="r in entitlements" ng-click="editEntitlement(r)"><td ng-repeat="col in columns">{{r[col.prop]}}</td> </tr></tbody>
+            <tr ng-if="!entitlements || entitlements.length == 0"><td colspan="{{columns.length}}" style="text-align: center">No Settings Configured</td></tr>
+        </table>
+        <!--
+        <div class="form-group">
+            <div align="center">
+                <input value="New Entitlement" class="btn btn-default pull-right" type="button" ng-click="editEntitlement('new')">
+            </div>
+        </div>
+        -->
+    </div>
+</div>

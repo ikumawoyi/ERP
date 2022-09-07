@@ -1,0 +1,100 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Confirmation Appraisal</h3></div>
+    <div class="panel-body" ng-if="sel" >
+        <table class="table">
+            <thead>
+                <tr style="border-bottom:1px solid grey">
+                    <td colspan="2" style="vertical-align:middle;" class="text-right">
+                        <label class="control-label">Select Employee:</label>
+                    </td>
+                    <td colspan="2">
+                        <select style="width: 228px;" ng-model="sel" ng-options="getName(i.employee) for i in data" class="form-control"></select>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td colspan="5">
+                        <div class="pull-left">
+                            <div class="pull-left" style="margin: 5px"><img ng-src="img/{{sel.employee.employeeId}}.jpg" width="112" height="113"></div>
+                            <div class="pull-right" style="margin: 5px; height: 113px;">
+                                <div><font face="Tahoma" size="6" ng-bind="getName(sel.employee)"></font></div>
+                                <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="sel.employee.designation"></font></div>
+                                <div><font face="Tahoma" style="font-size: 12.5pt" ng-bind="sel.employee.department.name" color="#333333"></font></div>
+                                <div><font face="Tahoma" ng-if="sel.kra.text" style="vertical-align:-webkit-baseline-middle;font-size: 24px" ; color="{{scoring[sel.kra.text]|| '#333333'}}" ng-bind="sel.kra.text + ' Performance'"></font></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="header-bg">
+                    <th>Date</th>
+                    <th>Appraiser</th>
+                    <td>Score</td>
+                    <td>Interpretation</td>
+                    <td>Recommendation</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="p in sel.data | orderBy:'-date' track by $index" class="clickable"
+                    ng-click="p.scoreText? showDetails(p, sel.employee): showError('confirmation')">
+                    <td  ng-bind="p.date| date: 'mediumDate'"></td>
+                    <td ng-bind="getName(p.appraiser)"></td>
+                    <td ng-bind="p.score"></td>
+                    <td ng-bind="p.scoreText"></td>
+                    <td ng-bind="p.recommendation"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+
+
+            </tfoot>
+        </table>
+        <div ng-if="!sel" class="text-center">
+            <span><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></span>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="pages/appraisal-confirmation-details.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading"><h3 class="panel-title"><span ng-bind="'Confirmation Appraisal for ' + getName(data.employee)"></span> <a class="btn btn-link pull-right" href="" ng-click="back()">Back</a><a class="btn btn-link pull-right" href="/confirmation/print/{{data._id}}" target="_blank">print</a></h3></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="pull-left">
+                    <div class="pull-left" style="margin: 5px"><img ng-src="img/{{data.employee.employeeId}}.jpg" width="112" height="113"></div>
+                    <div class="pull-right" style="margin: 5px; height: 113px;">
+                        <div><font face="Tahoma" size="6" ng-bind="getName(data.employee)"></font></div>
+                        <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="data.employee.designation"></font></div>
+                        <div><font face="Tahoma" style="font-size: 12.5pt" ng-bind="data.employee.department.name" color="#333333"></font></div>
+                        <div><font face="Tahoma" style="vertical-align:-webkit-baseline-middle;font-size: 24px" color="{{scoring[data.scoreText] || '#333333'}}" ng-bind="data.scoreText + ' Performance'"></font></div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <table class="table table-bordered">
+                <thead><tr class="header-bg"><td colspan="2" style="padding:12px;font-size: 15px;" ng-bind="'Competence Ratings'"></td></tr></thead>
+                <tbody>
+                    <tr ng-repeat="(area,dt) in data.details">
+                        <td width="40%" class="header-bg"><label ng-bind="area"></label>
+                        </td>
+                        <td ng-bind="dt.scoreText" style="color:{{scoring[dt.scoreText] || '#333333'}}"></td>
+                    </tr>
+                <tr><td colspan="2">
+                    <label ng-bind="'Justification'"></label>
+                    <textarea disabled ng-disabled="true" rows="5" ng-model="data.reason" class="form-control"></textarea>
+                </td></tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" colspan="2">
+                            <span class="col-sm-4" ng-bind="'Date : '+ (data.date|date:'mediumDate')"></span>
+                            <span class="col-sm-4" ng-bind="'By : '+ getName(data.appraiser)"></span>
+                            <span class="col-sm-4" ng-bind="'Recommendation: ' + data.recommendation"></span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</script>

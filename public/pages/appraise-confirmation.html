@@ -1,0 +1,90 @@
+<script type="text/ng-template" id="pages/confirm-iv-form.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Confirmation Evaluation<button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">x</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="pull-left">
+                    <div class="pull-left" style="margin: 5px"><img ng-src="img/{{eval.employee.employeeId}}.jpg" width="112" height="113"></div>
+                    <div class="pull-right" style="margin: 5px; height: 113px;">
+                        <div><font face="Tahoma" size="6" ng-bind="eval.employee.firstName + ' '+ eval.employee.lastName"></font></div>
+                        <div><font face="Tahoma" size="3" color="#CCCCCC">{{eval.employee.designation}}</font></div>
+                        <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333">{{eval.employee.department.name}}</font></div>
+                    </div>
+                </div>
+            </div>
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="achForm">
+                <span>Select the appropriate competence level from below</span>
+                <table class="table table-bordered" ng-repeat="(key,value) in groups">
+                    <thead>
+                        <tr class="header-bg">
+                            <td colspan="2"><label ng-bind="key" class="text-uppercase darkenblue"></label></td>
+                        </tr>
+                    </thead>
+                    <tr ng-repeat="i in value">
+                        <td ng-bind="i.area"></td>
+                        <td style="text-align: -webkit-center;">
+                            <label ng-repeat="g in globals.constants.appLevels" class="radio-inline">
+                                <input type="radio" ng-if="$last" required ng-model="$parent.eval.details[i.area].scoreText" value="{{g}}"><span ng-if="$last" ng-bind="' '+g"></span>
+                                <input type="radio" ng-if="!$last" ng-model="$parent.eval.details[i.area].scoreText" value="{{g}}"><span ng-if="!$last" ng-bind="' '+g"></span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="header-bg">
+                            <td colspan="2"><label ng-bind="'Recommendation'" class="text-uppercase darkenblue"></label></td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td class="text-center" ng-repeat="i in ['Confirm', 'Deny']">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" ng-checked="eval.recommendation == i" ng-click=" toggleselection(i)" > <span ng-bind="i"></span>
+                            </label>
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label>Justification for recommendation</label>
+                            <textarea ng-model="eval.reason" rows="6" style="width:100%; resize:vertical" placeholder="Justification for recommendation:" ng-required="true"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <p class="text-center"><button type="button" class="btn btn-default" ng-disabled="achForm.$invalid || savingAch || !eval.recommendation" ng-click="submitAppraisal()">{{savingAch?'Submiting Evaluation':'Submit'}}</button></p>
+            </form>
+        </div>
+    </div>
+</script>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Confirmation Appraisal Invitations</h3></div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="header-bg">
+                    <th width="10px"></th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Department</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="iv in globals.ivs">
+                    <td ng-bind="$index + 1"></td>
+                    <td ng-bind="iv.employee.firstName + ' ' + iv.employee.lastName"></td>
+                    <td ng-bind="iv.employee.designation"></td>
+                    <td ng-bind="iv.employee.department.name"></td>
+                    <td class="text-center"><a ng-click="performCon(iv)" class="btn btn-link">appraise</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

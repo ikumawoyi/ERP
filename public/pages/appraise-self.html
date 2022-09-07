@@ -1,0 +1,80 @@
+<div ng-if="selfAssR.isOpen && !selfAssR.completed && selfAssR.assessments.length > 0 &&lax" ng-include="'pages/appraise-self-form.html'"></div>
+
+<div ng-if="selfAssR.isOpen && selfAssR.completed && lax" ng-include="'pages/appraise-self-details.html'"></div>
+<div ng-if="!selfAssR.isOpen && lax">
+    <p>The appraisal time period has already elapsed. You may contact Practice Director for an extension.</p>
+</div>
+<script type="text/ng-template" id="pages/appraise-self-form.html">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Self Assessment</h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form ng-if="selfAssR.assessments && selfAssR.assessments.length > 0" name="assessForm">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr class="header-bg"><td colspan="2">All fields are required otherwise stated. Enter "NOT APPLICABLE" if question asked is not related to your jod duties.</td></tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="ax in selfAssR.assessments">
+                            <td width="45%">
+                                <span style="color: #000011; font-weight: bold; ">{{$index + 1}}.</span><span class="is-required">*</span> {{ax.question.text}}
+                                <div ng-if="ax.question.isCareer" style="font-size: 12px;">
+                                    <br>
+                                    <span style="color: #000011; font-weight: bold; ">a) </span> <em>Currently</em>
+                                    <textarea required ng-required="true" rows="4" style="resize: none;" ng-model="ax.answers[0]" class="form-control emoData header-bg" ng-change="isCareerChanged(ax)"></textarea>
+                                </div>
+                            </td>
+                            <td>
+                                <div ng-if="ax.question.isCareer" style="font-size: 12px;">
+                                    <span style="color: #000011; font-weight: bold; ">b) </span> <em>3 years from now</em>
+                                    <textarea required ng-required="true" rows="4" style="resize: none;" ng-model="ax.answers[1]" class="form-control emoData header-bg" ng-change="isCareerChanged(ax)"></textarea>
+                                    <span style="color: #000011; font-weight: bold; ">c) </span> <em>what can be done to accomplish your long-term career objectives?</em>
+                                    <textarea required ng-required="true" rows="4" style="resize: none;" ng-model="ax.answers[2]" class="form-control emoData header-bg" ng-change="isCareerChanged(ax)"></textarea>
+                                </div>
+                                <textarea ng-if="!ax.question.isCareer" required ng-required="true" rows="4" style="resize: none;" ng-model="ax.answer" class="form-control emoData header-bg"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot ng-if="selfAssR.assessments && selfAssR.assessments.length > 0">
+                        <tr><td colspan="2" class="text-center"><button type="button" class="btn btn-default" ng-disabled="assessForm.$invalid || savingAnswers" ng-click="submitAction()">{{savingAnswers?'Submiting Assessment':'Submit'}}</button></td></tr>
+                    </tfoot>
+                </table>
+            </form>
+            <p ng-if="!selfAssR.assessments || selfAssR.assessments.length <= 0" colspan="2" class="text-center">No self assessment questions.</p>
+            <hr />
+        </div>
+    </div>
+</script>
+<script id="pages/appraise-self-details.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Assessment Report</h3></div>
+        <div class="panel-body">
+            <div ng-include="'pages/employee-header-info.html'"></div>
+            <div class="row">
+                <table class="table table-bordered" style="border: none;">
+                    <tbody>
+                        <tr ng-repeat="ax in selfAssR.assessments">
+                            <td colspan="2" style="border-right: none;border-left: none;" ng-if="!ax.question.isCareer">
+                                <span>{{$index + 1}}. {{ax.question.text}}.</span><br>
+                                <span style="font-weight:bold;font-style:italic; color: #000011; margin-left: 10px">{{ax.answer}}</span>
+                            </td>
+                            <td colspan="2" style="border-right: none;border-left: none;padding: 0;" ng-if="ax.question.isCareer">
+                                <table class="table table-bordered" ng-init="part = ax.answer.split(':$:')">
+                                    <tr class="header-bg" ng-init="col = ['a) Currently','b) 3 years from now','c) Long-term career objectives']">
+                                        <td colspan="{{part.length}}">{{$index + 1}}. {{ax.question.text}}.</td>
+                                    </tr>
+                                    <tr>
+                                        <td ng-repeat="p in part track by $index">
+                                            <em>{{col[$index]}}</em><br>
+                                            <span style="font-weight:bold;font-style:italic; color: #000011; margin-left: 10px">{{p}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>

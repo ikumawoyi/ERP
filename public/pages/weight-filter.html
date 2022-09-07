@@ -1,0 +1,47 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title"><span ng-bind="type + ' Filter Settings'"></span><button type="button" class="close" ng-click="back()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button></h3></div>
+    <div class="panel-body content">
+        <form name="filterForm">
+            <table class="table table-bordered">
+                <tr>
+                    <th width="50%">Department(s):</th>
+                    <td>
+                        <ul class="kra-list" style="height: 164px;">
+                            <li ng-repeat="i in globals.constants.organisations track by i._id" ng-class="{'selectedSub':depts.indexOf(i) > -1}">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" ng-checked="depts.indexOf(i) > -1" ng-click="toggleDept(i)"><span ng-bind="i.name"></span></label>
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-repeat="dpt in depts track by dpt._id" ng-if="dpt.designations.length > 0">
+                    <td colspan="2">
+                        <table class="table" style="margin-bottom: 2px;">
+                            <tr class="header-bg"><td><span ng-bind="'Designation(s) for '"></span><span ng-bind="dpt.name"></span></td></tr>
+                            <tr>
+                                <td>
+                                    <ul class="kra-list" style="height: {{listSize(dpt.designations.length)}}; margin:1px 2px;">
+                                        <li ng-repeat="i in dpt.designations track by i" ng-class="{'selectedfSub':deptDesigs[dpt.name].indexOf(i) > -1}">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" ng-checked="deptDesigs[dpt.name].indexOf(i) > -1" ng-click="toggleDesig(i, dpt.name)"><span ng-bind="i"></span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Weight:</th>
+                    <td><input ng-required="true" type="number" class="form-control" ng-min="1" ng-init="weight = 1" ng-model="weight"> </td>
+                </tr>
+
+            </table>
+            <div align="center"><button type="button" class="btn btn-default" ng-disabled="!depts.length" ng-click="updateFilter()">Update Filter</button></div>
+        </form>
+    </div>
+</div>

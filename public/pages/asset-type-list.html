@@ -1,0 +1,132 @@
+﻿<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Asset Types</h3></div>
+    <div class="panel-heading"><a class="btn btn-default" ng-click="editType('new')">New Asset Type</a></div>
+    <div class="panel-body">
+        <table ng-if="assetTypes.length > 0" class="table table-bordered">
+            <thead class="header-bg">
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th colspan="2" class="text-center">Maintenance (Dept & Designations)</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="typ in assetTypes">
+                    <td width="10%" class="text-center">
+                        <span title="Edit Asset Type" class="btn btn-link" style="margin-right:2px" ng-click="editType(typ)">edit</span>
+                   </td>
+                    <td ng-bind="typ.name"></td>
+                    <td ng-bind="typ.code"></td>
+                    <td ng-bind="typ.department.name"></td>
+                    <td ng-bind="(typ.designations.length == typ.department.designations.length ?'All': typ.designations.length  )+ ' designations'"></td>
+                    <td ng-bind="typ.assets.length +' assets'"></td>
+                    <td class="text-center">
+                        <span title="View More Details" class="btn btn-link" style="margin-left:2px" ng-click="viewType(typ)">view</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/ng-template" id="pages/asset-new-type.html">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">New Asset Type<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body" style="max-width: 700px;">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="newAssetTypeForm">
+                <table class="table table-bordered">
+                    <thead class="header-bg">
+                        <tr>
+                            <th colspan="4">Asset Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td width="25%">Name</td><td><input class="form-control" ng-required="true" ng-model="newAssetType.name" type="text" /></td></tr>
+                        <tr><td>Code</td><td><input class="form-control" ng-required="true" ng-model="newAssetType.code" type="text" /></td></tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align:middle;-webkit-padding-start: 160px;">
+                                <div class="checkbox">
+                                    <label><input ng-model="newAssetType.shared" type="checkbox">Can be shared ?</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="header-bg">
+                            <th colspan="4">Maintenance</th>
+                        </tr>
+                        <tr>
+                            <td>Department:</td>
+                            <td><select ng-model="newAssetType.department" ng-options="i.name for i in globals.constants.organisations track by i._id" class="form-control"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Designation(s)</td>
+                            <td><select multiple ng-disabled="!newAssetType.department" ng-model="newAssetType.designations" ng-options="i for i in newAssetType.department.designations track by i" class="form-control"></select></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-center"><button ng-click="saveAssetType()" ng-disabled="newAssetTypeForm.$invalid || savingNewAssetType" class="btn btn-default" ng-bind="savingNewAssetType? 'Saving Asset': 'Save Asset'">Save</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="pages/asset-type-details.html">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Asset Type Details<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body" style="max-width: 700px;">
+                <table class="table table-bordered">
+                    <thead class="header-bg">
+                    <tr>
+                        <th colspan="4">Asset Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr><td width="25%">Name</td><td ng-bind="assetType.name"></td></tr>
+                    <tr><td>Code</td><td ng-bind="assetType.code"></td></tr>
+                    <tr>
+                        <td>Shared ?</td> <td ng-bind="assetType.shared"></td>
+                    </tr>
+                    <tr class="header-bg">
+                        <th colspan="4">Maintenance</th>
+                    </tr>
+                    <tr>
+                        <td>Department:</td>
+                        <td ng-bind="assetType.department.name"></td>
+                    </tr>
+                    <tr>
+                        <td>Designation(s)</td>
+                        <td ng-bind="assetType.designations"></td>
+                    </tr>
+                    <tr ng-if="assetType.assets.length > 0">
+                        <td colspan="2">
+                            <table class="table table-bordered">
+                                <tr class="header-bg">
+                                    <th>Code</th>
+                                    <th>Maker</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>State</th>
+                                </tr>
+                                <tr ng-repeat="i in assetType.assets">
+                                    <td ng-bind="i.code"></td>
+                                    <td ng-bind="i.manufacturer"></td>
+                                    <td ng-bind="i.date|date:'shortDate'"></td>
+                                    <td ng-bind="i.status"></td>
+                                    <td ng-bind="i.state"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+        </div>
+    </div>
+</script>

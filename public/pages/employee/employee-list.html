@@ -1,0 +1,25 @@
+<div class="panel panel-default margin10top" ng-controller="employeesCtrl"
+     ng-init="columns = [{ Text: 'First Name', prop: 'firstName' },
+     { Text: 'Last Name', prop: 'lastName' }, { Text: 'Designation', prop: 'designation' },
+     { Text: 'Level Type', prop: 'access' }]">
+    <div class="panel-heading"><h2 class="panel-title">Employees Record</h2></div>
+    <div class="panel-heading"><button class="btn btn-sm btn-default btn-lg" ng-click="createEmployee()">Add New Employee</button></div>
+    <div class="panel-body">
+        <div class="well"><small id="ctl">This page enables you to add all relevant employees’ information by clicking on 'Add New Employee button'. The information includes; personal data, employment
+         data and next of kin. Click on 'Refresh' button to reflect changes in the grid.
+            <br>You may click on each Employee ID to modify employee's entire record or add other information such as Job experience, Education, Compensation etc.
+            <br><b>Note</b>: Employee First-Name initial plus full Last-Name will be their respective EmployeeID while only their First-Name will be the DEFAULT login password.</small>
+        </div>
+        <div>
+            <details ng-repeat="(dept,emps) in employeeGroups" ng-open="dept.length > 0">
+                <summary class="kra-area-header" style="color:#333; padding: 5px 0;"><span ng-bind="( emps[0].department.name ? ('Department: ' + emps[0].department.name): 'Not Assigned') + ' ('+ emps.length+ ')'"></span></summary>
+                <table class="table table-responsive table-striped table-condensed">
+                    <thead><tr class="header-bg"><th>Employee Id</th><th ng-repeat="col in columns">{{col.Text}}</th><th width="60px">Photo</th></tr></thead>
+                    <tbody>
+                    <tr ng-repeat="emp in emps | orderBy:'access'"  ng-click="editEmployee(emp)" class="clickable">
+                        <td><a href="" class="btn btn-link">{{emp.employeeId}}</a></td><td ng-repeat="col in columns">{{col.prop == 'department'? emp[col.prop].name: emp[col.prop]}}</td><td width="60px"><img class="img-thumbnail" src="img/{{emp.employeeId}}.jpg" style="width: 80px;"></td> </tr></tbody>
+                </table>
+            </details>
+        </div>
+    </div>
+</div>

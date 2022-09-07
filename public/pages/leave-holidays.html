@@ -1,0 +1,43 @@
+<style class="ng-scope">
+    thead{
+        background-image: -webkit-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
+        background-image: -o-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
+        background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#e8e8e8));
+        background-image: linear-gradient(to bottom,#f5f5f5 0,#e8e8e8 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
+        background-repeat: repeat-x;
+        color: #333;
+        background-color: #f5f5f5;
+        border-color: #ddd;
+    }
+</style>
+<div class="panel panel-default margin10top" ng-controller="leaveCtrl">
+    <div class="panel-heading"><h3 class="panel-title">Holiday Setting</h3></div>
+    <div class="panel-body">
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <table class="table table-bordered table-responsive">
+            <thead><tr><th>Holiday</th><th>Start Date</th><th>Resumption Date</th></tr></thead>
+            <tbody><tr ng-repeat="r in holidays">
+                <td><a class="btn btn-link" ng-click="editHoliday(r)">{{r.name}}</a></td><td>{{r.start|date:'EEE, dd MMM yyyy'}}</td><td>{{r.resumption|date:'EEE, dd MMM yyyy'}}</td>
+            </tr></tbody>
+            <tr ng-if="!holidays || holidays.length == 0"><td colspan="{{columns.length}}" style="text-align: center">No Holidays</td></tr>
+        </table>
+        <!--
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                <div ng-include="'pages/holiday-edit.html'"></div>
+            </div>
+            <div class="col-sm-6">
+                <div ng-include="'pages/holiday-edit.html'"></div>
+            </div>
+        </div>
+        -->
+        <div class="form-group">
+            <div align="center">
+                <input value="New Holiday" class="btn btn-default pull-right" type="button" ng-click="editHoliday('new')">
+                <!--<input value="New Holiday" class="btn btn-default pull-right" type="button" ng-click="editHoliday('new')"> -->
+            </div>
+        </div>
+
+    </div>
+</div>

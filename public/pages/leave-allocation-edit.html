@@ -1,0 +1,22 @@
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Modify Leave Allocation Level<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <table class="table table-responsive" ng-init="isLeft = true">
+                <tbody><tr><th width="47%">Level 1</th><th></th><th width="47%">Level 2</th></tr>
+                <tr>
+                    <td><select autofocus="true" ng-focus="isLeft = true" multiple required ng-model="level1" ng-options="(i.firstName +' '+ i.lastName) for i in allocation.level1|orderBy:['firstName','lastName'] track by i._id" class="form-control" style="height: 251px;"></select></td>
+                    <td class="switcher">
+                        <a class="btn" ng-disabled="allocation.level1.length <= 0 || !isLeft" ng-click="move('right')"><i class="glyphicon glyphicon-arrow-right"></i></a><br>
+                        <a class="btn" ng-disabled="allocation.level2.length <= 0 || isLeft" ng-click="move('left')"><i class="glyphicon glyphicon-arrow-left"></i></a></td>
+                    <td><select ng-focus="isLeft = false" multiple required ng-model="level2" ng-options="(i.firstName +' '+ i.lastName) for i in allocation.level2|orderBy:['firstName','lastName'] track by i._id" class="form-control" style="height: 251px;"></select></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <div align="center">
+                <input ng-disabled="changes.length <= 0" value="Save Changes" class="btn btn-default" type="button" ng-click="submit()" >
+            </div>
+        </div>
+    </div>

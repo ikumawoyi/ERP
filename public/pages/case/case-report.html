@@ -1,0 +1,32 @@
+<div class="panel panel-default empData">
+    <div class="panel-heading"><h3 class="panel-title font16">Case/Team Assignment Report</h3></div>
+    <div class="panel-body">
+        <details ng-repeat="initiator in reports" ng-if="initiator.cases.length > 0" ng-open="{{initiator.cases.length < 10}}">
+            <summary class="kra-area-header"><span ng-bind="initiator.name|uppercase"></span></summary>
+            <table class="table table-bordered">
+                <tr>
+                    <td width="10px" style="vertical-align: middle; width:15%; text-transform:capitalize" ng-bind="initiator.name"></td>
+                    <td width="85%">
+                        <table class="table table-striped">
+                            <tr ng-repeat="case in initiator.cases|orderBy:'date':true">
+                                <td style="width:10px" ng-bind="$index + 1"></td>
+                                <td ng-bind="case.title"></td>
+                                <td ng-bind="case.location"></td>
+                                <td><span ng-repeat="n in getNamesFromColAsCol([case.initiator],case.members) track by $index" ng-class="{'text-grey' : getName(employee) == n._id}" ng-bind="n + ($last ? '.':', ')"></span></td>
+                                <td ng-bind="case.date|date:'shortDate'"></td>
+                                <td>
+                                    <a ng-if="!case.closed" class="btn btn-link" ng-bind="'mark as closed'" ng-click="closeCase(case)"></a>
+                                    <span ng-if="case.closed" ng-bind="'closed'"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </details>
+
+        <div class="text-center" ng-if="!reports">
+            <span><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></span>
+        </div>
+    </div>
+</div>

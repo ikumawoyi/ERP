@@ -1,0 +1,82 @@
+﻿<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Attendance Records</h3></div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td colspan="2" style="vertical-align:middle;" class="text-right">
+                        <label class="control-label">Select Month and Year:</label>
+                    </td>
+                    <td colspan="2">
+                        <select style="width: 108px; float:left; margin-right: 5px;" ng-required="true" ng-change="ichanged(m)" ng-model="ft.m" ng-options="m.name for m in (ft.y? globals.indexMonths.slice(ft.y.min-1, ft.y.max) :[])" class="form-control"></select>
+                        <select style="width: 108px;" ng-required="true" ng-model="ft.y" ng-options="i._id for i in myatts" class="form-control"></select>
+                    </td>
+                </tr>
+                <tr class="attStatus-header-bg">
+                    <td style="padding-top:0;padding-bottom:0;">Date</td>
+                    <td style="padding-top:0;padding-bottom:0;">Time In</td>
+                    <td style="padding-top:0;padding-bottom:0;">Lateness(Min)</td>
+                    <td style="padding-top:0;padding-bottom:0;">Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-class="{'late':sub.status == 'Late', 'ontime':sub.status == 'On Time','absent':sub.status == 'Absent', 'pending':sub.status == 'N/A', 'clickable': (sub.status == 'Absent' || sub.status == 'Late')}" class="attStatus" ng-repeat="sub in arrDays" ng-click="(sub.status == 'Absent' || sub.status == 'Late')?viewLateness(sub): noop()">
+                    <td ng-bind="sub.date| date:'mediumDate'"></td>
+                    <td ng-bind="sub.time?sub.time: 'NA'"></td>
+                    <td ng-bind="sub.lateness"></td>
+                    <td ng-bind="sub.status"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="pages/my-attendance-det.html">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Attendance Response<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body">
+            <form name="newTicForm">
+                <div ng-include="'pages/message-alert-modal.html'"></div>
+                <table class="table table-bordered">
+                    <thead class="header-bg">
+                    <tr><th colspan="2">Details</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Employee Name</td>
+                        <td ng-bind="att.name"></td>
+                    </tr>
+                    <tr>
+                        <td>Department</td>
+                        <td ng-bind="att.department"></td>
+                    </tr>
+                    <tr>
+                        <td>Time In:</td>
+                        <td ng-bind="att.time?att.time: 'NA'"></td>
+                    </tr>
+                    <tr>
+                        <td>Lateness (min)</td>
+                        <td ng-bind="att.lateness"></td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td ng-bind="att.date|date:'mediumDate'"></td>
+                    </tr>
+                    <tr class="header-bg">
+                        <td colspan="2">Note</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><textarea ng-model="att.reason" style="resize:vertical" ng-minlength="10" class="form-control empData" rows="6" placeholder="Reason for latenes" required></textarea></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="2" class="text-center"><button ng-click="replyLateness()" ng-disabled="newTicForm.$invalid || submittingP" class="btn btn-default" ng-bind="submittingP? 'Submitting': 'Reply Lateness'"></button></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>

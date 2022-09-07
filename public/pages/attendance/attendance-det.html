@@ -1,0 +1,28 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Attendance Details<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+    <div class="panel-body">
+        <div ng-include="'pages/message-alert-modal.html'"></div>
+        <form name="newTicForm">
+            <table class="table table-bordered">
+                <thead class="header-bg">
+                <tr><th colspan="2">Details</th></tr>
+                </thead>
+                <tbody>
+                <tr><td>Id</td><td ng-bind="att.employeeId"></td></tr>
+                <tr><td>Employee Name</td><td ng-bind="att.name"></td></tr>
+                <tr><td>Department</td><td ng-bind="att.department"></td></tr>
+                <tr><td>Time In:</td><td ng-bind="att.time || 'NA'"></td></tr>
+                <tr><td>Lateness (min)</td><td ng-bind="att.lateness"></td></tr>
+                <tr><td>Date</td><td ng-bind="att.date|date:'mediumDate'"></td></tr>
+                <tr class="header-bg"><td colspan="2">Lateness Reason</td></tr>
+                <tr><td colspan="2"><textarea ng-model="att.reason" disabled style="resize:vertical" class="form-control empData" rows="3" placeholder="Lateness Reason"></textarea></td></tr>
+                <tr class="header-bg"><td colspan="2">Note</td></tr>
+                <tr><td colspan="2"><textarea ng-model="att.note" style="resize:vertical" class="form-control empData" rows="6" placeholder="Pardon Note" required></textarea></td></tr>
+                </tbody>
+                <tfoot>
+                <tr><td colspan="2" class="text-center"><button ng-click="pardonLateness()" ng-disabled="newTicForm.$invalid || submittingP" class="btn btn-default" ng-bind="submittingP? 'Submitting': 'Pardon'"></button></td></tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>

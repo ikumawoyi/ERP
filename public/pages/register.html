@@ -1,0 +1,157 @@
+<div>
+    <form name="form" class="form-horizontal tab-content" novalidate>
+        <div class="modal-header">
+            <h2>Registration</h2>
+        </div>
+
+        <div class="panel panel-primary modal-body" style="margin:5px 10px;" role="tabpanel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Create a new account</h3>
+            </div>
+            <!--<ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#basic" data-toggle="tab" role="tab">Payarena</a>
+                </li>
+                <li role="presentation">
+                    <a href="#transfers" data-toggle="tab" role="tab">U-Money Transfer</a>
+                </li>
+            </ul>-->
+            <!--<tabset>
+                <tab heading="Payarena">role="tabpanel" class="tab-pane active"-->
+            <fieldset id="basic">
+                <div class="form-group" ng-class="{'has-error': form.UserName.$invalid && !form.UserName.$pristine}">
+                    <label class="col-sm-4 control-label" for="UserName">Email Address</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="user.UserName" name="UserName" type="email" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': form.Password.$invalid && !form.Password.$pristine}">
+                    <label class="col-sm-4 control-label" for="Password">Choose Password</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="user.Password" name="Password" type="password" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': !form.ConfirmPassword.$pristine  && (form.ConfirmPassword.$invalid || user.ConfirmPassword != user.Password)}">
+                    <label class="col-sm-4 control-label" for="Password">Confirm Password</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="user.ConfirmPassword" name="ConfirmPassword" type="password" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': form.Surname.$invalid && !form.Surname.$pristine}">
+                    <label class="col-sm-4 control-label" for="Surname">Surname</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="user.Surname" name="Surname" type="text" maxlength="50" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': form.FirstName.$invalid && !form.FirstName.$pristine}">
+                    <label class="col-sm-4 control-label" for="FirstName">First Name</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="user.FirstName" name="FirstName" type="text" maxlength="50" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': form.OtherName.$invalid && !form.OtherName.$pristine}">
+                    <label class="col-sm-4 control-label" for="OtherName">Other Names</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="user.OtherName" name="OtherName" type="text" />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': form.PhoneNumber.$invalid && !form.PhoneNumber.$pristine}">
+                    <label class="col-sm-4 control-label" for="PhoneNumber">Phone Number</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="user.PhoneNumber" name="PhoneNumber" type="tel" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error': form.BirthDate.$invalid && !form.BirthDate.$pristine}">
+                    <label class="col-sm-4 control-label" for="BirthDate">Birth Date (dd MMM yyyy e.g. 19 Jul 1974)</label>
+                    <div class="col-sm-8">
+                        <div class="input-group input-group-sm date">
+                            <input type="text" class="form-control" datepicker-popup="dd MMM yyyy" max-date="bdateMax" ng-model="user.BirthDate" is-open="opened.value" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="bdateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="Gender">Gender</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" ng-model="user.Gender" name="Gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <!--</tab>
+            <tab heading="U-Money Transfer"> role="tabpanel" class="tab-pane"-->
+            <fieldset id="transfers">
+                <label>
+                    <input type="checkbox" ng-model="user.MoneyTransfer" ng-change="umtChanged()" /> Register for U-Money Transfers
+                </label>
+                <div ng-show="user.MoneyTransfer">
+                    <div class="form-group" ng-class="{'has-error': form.CardType.$invalid && !form.CardType.$pristine}">
+                        <label class="col-sm-4 control-label" for="CardType">Card Type</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" ng-model="card.Type" name="CardType" ng-required="user.MoneyTransfer" ng-options="card for card in cardTypes" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': form.CardName.$invalid && !form.CardName.$pristine}">
+                        <label class="col-sm-4 control-label" for="CardName">Name as written on Card</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" ng-model="card.Name" name="CardName" type="text" ng-required="user.MoneyTransfer" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': (form.CardPAN1.$invalid && !form.CardPAN1.$pristine) || (form.CardPAN2.$invalid && !form.CardPAN2.$pristine)}">
+                        <label class="col-sm-4 control-label" for="CardPAN1">Masked PAN of Card</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" ng-model="card.PANFirst6" name="CardPAN1" type="text" ng-required="user.MoneyTransfer" pattern="[0-9]{6,6}" maxlength="6" placeholder="first 6 digits of card pan" />
+                            <input class="form-control" ng-model="card.PANLast4" name="CardPAN2" type="text" ng-required="user.MoneyTransfer" pattern="[0-9]{4,4}" maxlength="4" placeholder="last 4 digits of card pan" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': form.CardIssuer.$invalid && !form.CardIssuer.$pristine}">
+                        <label class="col-sm-4 control-label" for="CardIssuer">Name of Issuing Bank</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" ng-model="card.Issuer" name="CardIssuer" type="text" ng-required="user.MoneyTransfer" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': form.CardLocation.$invalid && !form.CardLocation.$pristine}">
+                        <label class="col-sm-4 control-label" for="CardLocation">Location of Issuing Bank</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" ng-model="card.Location" name="CardLocation" type="text" ng-required="user.MoneyTransfer" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': form.CardAddress.$invalid && !form.CardAddress.$pristine}">
+                        <label class="col-sm-4 control-label" for="CardAddress">Cardholder's Home / Billing Address</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" ng-model="card.Address" name="CardAddress" ng-required="user.MoneyTransfer" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': form.CardCountry.$invalid && !form.CardCountry.$pristine}">
+                        <label class="col-sm-4 control-label" for="CardCountry">Cardholder's Country</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="card.Country" name="CardCountry" ng-required="user.MoneyTransfer" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': form.CardQuestion.$invalid && !form.CardQuestion.$pristine}">
+                        <label class="col-sm-4 control-label" for="CardQuestion">Secret Question</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="user.Question" name="CardQuestion" ng-required="user.MoneyTransfer" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': form.CardAnswer.$invalid && !form.CardAnswer.$pristine}">
+                        <label class="col-sm-4 control-label" for="CardAnswer">Secret Answer</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="user.Answer" name="CardAnswer" ng-required="user.MoneyTransfer" />
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!--</tab>
+            </tabset>-->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="register()" ng-disabled="form.$invalid || user.ConfirmPassword != user.Password">Register</button>
+            <a class="btn btn-info" ng-click="cancel()">Back</a>
+        </div>
+    </form>
+</div>

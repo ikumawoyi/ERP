@@ -1,0 +1,18 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Supervisor Feedback and Evaluation Report for {{globals.year}} </h3></div>
+    <div class="panel-body" ng-init="complete = true">
+        <div ng-include="'pages/employee-header-info.html'"></div>
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <table ng-if="evaluations.length > 0" class="table table-bordered">
+            <thead><tr class="header-bg"><td width="20px"></td><td ng-repeat="(key,items) in evaluations[0].details">{{key}}</td><td>Date</td><td>Grade</td></tr></thead>
+            <tbody>
+            <tr ng-repeat="eval in evaluations">
+                <td>{{$index + 1}}</td>
+                <td ng-repeat="(key,item) in (eval.scoring || eval.details)" ng-init="complete && !!item.scoreText" style="text-align: -webkit-center;">{{item.scoreText? item.scoreText: ' - '}}</td>
+                <td ng-if="eval.scoreText"> {{eval.date|date: 'yyyy MMM dd'}}</td>
+                <td ng-if="!eval.scoreText"> </td>
+                <td>{{eval.scoreText?eval.scoreText: 'N/A'}}</td>
+            </tr></tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Supervisor/Subordinate Assignment</h3></div>
+    <div class="panel-body">
+        <div class="row">
+            <form name="modSup">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <thead><tr class="header-bg"><th colspan="2">Assign Supervisor</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>Supervisor:</td>
+                                <td><select ng-focus="isLeft = false" required ng-model="selectSup" ng-options="(i.firstName +' '+ i.lastName) for i in emps|orderBy:['firstName','lastName'] track by i._id" class="form-control"></select></td>
+                            </tr>
+                            <tr>
+                                <td>Subordinate(s):</td>
+                                <td>
+                                    <ul class="kra-list" style="height: 425px;" ng-init="newAssign.subordinates = newAssign.subordinates||[]">
+                                        <li ng-repeat="i in emps|orderBy:['firstName','lastName'] track by i._id" ng-class="{'selectedSub':newAssign.subordinates.indexOf(i._id) > -1}">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" ng-checked="newAssign.subordinates.indexOf(i._id) > -1 && i._id != newAssign._id" ng-click="toggleSelection(i)" ng-disabled="i._id == newAssign._id"><span ng-bind="getDispName(i, $event)"></span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </form>
+            <div align="center"><button type="button" class="btn btn-default" ng-disabled="modSup.$invalid || updatingD || newAssign.subordinates.length  < 1" ng-bind="updatingD?'Assigning Supervisor':'Assign Supervisor'" ng-click="saveSupChanges()"></button></div>
+        </div>
+            <div class="col-md-6">
+                <div class="header-bg" style="padding: 11px;"><h3 class="panel-title">Current Supervisor Assignment</h3></div>
+                <div class="restrict">
+                    <details ng-repeat="sup in sups" ng-if="sup.subordinates.length > 0" ng-open="sup.subordinates.length < 10">
+                        <summary class="kra-area-header">Supervisor Name: <span ng-bind="sup.firstName + ' '+ sup.lastName"></span></summary>
+                        <table class="table table-bordered">
+                            <tr class="header-bg"><th width="10px"></th><th>Name</th><th>Designation</th></tr>
+                            <tr ng-repeat="sub in sup.subordinates">
+                                <td width="10px" ng-bind="$index + 1"></td>
+                                <td ng-bind="sub.firstName + ' '+ sub.lastName"></td>
+                                <td ng-bind="sub.designation"></td>
+                            </tr>
+                        </table>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<style>
+    thead{
+        background-image: -webkit-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
+        background-image: -o-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
+        background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#e8e8e8));
+        background-image: linear-gradient(to bottom,#f5f5f5 0,#e8e8e8 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
+        background-repeat: repeat-x;
+        color: #333;
+        background-color: #f5f5f5;
+        border-color: #ddd;
+    }
+    h2.panel-title{
+        font-weight: bold;
+    }
+</style>
+<div class="panel panel-default margin10top" ng-controller="requestCtrl">
+    <div class="panel-heading"><h2 class="panel-title">Leave Balance Summary</h2></div>
+    <div class="panel-body">
+        <div class="col-md-12 Padding3Side">
+            <div class="col-md-3 col-sm-6 leave">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h2 class="panel-title">Annual Leave</h2></div>
+                    <div class="panel-body noPadding">
+                        <table class="table table-bordered table-condensed table-responsive">
+                            <tbody>
+                            <tr><th width="50%">Entitlement:</th><td>{{employee.leaveStatus.annual.entitlement}}</td></tr>
+                            <tr><th>Taken this Year:</th><td>{{employee.leaveStatus.annual.taken}}</td></tr>
+                            <tr><th>Remaining:</th><td class="text-red">{{employee.leaveStatus.annual.entitlement - employee.leaveStatus.annual.taken}}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 leave">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h2 class="panel-title">Casual Leave</h2></div>
+                    <div class="panel-body noPadding">
+                        <table class="table table-bordered table-condensed table-responsive">
+                            <tbody>
+                            <tr><th width="50%">Entitlement:</th><td>{{employee.leaveStatus.casual.entitlement}}</td></tr>
+                            <tr><th>Taken this Year:</th><td>{{employee.leaveStatus.casual.taken}}</td></tr>
+                            <tr><th>Remaining:</th><td class="text-red">{{employee.leaveStatus.casual.entitlement - employee.leaveStatus.casual.taken}}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 leave">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h2 class="panel-title">Sick Leave</h2></div>
+                    <div class="panel-body noPadding">
+                        <table class="table table-bordered table-condensed table-responsive">
+                            <tbody>
+                            <tr><th width="50%">Total Taken:</th><td>{{employee.leaveStatus.sick.taken}}</td></tr>
+                            <tr><th>Occasions:</th><td>{{employee.leaveStatus.sick.occassions}}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 leave">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h2 class="panel-title">{{employee.gender == 'Male'? 'Paternity' : employee.gender == 'Female'? 'Maternity':'Parenting'}} Leave</h2></div>
+                    <div class="panel-body noPadding">
+                        <table class="table table-bordered table-condensed table-responsive">
+                            <tbody>
+                            <tr><th width="50%">Entitlement:</th><td>{{employee.leaveStatus.parenting.entitlement}}</td></tr>
+                            <tr><th>Taken:</th><td>{{employee.leaveStatus.parenting.taken}}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div align="left">
+                <input value="Request Leave" class="btn btn-default" type="button" ng-click="leaveRequest()" >
+            </div>
+        </div>
+        <table class="table table-bordered table-responsive">
+            <thead><tr><th>Leave Type</th><th>Start Date</th><th>Resumption Date</th><th>Days</th><th>Approval Status</th></tr></thead>
+            <tbody><tr ng-repeat="req in leave"><td>{{(req.type != 'Parenting' || employee.gender == ''? req.type : parArray[employee.gender])}} Leave</td><td>{{req.start|date:'EEE,dd MMM yyyy'}}</td><td>{{req.resumption|date:'EEE,dd MMM yyyy'}}</td><td>{{req.days}}</td><td>{{req.status}}</td></tr></tbody>
+            <tfoot ng-if="!leave.length"><tr><td colspan="5">No records to display</td></tr></tfoot>
+        </table>
+
+    </div>
+</div>

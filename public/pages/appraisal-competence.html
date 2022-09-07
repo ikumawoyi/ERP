@@ -1,0 +1,80 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Employees' Competence Appraisal</h3></div>
+    <div class="panel-body">
+        <table class="table table-bordered table-condensed tabble-striped">
+            <thead>
+                <tr class="header-bg">
+                    <th width="10px"></th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Department</th>
+                    <th>Mark(%)</th>
+                    <th>Interpretation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ax in data" ng-click="showDetails(ax)" class="clickable">
+                    <td ng-bind="$index + 1"></td>
+                    <td width="60px"><img class="img-thumbnail" ng-src="img/{{ax.employee.employeeId}}.jpg" alt="" style="width: 80px;"></td>
+                    <td ng-bind="getName(ax.employee)"></td>
+                    <td ng-bind="ax.employee.designation"></td>
+                    <td ng-bind="ax.employee.department.name"></td>
+                    <td ng-bind="ax.competence.score"></td>
+                    <td ng-bind="ax.competence.text"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr ng-if="data && !data.length"><td colspan="7" class="text-center">No records to display</td></tr>
+                <tr ng-if="!data">
+                    <td colspan="7" class="text-center">
+                        <span><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script id="pages/appraisal-competence-details.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Competence Report <span ng-bind="'for ' + getPeriodName(data.period)"></span><a class="btn btn-link pull-right" href="" ng-click="back()">Back</a></h3></div>
+        <div class="panel-body">
+            <div class="pull-left">
+                <div class="pull-left" style="margin: 5px">
+                    <img ng-src="img/{{data.employee.employeeId}}.jpg" width="112" height="113">
+                </div>
+                <div class="pull-right" style="margin: 5px; height: 113px;">
+                    <div><font face="Tahoma" size="6" ng-bind="getName(data.employee)"></font></div>
+                    <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="data.employee.designation"></font></div>
+                    <div><font face="Tahoma" style="font-size: 12.5pt" ng-bind="data.employee.department.name" color="#333333"></font></div>
+                    <div><font face="Tahoma" style="vertical-align:-webkit-baseline-middle;font-size: 24px" ; color="{{scoring[data.competence.text]|| '#333333'}}" ng-bind="data.competence.text + ' Performance'"></font></div>
+                </div>
+            </div>
+            <div class="row" ng-init="reArrangeComp(data.competence)">
+                <table ng-repeat="(area,kras) in keys" class="table table-bordered">
+                    <thead><tr class="header-bg"><td style="padding:12px;font-size: 15px;" ng-bind="area + ' ratings'"></td><td width="100px" ng-bind="data.competence.more[area].scoreText"></td></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <div style="color:#336699;font-weight:bold;">
+                                    <div ng-repeat="item in kras">
+                                        <p style="margin:2px;"><label><span ng-bind="$index + 1 + ') '"></span><span ng-bind="item.details.name"></span></label>: <span ng-bind="item.details.description"></span></p>
+                                        <p style="margin: 5px; color:black;padding-left: 13px;">
+                                            <span ng-bind="item.scoring.text"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class=" row">
+                    <span class="col-sm-4" ng-bind="'Date : '+ (data.competence.list[0].scoring.date|date:'mediumDate')"></span>
+                    <span class="col-sm-4" ng-bind="'By : ' + data.competence.list[0].scoring.by"></span>
+                    <span class="col-sm-4" ng-bind="data.competence.list[0].scoring.text + ' Performance'"></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,26 @@
+<div class="row" ng-controller="infoCtrl">
+    <form enctype="multipart/form-data">
+    <div class="pull-left">
+        <div class="pull-left" style="margin: 5px"><img ng-src="{{imageURL}}" width="112" height="113"></div>
+        <div class="pull-right" style="margin: 5px; height: 113px;">
+            <div><font face="Tahoma" size="6" ng-bind="employee.firstName + ' ' + employee.lastName"></font></div>
+            <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="employee.designation"></font></div>
+            <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="employee.department.name"></font></div>
+            <div style="vertical-align: bottom" data-ng-if="uploader.queue.length" >
+                <font face="Tahoma" color="#666666" size="2" ng-click="uploader.uploadAll()" class="change-btn pull-left" ng-bind="'Upload'"></font>
+                <span class="pull-left">&nbsp;|&nbsp;</span>
+                <font face="Tahoma" color="#666666" size="2" ng-click="cancelUpload()" class="change-btn pull-left" ng-bind="'Cancel'"></font>
+            </div>
+            <div style="vertical-align: bottom;position: relative; overflow: hidden; padding: 2px" data-ng-if="!uploader.queue.length">
+                <font  face="Tahoma" color="#666666" size="2" class="change-btn">Change Picture</font>
+                <input style="position: absolute; top: 0;bottom: 0; z-index: 2; opacity: 0;" class="btn-file" type="file" nv-file-select uploader="uploader"/>
+            </div>
+        </div>
+    </div>
+    </form>
+    <style>
+        div.aw-widget-current-inner{
+            max-width: 100%!important;
+        }
+    </style>
+</div>

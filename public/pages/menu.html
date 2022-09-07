@@ -1,0 +1,144 @@
+﻿<accordion close-others="true">
+    <accordion-group heading="My Details" is-open="false">
+        <div class="list-group">
+            <a href="profile" class="list-group-item">My Profile</a>
+            <a href="card" class="list-group-item">Data Card</a>
+            <a href="cash" class="list-group-item">Petty Cash</a>
+            <a href="leave" class="list-group-item">Leave Request</a>
+            <a href="leavecalender" class="list-group-item">Leave Calendar</a>
+            <a href="quote" class="list-group-item" ng-if="user.info.isAdmin || employee.tasks.indexOf('quo') > -1">Quotes</a>
+        </div>
+        <div class="list-group">
+            <a href="myassets" class="list-group-item">Assets</a>
+            <a href="mytickets" class="list-group-item">Repair Tickets</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Invitations" is-open="false" ng-if="globals.ivs.length > 0">
+        <div class="list-group">
+            <a href="confirmationiv" class="list-group-item">Confirmation Appraisal</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Delegation" is-open="false" ng-if="user.info.isAdmin">
+        <div class="list-group">
+            <a href="setup/delegationlist" class="list-group-item">Delegate Task</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Employee Records" is-open="false" ng-if="user.info.isAdmin || employee.tasks.indexOf('emp') > -1">
+        <div class="list-group">
+            <a href="employees" class="list-group-item">Employee List</a>
+            <a href="cards" class="list-group-item">Employee Data Card</a>
+            <a href="exited" class="list-group-item">Exited Employees</a>
+            <a href="reset" class="list-group-item">Reset Password</a>
+            <a href="super" class="list-group-item">Supervisor Setting</a>
+            <a href="department" class="list-group-item">Departments</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Attendance Management" ng-if="user.info.isAdmin || employee.tasks.indexOf('att') > -1" is-open="false">
+        <div class="list-group">
+            <a href="hrattendance" class="list-group-item">Daily Clock In</a>
+            <a href="attendancereport" class="list-group-item">Monthly Report</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="{{'Fund Management' + ( employee.tasks.indexOf('cas') > -1 ?' (Admin)' : '')}}" ng-if="user.info.isAdmin || employee.tasks.indexOf('cas') > -1 " is-open="false">
+        <div class="list-group">
+            <a href="cashlist" class="list-group-item">Cash Request List</a>
+            <a href="cashreport" class="list-group-item">Cash Disbursement Report</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Leave Management" ng-if="user.info.isAdmin || employee.tasks.indexOf('lev') > -1 " is-open="false">
+        <div class="list-group">
+            <a href="holidays" class="list-group-item" title="Manage Holidays">Holiday Setting</a>
+            <a href="configureleave" class="list-group-item" title="Configure Entitlement">Leave Entitlement Setting</a>
+            <a href="allocateleave" class="list-group-item" title="Allocate Leave">Leave Allocation</a>
+            <a href="leavecalender" class="list-group-item" title="Leave Calender">Leave Calender</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Fund Management" ng-if="user.info.isFinance" is-open="false">
+        <div class="list-group">
+            <a href="approvedcash" class="list-group-item">Cash Request List</a>
+            <a href="approvedcashreport" class="list-group-item">Cash Disbursement Report</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="My Attendance" is-open="false">
+        <div class="list-group">
+            <a href="attendance" class="list-group-item">Attendance Record</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="KRAs & Appraisal" is-open="false">
+        <div class="list-group">
+            <a href="assessment" class="list-group-item">Self Assessment</a>
+            <a href="appraisal" class="list-group-item">KRAs Appraisal</a>
+            <!--<a href="competence" class="list-group-item">Competence Report</a>-->
+            <a href="subfeedback" class="list-group-item" ng-if="employee.subordinates.length > 0">Subordinate Feedback Report</a>
+            <a href="performance" class="list-group-item">My Performance Chart</a>
+            <a href="evaluatesup" class="list-group-item" ng-if="employee.supervisor">Evaluate Supervisor</a>
+            <a href="discipline" class="list-group-item">Disciplinary Actions</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Appraisal Reports" ng-if="user.info.isAdmin" is-open="false">
+        <div class="list-group">
+            <a href="hrassessment" class="list-group-item">Self Assessment Reports</a>
+            <a href="hrappraisal" class="list-group-item">KRAs Appraisal Reports</a>
+            <!--<a href="hrcompetence" class="list-group-item">Performance Competence Reports</a>-->
+            <a href="hrevaluation" class="list-group-item">Supervisor Evaluation Reports</a>
+            <a href="hrconfirmation" class="list-group-item">Confirmation Reports</a>
+            <a href="hrperformance" class="list-group-item">Performance History Charts</a>
+            <a href="hrappraisalsum" ng-if="false" class="list-group-item">Appraisal Dashboard</a>
+            <a href="hrdiscipline" class="list-group-item">Disciplinary Actions</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Appraisal Settings & Definitions" ng-if="user.info.isAdmin" is-open="false">
+        <div class="list-group">
+            <a href="setup/initiate" class="list-group-item">Initiate Appraisal</a>
+            <a href="setup/kra" class="list-group-item">Employees' KRAs</a>
+            <a href="setup/evaluation" class="list-group-item">Supervisor Evaluation</a>
+            <!--<a href="setup/competence" class="list-group-item">Performance Competence</a>-->
+            <a href="setup/assessment" class="list-group-item">Self Assessment</a>
+            <a href="setup/iconfirmation" class="list-group-item">Initiate Confirmation</a>
+            <a href="setup/confirmation" class="list-group-item">Confirmation Appraisal</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Team Attendance" ng-if="employee.subordinates.length > 0" is-open="false">
+        <div class="list-group">
+            <a href="subattendance" class="list-group-item">Time In</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Team Request" ng-if="employee.subordinates.length > 0 || true" is-open="false">
+        <div class="list-group">
+            <a href="subcash" class="list-group-item">Cash Request Approval</a>
+            <a href="subleave" class="list-group-item">Leave Request Approval</a>
+            <a href="definecase" class="list-group-item" ng-if="user.info.isCounsel">Define Case/Team</a>
+            <a href="mycases" class="list-group-item" ng-if="user.info.isCounsel">Case List</a>
+            <a href="casereports" class="list-group-item" ng-if="user.info.isAdmin">Case Reports</a>
+            <a href="closedcases" class="list-group-item" ng-if="user.info.isAdmin">Closed Cases</a>
+
+        </div>
+    </accordion-group>
+    <accordion-group heading="Team Performance Appraisal" ng-if="user.info.isSuper" is-open="false">
+        <div class="list-group">
+            <a href="subappraisal" class="list-group-item">KRAs Appraisal</a>
+            <!--<a href="subcompetence" class="list-group-item">Performance Competence</a>-->
+            <!--<a href="subperformance" class="list-group-item">Performance History Chart</a>-->
+            <a href="subdiscipline" class="list-group-item">Disciplinary Actions</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Facilities/Assets Management" is-open="false" ng-if="user.info.isAdmin || employee.tasks.indexOf('fac') > -1">
+        <div class="list-group">
+            <a href="assets" class="list-group-item">Assets</a>
+            <a href="assets/type" class="list-group-item">Asset Types</a>
+            <a href="assets/location" class="list-group-item">Asset Locations</a>
+            <a href="hrassets" class="list-group-item" ng-if="user.info.isAdmin">Asset Dashboard</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Training Management" is-open="false" ng-if="user.info.isAdmin || employee.tasks.indexOf('trn') > -1">
+        <div class="list-group">
+            <a href="training" class="list-group-item">Trainings</a>
+            <a href="traininghist" ng-if="false" class="list-group-item">Training History</a>
+        </div>
+    </accordion-group>
+    <accordion-group heading="Authorize Computer" is-open="false" ng-if="user.info.isIT">
+        <div class="list-group">
+            <a href="system/list" class="list-group-item">Assignments</a>
+        </div>
+    </accordion-group>
+</accordion>

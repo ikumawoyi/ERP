@@ -1,0 +1,3 @@
+<div ng-controller="msgCtrl" id="modeAlert">
+    <alert ng-repeat="a in modalAlerts" type="{{a.type}}" close="closeModalAlert($index);"><span ng-bind-html="a.text"></span></alert>
+</div>

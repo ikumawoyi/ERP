@@ -1,0 +1,25 @@
+<div class="panel panel-default empData">
+    <div class="panel-heading"><h2 class="panel-title font16">Leave Entitlement<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h2></div>
+    <div class="panel-body">
+        <form class="col-sm-12" name="form">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">{{entitlement.id?'Modify Entitlement':'Add New Entitlement'}}</h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>Leave Type:</span><span class="is-required"> *</span></td><td><input class="form-control" ng-disabled="true" ng-model="entitlement.name" type="text" required ng-required="true"/> </td></tr>
+                            <tr><td><span>No of Days:</span><span class="is-required"> *</span></td><td><input class="form-control" ng-model="entitlement.days" type="text"/></td></tr>
+                            <tr><td><span>Type of Count:</span><span class="is-required"> *</span></td><td><select required ng-model="entitlement.countType" ng-options="i for i in ['Only Working Days', 'All Days'] track by i" class="form-control"></select></td></tr>
+                            <tr><td><span>Level:</span><span class="is-required"> *</span></td><td><select required ng-model="entitlement.level" ng-disabled="true" ng-options="i for i in ['Level 1', 'Level 2'] track by i" class="form-control"></select></td></tr>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <div align="center">
+                            <input value="Save Changes" class="btn btn-default" type="button" ng-click="saveEntitlement()" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

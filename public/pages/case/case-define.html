@@ -1,0 +1,70 @@
+<form class="col-sm-12" name="newCaseForm">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h2 class="panel-title font16">Case/Team Definition</h2></div>
+        <div class="panel-body" ng-if="iData">
+            <div ng-if="newCase._id" class="alert alert-dismissable alert-info">
+                <span ng-init="rem = teamSize- newCase.members.length" ng-bind="'You have an incomplete case/team. please select '+ rem +' remaining counsel.'"></span>
+            </div>
+            <div ng-if="!newCase._id && employee.location =='Abuja'" class="alert alert-dismissable alert-info">
+                <span ng-bind="'No Outstanding cases to modify.'"></span>
+            </div>
+            <div ng-include="viewPath.alertModal"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default noBorder">
+                        <div class="panel-heading"><h3 class="panel-title" ng-bind="'Case Details'"></h3></div>
+                        <div class="panel-body" style="padding-bottom:0;">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th><span ng-bind="'Title'"></span><span class="is-required" ng-bind="'*'"></span></th>
+                                    <td><input class="form-control" placeholder="Case Title" ng-model="newCase.title" ng-required="true" type="text" ng-disabled="newCase._id || employee.location == 'Abuja'" /></td>
+                                </tr>
+                                <tr>
+                                    <th><span ng-bind="'Location'"></span><span class="is-required" ng-bind="'*'"></span></th>
+                                    <td>
+                                        <select class="form-control" ng-disabled="newCase._id || employee.location == 'Abuja'" ng-model="newCase.location" ng-required="true" ng-change="lChanged($event,i)" ng-options="i for i in ['Abuja', 'Lagos'] track by i"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default noBorder">
+                        <div class="panel-heading"><h3 class="panel-title" ng-bind="'Team Members'"></h3></div>
+                        <div class="panel-body" style="padding-bottom:0;">
+                            <div class="col-md-6" ng-repeat="(key, emps) in iData.unallocated|orderBy:'name':true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title" ng-bind="key +'('+  emps.length+')'"></h3></div>
+                                    <div class="panel-body" ng-class="{'disabledSub': !(newCase.location && newCase.title)}" style="padding-bottom:0; padding-top:0;">
+                                        <ul class="kra-list" style="height: 150px;">
+                                            <li ng-repeat="i in emps|orderBy:'name' track by i.id" ng-class="{'selectedSub':state.inc.indexOf(i.id) > -1}">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" ng-checked="state.inc.indexOf(i.id) > -1" ng-click="toggleSelection(i.id, key, $event, i.location)">
+                                                        <span ng-bind="i.name"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <hr class="divider" />
+                <div align="center" ng-if="!(!newCase._id && employee.location =='Abuja')">
+                    <input value="Save Details" ng-disabled="newCaseForm.$invalid || formError" class="btn btn-default" type="button" ng-click="saveCaseData(newCase)">
+                </div>
+            </div>
+        </div>
+        <div class="panel-body" ng-if="!iData">
+            <div class="text-center">
+                <span><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></span>
+            </div>
+        </div>
+    </div>
+</form>

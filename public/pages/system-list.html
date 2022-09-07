@@ -1,0 +1,69 @@
+﻿
+<div ng-include="'pages/provision-list.html'"></div>
+<script type="text/ng-template" id="pages/provision-list.html">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Attendence System Provisioning<a class="btn btn-link pull-right" ng-click="newProvision()">Provision New System</a></h3></div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead class="header-bg">
+                    <tr>
+                        <th>Date</th>
+                        <th>System</th>
+                        <th>User</th>
+                        <th>Status</th>
+                        <th>Expires</th>
+                        <th>By</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ticket in pList">
+                        <td ng-bind="ticket.date| date:'shortDate'"></td>
+                        <td ng-bind="ticket.systemName"></td>
+                        <td ng-bind="ticket.employeeName"></td>
+                        <td ng-bind="ticket.status"></td>
+                        <td ng-bind="ticket.expires|date: 'shortDate'"></td>
+                        <td ng-bind="ticket.assignedBy"></td>
+                        <td><a class="btn btn-link" ng-click="updateReg(ticket, ticket.status == 'Active'?'Inactive': 'Active')" ng-bind="ticket.status == 'Active'?'deactivate': 'activate'"></a></td>
+                    </tr>
+                </tbody>
+                <tfoot ng-if="pList && !pList.length">
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No System has been provision
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script id="pages/new-provision.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title"><span ng-bind="sys._id ?'Edit Provision': 'New Provision'"></span><a class="btn btn-link pull-right" href="" ng-click="back()" ng-bind="backText? backText: 'Back'"></a></h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="newTicForm">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>System Name</td>
+                            <td><input class="form-control" ng-model="sys.systemName" ng-required="true" type="text"/></td>
+                        </tr>
+                        <tr>
+                            <td>Employee</td>
+                            <td><select ng-model="sys.employee" ng-options="i.concat for i in emps track by i._id" class="form-control" ng-required="true"></select></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-center"><button ng-click="submitProvision()" ng-disabled="newTickForm.$invalid || submittingData" class="btn btn-default" ng-bind="submittingData? 'Provisioning System': 'Provision'">Submit</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>
+

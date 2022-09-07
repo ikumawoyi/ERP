@@ -1,0 +1,36 @@
+<div class="panel panel-default empData">
+    <div class="panel-heading"><h2 class="panel-title font16">Job Experience<a class="btn btn-link pull-right" href="" ng-click="back()" ng-bind="backText? backText: 'Back'"></a></h2></div>
+    <div class="panel-body">
+         <div ng-include="'pages/message-alert-modal.html'"></div>
+        <form class="col-sm-12" name="form">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title" ng-bind="panelHead + ' Employment History'"></h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>Employer:</span></td><td><input class="form-control" ng-model="experience.employer" type="text" required ng-required="true"/> </td></tr>
+                            <tr><td><span>Designation:</span></td><td><input class="form-control" ng-model="experience.designation" type="text"/></td></tr>
+                            <tr><td><span>Start Date:</span></td><td>
+                                <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="experience.startDate" name="startDate" is-open="exstart" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock">
+                                <button type="button" class="btn btn-default" ng-click="open($event, 'exstart')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </td></tr>
+                            <tr><td><span>End Date:</span></td><td>
+                                <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="experience.endDate" is-open="exend" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock">
+                                <button type="button" class="btn btn-default" ng-click="open($event, 'exend')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </td></tr>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <div align="center">
+                            <input value="{{savingexperience? 'Saving Details':'Save Details'}}" ng-disabled="form.$invalid || savingexperience" class="btn btn-default" type="button" ng-click="saveData()" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

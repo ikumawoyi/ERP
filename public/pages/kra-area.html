@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">KRA Designation
+        <button type="button" class="close" ng-click="back()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+    </h3></div>
+    <div class="panel-body">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">KRA Details</h3></div>
+            <div class="panel-body content">
+                <table class="table table-bordered">
+                    <tr><th>Area:</td><td>{{kra.area.name}}</td></tr>
+                    <tr><th>Description:</td><td>{{kra.description}}</td></tr>
+                    <tr><th>Department:</td><td>{{kra.department.name}}</td></tr>
+                    <tr><th>Weight:</td><td>{{kra.weight}}</td></tr>
+                    <tr><td colspan="2">
+                        <table class="table table-bordered">
+                            <tr class="header-bg"><th>Designations</th></tr>
+                            <tr ng-repeat="n in kra.designations"><td>{{n}}</td></tr>
+                        </table>
+                    </td> </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

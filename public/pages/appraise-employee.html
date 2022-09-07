@@ -1,0 +1,119 @@
+<div ng-if="appraisalR.isOpen && !appraisalR.appraised && appraisalA.length > 0 && lax" ng-include="'pages/appraise-achievement-form.html'"></div>
+<div ng-if="appraisalR.isOpen && appraisalR.appraised && lax" ng-include="'pages/appraise-achievement-appraised.html'"></div>
+<div ng-if="!appraisalR.isOpen && lax">
+    <p>The appraisal time period has already elapsed. You may contact Practice Director for an extension.</p>
+</div>
+<script type="text/ng-template" id="pages/appraise-achievement-appraised.html">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title"><span ng-bind="'KRA Appraisal Report for ' + appraisalR.period.name + ' ' + appraisalR.period.year"></span></h3></div>
+        <div class="panel-body">
+            <div ng-if="appraisalR.appraised">
+                <div class="row">
+                    <div class="pull-left">
+                        <div class="pull-left" style="margin: 5px"><img ng-src="img/profile.png" width="112" height="113"></div>
+                        <div class="pull-right" style="margin: 5px; height: 113px;">
+                            <div><font face="Tahoma" size="6" ng-bind="user.fullName"></font></div>
+                            <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="employee.designation"></font></div>
+                            <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="employee.department.name"></font></div>
+                            <div><font face="Tahoma" style="vertical-align:-webkit-baseline-middle;font-size: 24px"; color="{{scoring[appraisalR.text] || '#333333'}}" ng-bind="appraisalR.text + ' Performance'"></font></div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="header-bg">
+                            <td style="padding:12px;font-size: 15px;" ng-bind="'KRA Category ' + (appraisalR.appraised?', Ratings, ':'') + 'and Achievements'"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(area,kras) in appraisalR.kras">
+                            <td>
+                                <div style="color:#336699;font-weight:bold;">
+                                    <span style="color:#336699;font-weight:bold;font-size:22px" ng-bind="area + (area?':':'')"></span> <br />
+                                    <div ng-repeat="item in kras" ng-init="ind = $index;item.includeArc = false; ">
+                                        <p style="color:GrayText;margin: 4px auto;border-top: 1px solid #eee;border-bottom: 1px solid #eee;" ng-bind="item.details.kra"></p>
+                                        <p style="margin: 5px; color:black;">
+                                            <span ng-bind="item.scoring.text"></span>
+                                        </p>
+                                        <p style="font-size:12px;color:maroon;margin: 7px auto;border-bottom: 1px solid #eee;" ng-if="item.achievement" ng-bind="item.achievement"></p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-center">
+                                <span class="col-sm-4" ng-bind="'Date : ' + appraisalR.date|date:'mediumDate'"></span>
+                                <span class="col-sm-4" ng-bind="'By : ' + appraisalR.by"></span>
+                                <span class="col-sm-4" ng-bind="appraisalR.text + 'Performance'"></span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="pages/appraise-achievement-form.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading"><h3 class="panel-title" ng-bind="'Achievements in ' + appraisalR.period.name + ' ' +appraisalR.period.year"></h3></div>
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-body content">
+                    <table class="table table-bordered">
+                        <tr style="padding: 0;" class="kra-header">
+                            <td width="20%"></td>
+                            <td width="80%">Description</td>
+                        </tr>
+                    </table>
+                    <div class="restrict" style="height: auto;">
+                        <details ng-repeat="area in appraisalA" ng-if="appraisalQ[area].length > 0" ng-open="{{appraisalQ[area].length > 0}}">
+                            <summary class="kra-area-header" ng-bind="'Area: ' + area"></summary>
+                            <table class="table table-bordered">
+                                <tr ng-repeat="ach in appraisalQ[area]">
+                                    <td width="20%" class="align-center-top"><a class="btn btn-link" ng-click="editArch(ach, area)" ng-bind="(ach.achievement ? 'edit': 'add') + ' achievement'"></a> </td>
+                                    <td width="80%" ng-bind="ach.details.kra"></td>
+                                </tr>
+                            </table>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="pages/edit-achievement.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span ng-bind="'Achievements in ' + appraisalR.period.name + ' ' +appraisalR.period.year"></span>
+                <button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <form name="achForm">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Area:</td>
+                        <td ng-bind="achEdit.details.area"></td>
+                    </tr>
+                    <tr>
+                        <td>Description:</td>
+                        <td ng-bind="achEdit.details.kra"></td>
+                    </tr>
+                    <tr><td colspan="2">Achievements</td> </tr>
+                    <tr>
+                        <td colspan="2"><textarea class="form-control" ng-model="achEdit.achievement" rows="7" style="resize: vertical;"></textarea> </td>
+                    </tr>
+                    <tr ng-if="achEdit.achievement && achEdit.achievement.length > 5">
+                        <td colspan="2" class="text-center"><button type="button" class="btn btn-default" ng-disabled="achForm.$invalid || savingAch" ng-click="saveA()" ng-bind="savingAch?'Submiting Assessment':'Submit'"></button> </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>

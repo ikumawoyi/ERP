@@ -1,0 +1,16 @@
+<div class="panel panel-default cashlist">
+    <div class="panel-heading"><h3 class="panel-title">Cash Request</h3></div>
+    <div class="panel-body">
+        <accordion close-others="oneAtATime">
+            <accordion-group ng-repeat="(key, dg) in financeCash" heading="{{key}}" is-open="true">
+                <table class="table table-bordered table-responsive cashlist">
+                    <thead><tr class=""><th></th><th>Ref.#</th><th>Requester</th><th>Description</th><th>Incurred</th><th>Disbursed</th><th>Amount (&#x20A6)</th><th>Status</th></tr></thead>
+                    <tbody><tr ng-repeat="req in dg"><td></td><td><a href="" ng-click="access(req)" class="btn btn-link">{{req.referenceNumber}}</a></td><td>{{req.requester}}</td><td>{{req.description}}</td><td>{{req.incurred|date:'yyyy MMM dd'}}</td><td>{{req.disbursed|date:'yyyy MMM dd'}}</td><td>{{req.amount| currency: '\u20A6': 2}}</td><td>{{req.status}}</td></tr></tbody>
+                    <tfoot>
+                        <tr ng-if="!dg || dg.length==0"><td colspan="8" class="text-center">No Records to display</td></tr>
+                    </tfoot>
+                </table>
+            </accordion-group>
+        </accordion>
+    </div>
+</div>

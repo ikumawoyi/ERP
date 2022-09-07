@@ -1,0 +1,79 @@
+<div class="panel panel-default kra-settings margin10top">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Disciplinary Actions
+        </h3>
+    </div>
+    <div class="panel-body">
+        <span>To respond to a query click on <em>'respond'</em>.</span>
+        <table class="table table-bordered">
+            <thead>
+                <tr class="header-bg">
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Issued On</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="i in mydiscs">
+                    <td ng-bind="i.subject"></td>
+                    <td ng-bind="i.status"></td>
+                    <td ng-bind="i.issued| date:'mediumDate'"></td>
+                    <td class="text-center">
+                        <a ng-click="respond(i)" ng-if="!i.replyDate" class="btn btn-link">respond</a>
+                        <a ng-click="viewDetails(i)" ng-if="i.replyDate" class="btn btn-link">view</a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot ng-if="!mydiscs.length">
+                <tr><td colspan="5" class="text-center">No Queries Found</td></tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="pages/my-discipline-details.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Disciplinary Action Detail<button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">x</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="repForm">
+                <table class="table table-bordered">
+                    <thead>                        
+                        <tr><th colspan="2" class="header-bg">Query Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr> <th>Subject</th><td ng-bind="qr.subject"></td></tr>
+                        <tr><th>Description</th><td><p ng-bind="qr.description"></p></td></tr>
+                        <tr> <th>Date Issued</th> <td ng-bind="qr.issued|date:'mediumDate'"></td> </tr>
+                        <tr> <th>Reply Before</th> <td ng-bind="qr.reply|date:'mediumDate'"></td> </tr>
+                        <tr> <th>Status</th> <td ng-bind="qr.status"></td></tr>
+                    </tbody>
+                    <tfoot ng-if="isEdit">
+                        <tr>
+                            <td colspan="2">
+                                <label>Reply Text:</label>
+                                <textarea class="form-control" ng-model="qr.replyText" rows="6" style="resize:vertical;" placeholder="Input reply to query here (min 10 characters)" ng-required="true" ng-minlength="10"></textarea>
+
+                            </td>
+                        </tr>
+                        <tr><td colspan="2" class="text-center"><button type="button" class="btn btn-default" ng-disabled="repForm.$invalid || savingCon" ng-click="sendReply()" ng-bind="savingCon?'Replying Query':'Reply Query'"></button></td></tr>
+                    </tfoot>
+                    <tfoot ng-if="!isEdit">
+                        <tr>
+                            <th>Replied Text:</th>
+                            <td><p ng-bind="qr.replyText"></p></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>

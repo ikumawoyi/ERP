@@ -1,0 +1,98 @@
+<style class="ng-scope">
+    thead{
+        background-image: -webkit-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
+        background-image: -o-linear-gradient(top,#f5f5f5 0,#e8e8e8 100%);
+        background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#e8e8e8));
+        background-image: linear-gradient(to bottom,#f5f5f5 0,#e8e8e8 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
+        background-repeat: repeat-x;
+        color: #333;
+        background-color: #f5f5f5;
+        border-color: #ddd;
+    }
+</style>
+<div class="panel panel-default margin10top" ng-controller="teamCtrl">
+    <div class="panel-heading"><h3 class="panel-title">Employee Leave Allocation</h3></div>
+    <div class="panel-body">
+        <table class="table"><tr><td width="50%"><label class="control-label pull-right">Select Employee:</label></td><td width="50%"><select required ng-model="req" ng-options="(i.requester + ' (' +i.type+ ' Leave)') for i in subleave track by i._id" style="width: 50%" class="form-control pull-left"></select></td></tr></table>
+        <div class="panel panel-default noPadding noBorder">
+            <div class="panel-heading"><h2 class="panel-title">Leave Balance Summary</h2></div>
+            <div class="panel-body Padding3Side">
+                <div class="col-md-12 Padding3Side">
+                    <div class="col-md-3 col-sm-6 leave">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h2 class="panel-title">Annual Leave</h2></div>
+                            <div class="panel-body noPadding">
+                                <table class="table table-bordered table-condensed table-responsive">
+                                    <tbody>
+                                    <tr><th width="50%">Entitlement:</th><td ng-bind="req.employee.leaveStatus.annual.entitlement"></td></tr>
+                                    <tr><th>Taken this Year:</th><td ng-bind="req.employee.leaveStatus.annual.taken"></td></tr>
+                                    <tr><th>Remaining:</th><td class="text-red" ng-bind="req.employee.leaveStatus.annual.entitlement - req.employee.leaveStatus.annual.taken"></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 leave">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h2 class="panel-title">Casual Leave</h2></div>
+                            <div class="panel-body noPadding">
+                                <table class="table table-bordered table-condensed table-responsive">
+                                    <tbody>
+                                    <tr><th width="50%">Entitlement:</th><td ng-bind="req.employee.leaveStatus.casual.entitlement"></td></tr>
+                                    <tr><th>Taken this Year:</th><td ng-bind="req.employee.leaveStatus.casual.taken"></td></tr>
+                                    <tr><th>Remaining:</th><td class="text-red" ng-bind="req.employee.leaveStatus.casual.entitlement - req.employee.leaveStatus.casual.taken"></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 leave">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h2 class="panel-title">Sick Leave</h2></div>
+                            <div class="panel-body noPadding">
+                                <table class="table table-bordered table-condensed table-responsive">
+                                    <tbody>
+                                    <tr><th width="50%">Total Taken:</th><td ng-bind="req.employee.leaveStatus.sick.entitlement"></td></tr>
+                                    <tr><th>Occasions:</th><td ng-bind="req.employee.leaveStatus.sick.occassions"></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 leave">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h2 class="panel-title" ng-bind="(req.employee.gender == 'Male'? 'Paternity' : req.employee.gender == 'Female'? 'Maternity':'Parenting') + ' Leave'"></h2></div>
+                            <div class="panel-body noPadding">
+                                <table class="table table-bordered table-condensed table-responsive">
+                                    <tbody>
+                                    <tr><th width="50%">Entitlement:</th><td ng-bind="req.employee.leaveStatus.parenting.entitlement"></td></tr>
+                                    <tr><th>Taken:</th><td ng-bind="req.employee.leaveStatus.parenting.taken"></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 empData">
+                    <table class="table table-bordered table-responsive">
+                        <thead><tr><th colspan="2">Leave Information</th></tr></thead>
+                        <tr><td width="50%"><span>Leave Type:</span></td><td width="50%" ng-bind="req.type"></td></tr>
+                        <tr><td><span>Start Date:</span></td><td ng-bind="req.start|date:'EEE,dd MMM yyyy'"></td></tr>
+                        <tr><td><span>Number of Days:</span></td><td ng-bind="req.days"></td></tr>
+                        <tr><td><span>Resumption Date:</span></td><td ng-bind="req.resumption|date:'EEE,dd MMM yyyy'"></td></tr>
+                        <tr><td><span>Contact while on Leave:</span></td><td ng-bind="req.contact"></td></tr>
+                    </table>
+                    <div class="form-group">
+                        <div align="center">
+                            <input value="Approve Request" class="btn btn-default" ng-disabled="!req" type="button" ng-click="approveLeave()">
+                            <input value="Decline Request" class="btn btn-default" ng-disabled="!req" type="button" ng-click="declineLeave()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---->
+    </div>
+</div>

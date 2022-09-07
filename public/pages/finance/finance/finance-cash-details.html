@@ -1,0 +1,54 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Cash Request<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+    <div class="panel-body">
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Expense Information</h3></div>
+            <div class="panel-body">
+                <table class="table table-responsive">
+                    <tr><td>Brief Description:</td><td>{{req.description}}</td></tr>
+                    <tr><td>Amount (&#x20A6):</td><td>{{req.amount | currency: '\u20A6': 2}}</td></tr>
+                    <tr><td>Date:</td><td>{{req.incurred | date:'yyyy MMM dd'}}</td></tr>
+                    <tr><td>Date of Reimbursement:<td>{{req.disbursed|date:'yyyy MMM dd'}}</td></tr>
+                    <tr><td>Cash Retired:<td>{{req.disbursed|date:'yyyy MMM dd'}}</td></tr>
+                    <tr><td>Payment To:</td><td>{{req.payTo}}</td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Requester's Notes</h3></div>
+            <div class="panel-body">
+                <p>{{req.requesterNotes}}</p>
+            </div>
+        </div>
+        <div class="panel panel-default" ng-if="req.pdNotes">
+            <div class="panel-heading"><h3 class="panel-title">Practice Director's Notes</h3></div>
+            <div class="panel-body">
+                <p>{{req.pdNotes}}</p>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Finance Corner</h3></div>
+            <div class="panel-body">
+                <table class="table table-responsive">
+                    <tr><td width="50%">Mode of Payment:</td><td ng-if="req.status=='Approved'"><div ng-init="req.modeOfPayment = req.modeOfPayment|| 'Cash'">
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="req.modeOfPayment" value="Cash"> Cash
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="req.modeOfPayment" value="Cheque"> Cheque
+                        </label>
+                    </div></td><td ng-if="req.status =='Cash Released'">{{req.modeOfPayment}}</td></tr>
+                    <tr ng-if="req.status =='Cash Released'"><td><input class="form-control" type="text" ng-model="req.amountRetired"> </td></tr>
+                    <tr ng-if="req.status =='Retired' && req.amountRetired"><td><input class="form-control" type="text" ng-model="req.amountRetired"> </td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <div align="center">
+                <input ng-if="req.status=='Approved'" value="Release Cash" class="btn btn-default" type="button" ng-click="release()" >
+                <input value="Retire Request" ng-if="req.status =='Cash Released'" class="btn btn-default" type="button" ng-click="retire()" >
+            </div>
+        </div>
+    </div>
+</div>

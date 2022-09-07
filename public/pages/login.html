@@ -1,0 +1,76 @@
+﻿<!--<div>-->
+    <!--<form name="form" novalidate>-->
+        <!--<div class="modal-header">-->
+            <!--<h2>Log In</h2>-->
+        <!--</div>-->
+
+        <!--<div class="panel panel-primary modal-body" style="margin:5px 10px;">-->
+            <!--<div class="panel-heading">-->
+                <!--<h3 class="panel-title">Log In Here</h3>-->
+            <!--</div>-->
+            <!--<fieldset>-->
+                <!--<div class="form-group" ng-class="{'has-error': form.UserName.$invalid && !form.UserName.$pristine}">-->
+                    <!--<label class="control-label" for="UserName">Username</label>-->
+                    <!--<div class="controls">-->
+                        <!--<input class="form-control" ng-model="user.username" name="UserName" type="text" required />-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group" ng-class="{'has-error': form.Password.$invalid && !form.Password.$pristine}">-->
+                    <!--<label class="control-label" for="Password">Password</label>-->
+                    <!--<div class="controls">-->
+                        <!--<input class="form-control" ng-model="user.password" name="Password" type="password" ng-minlength="3" required />-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<a ng-click="forgot()" style="margin-top:15px">Help! I have forgotten my password</a>-->
+
+            <!--</fieldset>-->
+        <!--</div>-->
+        <!--<div class="modal-footer">-->
+            <!--<p class="pull-left">-->
+                <!--Not yet registered? <a ng-click="register()">Register</a> now.-->
+            <!--</p>-->
+            <!--<button class="btn btn-primary" ng-click="login()" ng-disabled="form.$invalid">Log in</button>-->
+            <!--<a class="btn btn-info" ng-click="cancel()">Back</a>-->
+        <!--</div>-->
+    <!--</form>-->
+<!--</div>-->
+
+<div class="row">
+    <p align="center" ng-controller="stateCtrl">
+        <span class="slogan" ng-bind="slogan"></span>
+    </p>
+    <div class="login-container">
+        <div id="login" class="login">
+            <div ng-include="'pages/message-alert.html'"></div>
+            <form method="post" name="form">
+                <div class="form-group">
+                    <label for="username">Employee ID</label><span class="is-required">*</span>
+                    <input class="form-control" type="text" id="username" ng-model="user.username">
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label><span class="is-required">*</span>
+                    <input class="form-control" type="password" id="password" ng-model="user.password">
+                    <span class="help-block"></span>
+                </div>
+                <span class="forget">Forgot password? Contact PD.</span>
+                <br />
+                <script type="text/javascript">var RecaptchaOptions = { theme: 'white' };</script>
+                <!--<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=6LfwxgMTAAAAACgvL07nP_zCmPvBr9DuGQvNyy0U"></script>-->
+                <br />
+                <div class="form-actions">
+                    <button class="btn btn-primary btn-login pull-right" style="margin-right: 15px;" ng-click="login()" ng-disabled="form.$invalid || signingIn || !(user && user.password && user.username)" ng-bind="signingIn? 'Signing In': 'Sign In'"></button>&nbsp;
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    window.loginModal = true;
+    var t = document.createElement('script');
+    t.src= "http://www.google.com/recaptcha/api/challenge?k=6LfwxgMTAAAAACgvL07nP_zCmPvBr9DuGQvNyy0U";
+    login.appendChild(t);
+
+</script>

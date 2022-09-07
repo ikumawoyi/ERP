@@ -1,0 +1,51 @@
+﻿<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Locations</h3></div>
+    <div class="panel-heading"><a class="btn btn-default" ng-click="editLoc('new')">New Location</a></div>
+    <div class="panel-body">
+        <table ng-if="assetLocations.length > 0" class="table table-bordered">
+            <thead class="header-bg">
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Location</th>
+                    <!--<th></th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="loc in assetLocations">
+                    <td>
+                        <span class="glyphicon glyphicon-pencil btn" title="Edit Location" ng-click="editLoc(loc)"></span>
+                    </td>
+                    <td ng-bind="loc.name"></td>
+                    <td ng-bind="loc.assets.length +' assets'"></td>
+                    <!--<td class="text-center">-->
+                        <!--<span title="View More Details" class="btn btn-link glyphicon glyphicon-book" style="margin-left:2px" ng-click="viewLoc(typ)"></span>-->
+                    <!--</td>-->
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<script id="pages/asset-new-location.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Define New Asset Location<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body" style="max-width: 700px;">
+            <form name="newLocForm">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Location</td>
+                            <td><input class="form-control" ng-model="newLoc.name" type="text" ng-required="true" /></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-center"><button ng-click="saveLoc()" ng-disabled="newLocForm.$invalid || savingNewAssetLoc" class="btn btn-default" ng-bind="savingNewAssetLoc? 'Saving Location': 'Save Location'">Save</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,85 @@
+<div class="panel panel-default empData">
+    <div class="panel-heading"><h2 class="panel-title font16"><span ng-bind="'Edit Employee Record'"></span><a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h2></div>
+    <div class="panel-body">
+       <div ng-include="'pages/message-alert-modal.html'"></div>
+        <form class="col-sm-12" name="form">
+            <div class="col-xs-12">
+                <div class="pull-left">
+                    <div class="pull-left" style="margin: 5px"><img ng-src="{{'img/' + employee.employeeId + '.jpg'}}" width="112" height="113"></div>
+                    <div class="pull-right" style="margin: 5px; height: 113px;">
+                        <div><font face="Tahoma" size="6" ng-bind="employee.firstName + ' ' + employee.lastName"></font></div>
+                        <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="employee.designation"></font></div>
+                        <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="employee.department.name"></font></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Personal Data</h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>First Name:</span><span class="is-required">*</span> </td><td><input class="form-control" ng-model="employee.firstName" type="text" required ng-required="true"/> </td></tr>
+                            <tr><td><span>Middle Name:</span></td><td><input class="form-control" ng-model="employee.middleName" type="text"/></td></tr>
+                            <tr><td><span>Last Name:</span><span class="is-required">*</span></td><td><input class="form-control" ng-model="employee.lastName" type="text" required ng-required="true"/></td></tr>
+                            <tr><td><span>Date Of Birth:</span><span class="is-required">*</span></td><td><input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="employee.dob" name="dob" is-open="dob" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock"><button type="button" class="btn btn-default" ng-click="open($event, 'dob')"><i class="glyphicon glyphicon-calendar"></i></button></span>
+                            </td></tr>
+                            <tr><td><span>Gender:</span><span class="is-required">*</span></td><td><select required ng-model="employee.gender" name="gender" ng-options="i for i in constants.gender" class="form-control" ng-required="true"></select></td></tr>
+                            <tr><td><span>Marital Status:</span><span class="is-required">*</span></td><td><select ng-model="employee.maritalStatus" name="maritalStatus" ng-options="i for i in constants.status" class="form-control" ng-required="true"></select></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Employment Information</h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>Hired On:</span><span class="is-required">*</span></td><td><input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="employee.hired" name="hired" is-open="hiredopened" ng-required="true" close-text="Close" /><span class="input-group-btn unblock"><button type="button" class="btn btn-default" ng-click="open($event, 'hiredopened')"><i class="glyphicon glyphicon-calendar"></i></button></span></td></tr>
+                            <tr><td><span>Department:</span><span class="is-required">*</span></td><td><select ng-required="true" ng-model="employee.department" ng-options="i.name for i in constants.organisations track by i._id" class="form-control"></select></td></tr>
+                            <tr><td><span>Designation:</span><span class="is-required">*</span></td><td><select ng-model="employee.designation" ng-options="i for i in employee.department.designations track by i" class="form-control" ng-required="true"></select></td></tr>
+                            <tr><td><span>Access Type:</span><span class="is-required">*</span></td><td><select ng-model="employee.access" ng-options="(constants.accObj[i]) for i in constants.access track by i" class="form-control" ng-required="true"></select></td></tr>
+                            <tr><td><span>Location:</span><span class="is-required">*</span></td><td><select ng-model="employee.location" ng-options="i for i in ['Abuja', 'Lagos'] track by i" class="form-control" ng-required="true"></select></td></tr>
+                            <tr><td><span>Status:</span><span class="is-required">*</span></td><td><select ng-model="employee.status" ng-options="i for i in constants.empStatus track by i" class="form-control" ng-required="true"></select></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Address & Contact Information</h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>Street:</span></td><td><input class="form-control" ng-model="employee.street" type="text"/></td></tr>
+                            <tr><td><span>City:</span></td><td><input class="form-control" ng-model="employee.city" type="text" /></td></tr>
+                            <tr><td><span>State:</span></td><td><input class="form-control" ng-model="employee.state" type="text" /></td></tr>
+                            <tr><td><span>Zip Code:</span></td><td><input class="form-control"ng-model="employee.zipCode" type="text"/></td></tr>
+                            <tr><td><span>Personal Email:</span></td><td><input class="form-control" ng-model="employee.pEmail" type="email"/></td></tr>
+                            <tr><td><span>Mobile Phone:</span><span class="is-required">*</span></td><td><input class="form-control"ng-model="employee.pPhone" ng-required="true" type="tel"/></td></tr>
+                            <tr><td><span>Work Email:</span><span class="is-required">*</span></td><td><input class="form-control" ng-model="employee.wEmail" type="email" ng-required="true"/></td></tr>
+                            <tr><td><span>Work Phone:</span></td><td><input class="form-control" ng-model="employee.wPhone" type="tel"/></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Emergency Contact</h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>Full Name:</span></td><td><input class="form-control"ng-model="employee.nokName" type="text"/></td></tr>
+                            <tr><td><span>Relationship:</span></td><td><input class="form-control"ng-model="employee.nokRelationship" type="text"/></td></tr>
+                            <tr><td><span>Phone:</span></td><td><input class="form-control"ng-model="employee.nokPhone" type="tel"/></td></tr>
+                            <tr><td><span>Email:</span></td><td><input class="form-control"ng-model="employee.nokEmail" type="email"/></td></tr>
+                            <tr><td><span>Address:</span></td><td><textarea name="address" rows="2" cols="20" class="form-control" ng-model="employee.nokAddress"></textarea></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <span ng-if="errText && form.$invalid" class="text-center" ng-bind="errText"></span>
+                <div align="center"><input value="{{updating? 'Updating Record': 'Update Record'}}" class="btn btn-default" ng-disabled="form.$invalid" type="button" ng-click="saveData()" ></div>
+            </div>
+        </form>
+    </div>
+</div>

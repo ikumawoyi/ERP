@@ -1,0 +1,9 @@
+<script src="javascripts/fullcalendar/fullcalendar.min.js"></script>
+<script src="javascripts/fullcalendar/gcal.js"></script>
+<link rel="stylesheet" href="stylesheets/fullcalendar.min.css">
+<div class="panel panel-default" ng-controller="testCtrl">
+    <div class="panel-heading"><h2 class="panel-title font16">Leave Calendar</h2></div>
+    <div class="panel-body">
+        <div class="calendar" ng-model="eventSources" calendar="cal" ui-calendar="uiConfig.calendar"></div>
+    </div>
+</div>

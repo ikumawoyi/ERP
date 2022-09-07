@@ -1,0 +1,67 @@
+<div class="panel panel-default kra-settings margin10top" ng-controller="kraCtrl">
+    <div class="panel-heading"><h3 class="panel-title">KRAs for {{globals.year}}</h3></div>
+    <div class="panel-body">
+        <p>This screen allows you to specify all details about a specific KRA for particular designation.
+            Use the form below to add new KRA. Employees in the selected designation(s) will be attached to this KRA.
+            Click on ‘View’ link to view the entire employee attached to that particular KRA. You may click on ‘Modify’
+            link to either edit or delete KRA.</p>
+        <div class="panel panel-default">
+            <div class="panel-body content">
+                <table class="table table-bordered">
+                    <tr style="padding: 0;" class="kra-header">
+                        <!--<td width="2%"></td>-->
+                        <td width="4%"></td>
+                        <td width="85%">Description</td>
+                        <td width="10%"></td>
+                    </tr>
+                </table>
+                <div class="restrict">
+                    <details ng-repeat="area in areas" ng-if="area.kras.length > 0" ng-open="{{area.kras.length > 0}}" >
+                        <summary class="kra-area-header">Area: {{area.name}}</summary>
+                        <table class="table table-bordered">
+                            <tr ng-repeat="kra in area.kras">
+                                <!--<td width="2%"></td>-->
+                                <td width="4%"><a class="btn btn-link" ng-click="editKra(kra, area)">edit</a></td>
+                                <td width="85%">{{kra.description}}</td>
+                                <td width="10%"><a class="btn btn-link" ng-click="showDesignations(kra, area)">{{kra.designations.length}} designations</a></td>
+                            </tr>
+                        </table>
+                    </details>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Add to KRA</h3></div>
+            <div class="panel-body">
+                <table class="table table-bordered table-responsive">
+                    <tr><th width="40%">Area:</th><td>
+                        <select required ng-model="modified.area" style="width:70%;float: left;" ng-options="i.name for i in areas track by i._id" class="form-control"></select>
+                        <a class="btn btn-link" ng-click="addArea()">Add New Area</a>
+                    </td></tr>
+                    <tr><th>KRA Description:</th><td><textarea ng-model="modified.description" rows="5" style="resize: none" class="form-control"></textarea></td></tr>
+                    <tr><th width="40%">Department:</th><td>
+                        <select required ng-model="modified.area" style="width:70%;float: left;" ng-options="i.name for i in globals.constants.organisations track by i._id" class="form-control"></select>
+                    </td></tr>
+                    <tr><th>Select Designation(s):<br>
+                        <span>(The details of the KRA can be specified here in multiple lines. You can enter the details in 500 characters.)</span>
+                    </th>
+                        <td>
+                            <ul class="kra-list">
+                                <li ng-repeat="desig in modified.area.designations">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-model="modified.chosen[desig]" ng-change="checkedChanged(desig)" ng-true-value="'true'">{{desig}}
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+                <div align="center"><button type="button" class="btn btn-default" ng-disabled="!modified.area || !modified.description || modified.designations.length < 1 || savingkra" ng-click="saveKra()">{{savingkra?'Saving KRA':'Add KRA'}}</button></div>
+            </div>
+        </div>
+    </div>
+</div>

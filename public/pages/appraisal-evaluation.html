@@ -1,0 +1,66 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Supervisor Evaluation</h3></div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead><tr class="header-bg"><td width="10px"></td><td>Photo</td><td>Employee Name</td><td>Designation</td><td width="25%">Department</td><td>Average(%)</td><td>Grade</td></tr></thead>
+            <tbody>
+                <tr ng-repeat="ax in evaluations" ng-click="showDetails(ax)" class="clickable">
+                    <td ng-bind="$index + 1"></td>
+                    <td width="60px"><img class="img-thumbnail" ng-src="img/{{ax.employeeId}}.jpg" style="width: 80px;"></td>
+                    <td ng-bind="ax.name || (ax.firstName + ' ' + ax.lastName)"></td>
+                    <td ng-bind="ax.designation"></td>
+                    <td ng-bind="ax.department"></td>
+                    <td ng-bind="ax.average"></td>
+                    <td ng-bind="ax.text"></td>
+                </tr>
+            </tbody>
+            <tfoot ng-if="!evaluations || !evaluations.length"><tr><td colspan="7" class="text-center">No records to display</td></tr></tfoot>
+        </table>
+    </div>
+</div>
+
+<script id="pages/appraisal-evaluation-details.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Supervisor Feedback and Evaluation Report for <span ng-bind="data.year"></span> <a class="btn btn-link pull-right" href="" ng-click="back()">Back</a></h3></div>
+        <div class="panel-body" ng-init="complete = true">
+            <div class="pull-left">
+                <div class="pull-left" style="margin: 5px">
+                    <img ng-src="img/{{data.employeeId}}.jpg" width="112" height="113">
+                </div>
+                <div class="pull-right" style="margin: 5px; height: 113px;">
+                    <div><font face="Tahoma" size="6" ng-bind="data.name"></font></div>
+                    <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="data.designation"></font></div>
+                    <div><font face="Tahoma" style="font-size: 12.5pt" ng-bind="data.department" color="#333333"></font></div>
+                    <div><font face="Tahoma" style="vertical-align:-webkit-baseline-middle;font-size: 24px" ; color="{{scoring[data.text] || '#333333'}}" ng-bind="data.text ? (data.text + ' Performance'): ''"></font></div>
+                </div>
+            </div>
+            <div class="row">
+                <table ng-if="data.evaluations.length > 0" class="table table-bordered table-condensed table-striped" style="font-size: smaller;">
+                    <thead>
+                        <tr class="header-bg">
+                            <td width="10px"></td>
+                            <td>Name</td>
+                            <td>Designation</td>
+                            <td ng-repeat="(key,items) in data.evaluations[0].details" ng-bind="key"></td>
+                            <!--<td>Date</td>-->
+                            <td>Grade</td>
+                            <td>Score</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="eval in data.evaluations">
+                            <td ng-bind="$index + 1"></td>
+                            <td ng-bind="getName(eval.subordinate)"></td>
+                            <td ng-bind="eval.subordinate.designation"></td>
+                            <td ng-repeat="(key,item) in (eval.scoring || eval.details)" ng-init="complete && !!item.scoreText" style="text-align: -webkit-center;" ng-bind="item.scoreText|| ' - '"></td>
+                            <!--<td ng-if="eval.scoreText" ng-bind="eval.date|date: 'yyyy MMM dd'"></td>-->
+                            <td ng-bind="eval.score"></td>
+                            <td ng-if="!eval.scoreText"></td>
+                            <td ng-bind="eval.scoreText || 'N/A'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,109 @@
+﻿<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Attendance Reports</h3></div>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td colspan="6">
+                        <table class="table" style="margin-bottom:0">
+                            <thead>
+                                <tr>
+                                    <td colspan="2" style="vertical-align:middle;" class="text-right">
+                                        <label class="control-label">Select Month and Year:</label>
+                                    </td>
+                                    <td colspan="2">
+                                        <select style="width: 108px; float:left; margin-right: 5px;" ng-required="true" ng-change="ichanged(m)" ng-model="ft.m" ng-options="m.name for m in (ft.y? globals.indexMonths.slice(ft.y.min-1, ft.y.max) :[])" class="form-control"></select>
+                                        <select style="width: 108px;" ng-required="true" ng-model="ft.y" ng-options="i._id for i in atts" class="form-control"></select>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="attStatus-header-bg">
+                    <td style="padding-top:0;padding-bottom:0;"></td>
+                    <td style="padding-top:0;padding-bottom:0;">Id</td>
+                    <td style="padding-top:0;padding-bottom:0;">Name</td>
+                    <td style="padding-top:0;padding-bottom:0;">Department</td>
+                    <td style="padding-top:0;padding-bottom:0;"></td>
+                    <td style="padding-top:0;padding-bottom:0;"></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-class="{'late':sub.status == 'late', 'ontime':sub.status == 'On Time','absent':sub.status == 'Absent', 'pending':sub.status == 'N/A'}" class="attStatus" ng-repeat="sub in arrEmps | orderBy: 'name'">
+                    <td ng-bind="$index"></td>
+                    <td ng-bind="sub.id"></td>
+                    <td ng-bind="sub.name"></td>
+                    <td ng-bind="sub.department"></td>
+                    <td><a class="btn btn-link text-nowrap" ng-bind="'Monthly'" ng-click="viewMonth(sub)"></a></td>
+                    <td><a class="btn btn-link text-nowrap" ng-bind="'Yearly'" ng-click="viewYear(sub.id, sub.name, sub.department)"></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="pages/attendance-report-month.html">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Month Attendance Report <span ng-bind="' for ' +  emp.name"></span><button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true" class="small">x</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="attStatus-header-bg">
+                        <td style="padding-top:0;padding-bottom:0;">Date</td>
+                        <td style="padding-top:0;padding-bottom:0;">Time In</td>
+                        <td style="padding-top:0;padding-bottom:0;">Lateness(Min)</td>
+                        <td style="padding-top:0;padding-bottom:0;">Status</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-class="{'late':sub.status == 'late', 'ontime':sub.status == 'On Time','absent':sub.status == 'Absent', 'pending':sub.status == 'N/A'}" class="attStatus" ng-repeat="sub in emp.days">
+                        <td ng-bind="sub.date| date:'mediumDate'"></td>
+                        <td ng-bind="sub.time?sub.time: 'NA'"></td>
+                        <td ng-bind="sub.lateness"></td>
+                        <td ng-bind="sub.status"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script id="pages/attendance-report-year.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading">
+            <h3 class="panel-title">Year Attendance Report <span ng-bind="' for ' +  emp.name"></span><span ng-if="emp.year" ng-bind="'. Year: '+ emp.year"></span><button type="button" class="close" ng-click="back()"><span aria-hidden="true" class="small">x</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <details ng-repeat="item in emp.months" ng-if="item.days.length > 0" ng-open="{{item.month - 1 == code}}">
+                <summary class="kra-area-header header-bg" style="padding: 2px 2px;margin-top: 5px;">Month: {{globals.months[item.month-1]}}</summary>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="attStatus-header-bg">
+                            <td style="padding-top:0;padding-bottom:0;">Date</td>
+                            <td style="padding-top:0;padding-bottom:0;">Time In</td>
+                            <td style="padding-top:0;padding-bottom:0;">Lateness(Min)</td>
+                            <td style="padding-top:0;padding-bottom:0;">Status</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-class="{'late':sub.status == 'late', 'ontime':sub.status == 'On Time','absent':sub.status == 'Absent', 'pending':sub.status == 'N/A'}" class="attStatus" ng-repeat="sub in item.days">
+                            <td ng-bind="sub.date| date:'mediumDate'"></td>
+                            <td ng-bind="sub.time?sub.time: 'NA'"></td>
+                            <td ng-bind="sub.lateness"></td>
+                            <td ng-bind="sub.status"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,66 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Departments<a class="btn btn-link pull-right" ng-click="editOrg('new')" ng-bind="'New Dept.'"></a>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="header-bg"><th width="30%">Name</th><th>Designations</th><th></th></tr>
+            </thead>
+            <tr ng-repeat="item in orgs">
+                <td width="30%" ng-bind="item.name"></td>
+                <td><span ng-repeat="desig in item.designations"><span ng-bind="desig"></span><span ng-if="!$last">, </span><span ng-if="$last">.</span> </span></td>
+                <td width="10%" class="editCol">
+                    <span class="glyphicon glyphicon-pencil" title="Edit Organisation" ng-click="editOrg(item)"></span>
+                    <span class="glyphicon glyphicon-trash" title="Delete Department" ng-click="deleteOrg(item)"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!--<details ng-repeat="itm in orgs">
+    <summary ng-bind="itm.name"></summary>
+    <table class="table table-bordered">
+        <tr ng-repeat="desig in itm.designations"><td ng-bind="desig"></td>
+        </tr>
+    </table>
+</details>-->
+
+<script id="pages/edit-org.html" type="text/ng-template">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span ng-bind="(org_id?'Modify':'New') +' Department'"></span><button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <table class="table table-bordered table-responsive">
+                <tr>
+                    <th>Name:</th>
+                    <td><input type="text" class="form-control" ng-model="org.name" required></td>
+                </tr>
+                <tr>
+                    <th>Designation(s):</th>
+                    <td>
+                        <ul class="kra-list" style="height: 425px;">
+                            <li ng-repeat="i in constants.designations track by i" ng-class="{'selectedSub':org.designations.indexOf(i) > -1}">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-checked="org.designations.indexOf(i) > -1" ng-click="toggleDesignation(i)"><span ng-bind="i"></span>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            <div align="center"><button type="button" class="btn btn-default" ng-disabled="!org.name || updatingD" ng-click="saveDept()">{{updatingD?'Saving Department':'Submit'}}</button></div>
+        </div>
+    </div>
+</script>

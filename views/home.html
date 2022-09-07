@@ -1,0 +1,155 @@
+﻿<!doctype html>
+<!--[if lt IE 7]>      <html ng-app="app" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html ng-app="app" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html ng-app="app" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html ng-app="app" class="no-js">
+<!--<![endif]-->
+<head ng-controller="mainCtrl">
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title ng-bind="globals.title + pageTitle">Kenna Counsel</title>
+    <meta name="description" content="Kenna Partners (Nigerian Law Firm) Counsel System">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="stylesheets/dialogs.min.css" />
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="stylesheets/normalize.css">
+    <link rel="stylesheet" href="stylesheets/angular-chart.css">
+    <link rel="stylesheet" href="javascripts/busy/loading-bar.css">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/icon.png">
+    <link rel="apple-touch-icon-precomposed" href="images/icon.png">
+    <!--[if lt IE 9]><script src="javascripts/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--<script src="js/ie-emulation-modes-warning.js"></script>-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="lib/html5shiv.min.js"></script>
+    <script src="lib/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body background="images/login-p-bg.png"  ng-init="navbarCollapsed = true">
+    <nav class="navbar navbar-default navbar-static-top" role="banner" style="margin-bottom: {{navbarCollapsed ? '38px': '5px'}}; ">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" ng-click="navbarCollapsed = !navbarCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img src="images/logo.png" alt="Logo" />
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" role="navigation" collapse="navbarCollapsed">
+                <ul class="nav navbar-nav navbar-right" ng-controller="userCtrl">
+                    <li ng-cloak>
+                        <br>
+                        <div><font face="Tahoma" color="#808080" size="4" ng-bind="now|date:'fullDate'"></font> <font face="Tahoma" size="2" color="#0066CC"></font></div>
+                        <div>
+                            <font face="Tahoma" style="font-size: 12pt" color="#C0C0C0" ng-if="user.username && employee">
+                                <a ng-click="password()" class="has-pointer" title="Change Password">Change Password</a>
+                                <span> | </span>
+                                <a ng-click="logout()" title="Logout"  class="has-pointer">Logout</a>
+                            </font>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid body-content">
+        <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="row" style="padding-bottom: 5px; color: #ffffff;">
+            <div ng-cloak class="pull-right" ng-bind="'Welcome ' + user.fullName+'!'"></div>
+        </div>
+        <div ng-include="'pages/message-alert.html'"></div>
+        <div class="row">
+            <div class="col-sm-4 col-md-3">
+                <div ng-include="'pages/menu.html'"></div>
+            </div>
+            <div class="col-sm-8 col-md-9" style="min-height: 300px; background-color: #ffffff" ng-view>
+            </div>
+        </div>
+        <div class="loading" ng-if="loading" style="top: 0;bottom: 0;  left: 0;  right: 0;  background: rgba(7, 6, 4, 0.44);  position: fixed;  z-index: 1000;">
+            <div class="text-center">
+                <h2><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></h2>
+            </div>
+        </div>
+
+        <footer>
+            <font ng-cloak face="Tahoma" style="font-size: 8pt" color="#AAA">
+                <!--<hr />-->
+                <p>
+                    &copy; Copyright {{globals.year}}. All rights reserved.<br />{{globals.company}}
+                </p>
+                <!--<p>
+                    <a href="/">Home</a> | <a href="{{website}}" target="_blank">About {{globals.company}}</a> | <a href="mailto://{{globals.email}}">Send us a message</a>
+                </p>-->
+            </font>
+        </footer>
+    </div>
+    <script type="text/ng-template" id="pages/linker.html">
+        <div class="panel panel-default margin10top">
+            <div class="panel-heading">
+                Extend Evaluation Period<button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+            </div> <div class="panel-body">
+                <div ng-controller="msgCtrl">
+                    <alert ng-cloak ng-repeat="a in modalAlerts" type="{{a.type}}" close="closeModalAlert($index);"><span ng-bind="a.text"></span></alert>
+                </div>
+                <div class="padding">
+                    <form class="form-horizontal" name="form">
+                        <div class="form-group">
+                            <label class="col-xs-6 control-label">
+                                Appraisal Time Period:<br>
+                                <span style="font-weight: normal">(Start date an and date indicated the time period which the appraisal is carried out. This represents the time period employee has worked with a subordinate)</span>
+                            </label>
+                            <div class="col-xs-6">
+                                <label>Start date:  <span style="font-weight: normal" ng-bind="extApp.start|date:'EEE, MMM dd, yyyy'"></span></label>
+                                <label>End Date: <span style="font-weight: normal" ng-bind="extApp.end|date:'EEE, MMM dd, yyyy'"></span></label><br>
+                                <input ng-disabled="disable" type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="extApp.newEnd" is-open="newEndOpen" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn unblock">
+                                    <button type="button" class="btn btn-default" ng-click="setDate($event, 'newEndOpen')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div align="center"> <button type="button" class="btn btn-default" ng-disabled="!extApp.newEnd|| (extApp.newEnd < extApp.end) || (extApp.newEnd < now) || extendingApp" ng-click="extendApp()" ng-bind="extendingApp?'Extending Period':'Extend'"></button> </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/moment.min.js"></script>
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-route.min.js"></script>
+    <script src="lib/angular-sanitize.min.js"></script>
+    <!--<script src="lib/angular-cookies.min.js"></script>-->
+    <script src="lib/angular-animate.min.js"></script>
+    <script src="lib/ui-bootstrap-tpls.min.js"></script>
+    <script src="lib/angular-file-upload.min.js"></script>
+    <script src="javascripts/calendar.js"></script>
+    <script src="javascripts/dialogs.min.js"></script>
+    <script src="javascripts/http-auth-interceptor.js"></script>
+    <script src="javascripts/bp-ngContextMenu.js"></script>
+    <script src="javascripts/chart/Chart.Core.js"></script>
+    <script src="javascripts/chart/Chart.Line.js"></script>
+    <script src="javascripts/chart/Chart.Bar.js"></script>
+    <script src="javascripts/chart/angular-chart.js"></script>
+    <script src="javascripts/busy/loading-bar.js"></script>
+    <script src="javascripts/system.js"></script>
+    <script src="javascripts/main.js"></script>
+    <script src="javascripts/controller.js"></script>
+
+</body>
+</html>

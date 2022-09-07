@@ -1,0 +1,98 @@
+﻿<html ng-app="system.user">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en-us">
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title ng-bind="'Kenna Counsel - Login'"></title>
+
+
+    <title>reCAPTCHA demo: Simple page</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <!--<title>Trusoft Limited - HR</title>-->
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../stylesheets/style.css">
+    <link rel="stylesheet" href="javascripts/busy/loading-bar.css">
+    <link rel="stylesheet" href="../stylesheets/normalize.css">
+
+    <link rel="icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../images/icon.png">
+    <link rel="apple-touch-icon-precomposed" href="../images/icon.png">
+    <!--[if lt IE 9]>
+    <script src="../javascripts/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--<script src="js/ie-emulation-modes-warning.js"></script>-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="../lib/html5shiv.min.js"></script>
+    <script src="../lib/respond.min.js"></script>
+
+    <![endif]-->
+</head>
+<body class="body-login">
+    <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="container">
+        <p align="center"><img src="../images/logo.png" width="251" height="31" border="0"></p>
+    </div>
+
+    <div class="page">
+        <div class="container">
+            <div class="row">
+                <p align="center" ng-controller="stateCtrl">
+                    <span class="slogan" ng-bind="slogan"></span>
+                </p>
+                <div class="login-container" ng-controller="loginCtrl">
+                    <div id="login" class="login">
+                        <div ng-include="'pages/message-alert.html'"></div>
+                        <form method="post" name="form">
+                            <div class="form-group">
+                                <label for="username">Employee ID</label><span class="is-required">*</span>
+                                <input class="form-control" type="text" id="username" ng-model="user.username">
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label><span class="is-required">*</span>
+                                <input class="form-control" type="password" id="password" ng-model="user.password">
+                                <span class="help-block"></span>
+                            </div>
+                            <span class="forget">Forgot password? Contact PD.</span>
+                            <br />
+                            <!--<form action="?" method="POST">-->
+                                <!--<div class="g-recaptcha" data-sitekey="6LfwxgMTAAAAACgvL07nP_zCmPvBr9DuGQvNyy0U"></div>-->
+                                <!--<br/>-->
+                                <!--&lt;!&ndash;<input type="submit" value="Submit">&ndash;&gt;-->
+                            <!--</form>-->
+
+
+                            <!--<script type="text/javascript">var RecaptchaOptions = { theme: 'white' };</script>-->
+                            <!--<script type="text/javascript" src="https://www.google.com/recaptcha/api/challenge?k=6LfwxgMTAAAAACgvL07nP_zCmPvBr9DuGQvNyy0U&render=explicit"></script>-->
+                            <br />
+                            <div class="form-actions">
+                                <button class="btn btn-primary btn-login pull-right" style="margin-right: 15px;" ng-click="login()" ng-disabled="form.$invalid || signingIn || !(user && user.password && user.username)" ng-bind="signingIn? 'Signing In': 'Sign In'"></button>&nbsp;
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer" style="text-align: -webkit-center; text-align: -moz-center; text-align: center;">
+        <hr />
+        <p>Copyright 2015. All Rights Reseved. Trusoft Limited</p>
+    </footer>
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-animate.min.js"></script>
+    <!--<script src="lib/angular-cookies.min.js"></script>-->
+    <script src="lib/angular-sanitize.min.js"></script>
+    <script src="lib/ui-bootstrap-tpls.min.js"></script>
+    <script src="javascripts/busy/loading-bar.js"></script>
+    <script src="javascripts/system.js"></script>
+</body>
+</html>
+

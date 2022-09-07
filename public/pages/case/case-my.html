@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h2 class="panel-title font16">Case Assignment</h2></div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="header-bg">
+                    <th></th>
+                    <th ng-bind="'Title'"></th>
+                    <th ng-bind="'Team Leader'"></th>
+                    <th ng-bind="'Location'"></th>
+                    <th ng-bind="'Team Members'"></th>
+                    <th ng-bind="'Date Added'"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in cases|orderBy:'date':true">
+                    <td ng-bind="$index + 1"></td>
+                    <td ng-bind="c.title"></td>
+                    <td ng-bind="getName(c.leader)"></td>
+                    <td ng-bind="c.location"></td>
+                    <td><span ng-repeat="n in getNamesFromColAsCol([c.initiator],c.members) track by $index" ng-class="{'text-grey' : getName(employee) == n._id}" ng-bind="n + ($last ? '.':', ')"></span></td>
+                    <td ng-bind="c.date|date:'shortDate'"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-center" ng-if="!cases">
+            <span><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></span>
+        </div>
+    </div>
+</div>

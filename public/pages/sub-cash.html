@@ -1,0 +1,10 @@
+<div class="panel panel-default margin10top" ng-controller="teamCtrl">
+    <div class="panel-heading"><h3 class="panel-title">Cash Request</h3></div>
+    <div class="panel-body">
+        <table class="table table-bordered table-responsive cashlist">
+            <thead><tr class=""><th></th><th>Ref.#</th><th>Requester</th><th>Description</th><th>Incurred</th><th>Amount (&#x20A6)</th><th>Status</th></tr></thead>
+            <tbody><tr ng-repeat="req in subcash"><td></td><td><a href="" ng-click="access(req)" class="btn btn-link">{{req.referenceNumber}}</a></td><td>{{req.requester}}</td><td>{{req.description}}</td><td>{{req.incurred|date:'yyyy MMM dd'}}</td><td>{{req.amount| currency: '\u20A6': 2}}</td><td>{{req.status}}</td></tr>
+            <tr ng-if="!subcash || subcash.length==0"><td colspan="8"  class="text-center">No Records to display</td></tr></tbody>
+        </table>
+    </div>
+</div>

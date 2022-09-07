@@ -1,0 +1,241 @@
+<script type="text/ng-template" id="pages/confirmation-list.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Employee Confirmation Setup</h3></div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="header-bg">
+                        <th></th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Date hired</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="emp in unconfirmed">
+                        <td></td>
+                        <td ng-bind="emp.firstName + ' ' + emp.lastName"></td>
+                        <td ng-bind="emp.designations"></td>
+                        <td ng-bind="emp.departmant.name"></td>
+                        <td ng-bind="emp.hired">Date hired</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr> <td colspan="6" class="text-center">No confirmation information setup</td> </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="pages/setup-confirm.html">
+    <div class="panel panel-default kra-settings margin10top" ng-if="false">
+        <div class="panel-heading"><h3 class="panel-title" ng-bind="'KRAs for '+ globals.year"></h3></div>
+        <div class="panel-body">
+            <p>
+                This screen allows you to specify all details about a specific KRA for particular designation.
+                Use the form below to add new KRA. Employees in the selected designation(s) will be attached to this KRA.
+                Click on ‘View’ link to view the entire employee attached to that particular KRA. You may click on ‘Modify’
+                link to either edit or delete KRA.
+            </p>
+            <div class="panel panel-default">
+                <div class="panel-body content">
+                    <table class="table t able-bordered">
+                        <tr style="padding: 0;" class="kra-header">
+                            <!--<td width="2%"></td>-->
+                            <td width="4%"></td>
+                            <td width="85%">Description</td>
+                            <td width="10%"></td>
+                        </tr>
+                    </table>
+                    <div class="restrict">
+                        <details ng-repeat="area in areas" ng-if="area.kras.length > 0" ng-open="{{area.kras.length > 0}}">
+                            <summary class="kra-area-header">Area: {{area.name}}</summary>
+                            <table class="table table-bordered">
+                                <tr ng-repeat="kra in area.kras">
+                                    <!--<td width="2%"></td>-->
+                                    <td width="4%"><a class="btn btn-link" ng-click="editKra(kra, area)">edit</a></td>
+                                    <td width="85%">{{kra.description}}</td>
+                                    <td width="10%"><a class="btn btn-link" ng-click="showDesignations(kra, area)">{{kra.designations.length}} designations</a></td>
+                                </tr>
+                            </table>
+                        </details>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Add to KRA</h3></div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-responsive">
+                        <tr>
+                            <th width="40%">Area:</th>
+                            <td><select required ng-model="modified.area" style="width:70%;float: left;" ng-options="i.name for i in areas track by i._id" class="form-control"></select> <a class="btn btn-link" ng-click="addArea()">Add New Area</a></td>
+                        </tr>
+                        <tr><th>KRA Description:</th><td><textarea ng-model="modified.description" rows="5" style="resize: none" class="form-control"></textarea></td></tr>
+                        <tr>
+                            <th width="40%">Department:</th>
+                            <td><select required ng-model="modified.area" style="width:70%;float: left;" ng-options="i.name for i in globals.constants.organisations track by i._id" class="form-control"></select></td>
+                        </tr>
+                        <tr>
+                            <th>Select Designation(s):<br><span>(The details of the KRA can be specified here in multiple lines. You can enter the details in 500 characters.)</span></th>
+                            <td>
+                                <ul class="kra-list">
+                                    <li ng-repeat="desig in modified.area.designations">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="modified.chosen[desig]" ng-change="checkedChanged(desig)" ng-true-value="'true'">{{desig}}
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <div align="center"><button type="button" class="btn btn-default" ng-disabled="!modified.area || !modified.description || modified.designations.length < 1 || savingkra" ng-click="saveKra()">{{savingkra?'Saving KRA':'Add KRA'}}</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="pages/confirm-preview-form.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Confirmation Evaluation<button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">x</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="pull-left">
+                    <div class="pull-left" style="margin: 5px"><img src="images/profile.png" width="112" height="113"></div>
+                    <div class="pull-right" style="margin: 5px; height: 113px;">
+                        <div><font face="Tahoma" size="6" ng-bind="'Name'"></font></div>
+                        <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="'Designation'"></font></div>
+                        <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="'Department'"></font></div>
+                    </div>
+                </div>
+            </div>
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="achForm">
+                <span>Select the appropriate competence level from below</span>
+                <table class="table table-bordered" ng-repeat="(key,value) in groups">
+                    <thead>
+                        <tr class="header-bg">
+                            <td colspan="2"><label ng-bind="key" class="text-uppercase darkenblue"></label></td>
+                        </tr>
+                    </thead>
+                    <tr ng-repeat="i in value">
+                        <td ng-bind="i.area"></td>
+                        <td style="text-align: -webkit-center;">
+                            <label ng-repeat="g in globals.constants.appLevels" class="radio-inline">
+                                <input type="radio" ng-if="$last" required ng-model="$parent.eval.details[i.area].scoreText" value="{{g}}"><span ng-if="$last" ng-bind="' '+g"></span>
+                                <input type="radio" ng-if="!$last" ng-model="$parent.eval.details[i.area].scoreText" value="{{g}}"><span ng-if="!$last" ng-bind="' '+g"></span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="header-bg">
+                            <td colspan="2"><label ng-bind="'Recommendation'" class="text-uppercase darkenblue"></label></td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td class="text-center" ng-repeat="i in ['Confirm', 'Deny']">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" ng-checked="eval.recommendation == i" ng-click=" toggleselection(i)"> <span ng-bind="i"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label>Justification for recommendation</label>
+                            <textarea ng-model="eval.reason" rows="6" style="width:100%; resize:vertical" placeholder="Justification for recommendation:" ng-required="true"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <p class="text-center"><button type="button" class="btn btn-default" ng-disabled="achForm.$invalid || savingAch || !eval.recommendation" ng-click="submitAppraisal()">{{savingAch?'Submiting Evaluation':'Submit'}}</button></p>
+            </form>
+        </div>
+    </div>
+</script>
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Employee Confirmation Areas<a class="btn btn-link pull-right" href="" ng-bind="'Preview Form'" ng-click="previewCon()"></a></h3></div>
+    <div class="panel-body">
+        <p>
+            Add evaluation areas to be included when performing confirmation evaluation.<br />
+            The header determines how the areas are group in the form displayed during evaluation.<br />
+            Filter the evaluation area to a specific department by selecting the appropriate department from the dropdown list.
+        </p>
+        <hr />
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr class="header-bg"><td></td><td width="40%">Area</td><td class="50%">Header</td><th>Departments</th><td class="editCol"></td></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ax in confirmationAreas">
+                    <td ng-bind="($index + 1)+'.' "></td>
+                    <td ng-bind="ax.area"></td>
+                    <td ng-bind="ax.header"></td>
+                    <td ng-bind="getDepts(ax.departments)"></td>
+                    <td class="editCol">
+                        <span class="glyphicon glyphicon-pencil" title="Edit Area" ng-click="editEvaluation(ax)"></span>
+                        <span class="glyphicon glyphicon-trash" title="Delete Area" ng-click="deleteEvaluation(ax)"></span>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot ng-if="!confirmationAreas || confirmationAreas.length <= 0">
+                <tr>
+                    <td colspan="5" class="text-center">No confirmation evaluation areas setup.</td>
+                </tr>
+            </tfoot>
+        </table>
+        <hr />
+        <div ng-include="'pages/confirmation-area.html'"></div>
+    </div>
+</div>
+<script id="pages/confirmation-area.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">New Evaluation Area</h3></div>
+        <div class="panel-body">
+            <form name="appForm">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-md-2" for="question">Area:</label>
+                    <div class="col-sm-9  col-md-10"><input class="form-control" type="text" ng-model="newEval.area" placeholder="New area" ng-required="true"></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-md-2" for="question">Header:</label>
+                    <div class="col-sm-9  col-md-10"><input class="form-control" type="text" ng-model="newEval.header" placeholder="Header" ng-required="true"></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-md-2" for="question">Department(s):<a class="btn btn-link" href="" ng-bind="'Select All'" ng-click="selectAll()" ng-disabled="newEval.departments.length == globals.constants.organisations.length"></a></label>
+
+                    <div class="col-sm-9  col-md-10">
+                        <ul class="kra-list" style="height:200px;">
+                            <li ng-repeat="dept in globals.constants.organisations|orderBy:'name'" ng-class="{'selectedSub':newEval.departments.indexOf(dept._id) > -1}">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-checked="newEval.departments.indexOf(dept._id) > -1" ng-click="toggleSelection(dept._id)"> <span ng-bind="dept.name"></span>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>                        
+                    </div>
+                </div>
+                <div class="col-sm-offset-3 col-md-offset-2  col-sm-9 col-md-10">
+                    <button type="button" class="btn btn-default" ng-disabled="appForm.$invalid || newEval.title.length < 3" ng-click="submitArea(newEval)">{{savingAssess?'Saving Area':'Save Area'}}</button>
+                    <button type="button" class="btn btn-default" ng-disabled="!(newEval.area || newEval.header || newEval.departments.length > 0)" ng-click="clearInput()">Clear Input</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>

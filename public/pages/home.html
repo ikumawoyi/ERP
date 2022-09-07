@@ -1,0 +1,46 @@
+<div class="slide-animate-container" ng-controller="homeCtrl">
+    <div class="slide-animate" ng-include="'pages/employee-header.html'"></div>
+    <hr/>
+    <div class="col-sm-12 landing">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Today's Message</h3></div>
+                <div class="panel-body" style="overflow:auto">
+                    <div ng-repeat="mail in mails |orderBy:'date':true">
+                        <div class="MailSubject" style="border-bottom:1px solid #E8E5E5">
+                            <span style="color:#336699;" ng-bind="mail.title"></span>
+                            <br><span ng-bind-html="mail.text"></span><br>
+                            <div align="right">
+                                <span style="font-weight:bold;font-style:italic;" ng-bind="mail.sender"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Notice Board</h3></div>
+                <div class="panel-body">
+                    <div class="quote-container">
+                        <carousel interval="slideInterval">
+                            <slide ng-repeat="slide in globals.dayQuote track by $index">
+                                <div>
+                                    <i class="pin"></i>
+                                    <blockquote class="note note-bg">
+                                        <header class="title" ng-bind="slide.title"></header>
+                                        <content ng-if="slide.isBirthday">
+                                            <img src="../images/birthday-cake.png" alt="{{slide.text}}">
+                                        </content>
+                                        <content ng-bind="slide.text" style="font-size: 24px;"></content>
+                                        <cite class="author" ng-bind="slide.date|date:'mediumDate'"></cite>
+                                    </blockquote>
+                                </div>
+                            </slide>
+                        </carousel>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

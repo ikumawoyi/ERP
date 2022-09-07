@@ -1,0 +1,19 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Modify KRA<button type="button" class="close" ng-click="back()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button></h3></div>
+    <div class="panel-body">
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <table class="table table-bordered table-responsive">
+            <tr><th width="50%">Area:</th><td>
+                <select required ng-model="kraEdit.area" style="width:70%;float: left;" ng-options="i.name for i in areas track by i._id" class="form-control"></select>
+                <a class="btn btn-link" ng-click="addArea()">Add New Area</a>
+            </td></tr>
+            <tr><th>KRA Description:</th><td><textarea ng-model="kraEdit.description" rows="5" style="resize: none" class="form-control"></textarea></td></tr>
+            <tr><th width="50%">Department:</th><td>
+                <select required ng-model="kraEdit.department" style="width:70%;float: left;" ng-options="i.name for i in globals.constants.organisations track by i._id" class="form-control"></select>
+            </td></tr>
+            <tr><th>Select Designation(s):</th><td><ul class="kra-list"><li ng-repeat="desig in kraEdit.department.designations"><div class="checkbox"><label><input type="checkbox" name="designations[]" ng-checked="kraEdit.designations.indexOf(desig) > -1" ng-click="toggleEditSelection(desig)"> {{desig}}</label></div></li></ul></td></tr>
+            <tr><th>KRA Weight:</th><td><input type="number" class="form-control" ng-min="1" ng-init="kraEdit.weight = kraEdit.weight || 1" ng-model="kraEdit.weight"> </td></tr>
+        </table>
+        <div align="center"><button type="button" class="btn btn-default" ng-disabled="!kraEdit.area || !kraEdit.description || kraEdit.designations.length < 1 || updatingkra" ng-click="updateKra()">{{updatingkra?'Updating KRA':'Update Area'}}</button></div>
+    </div>
+</div>

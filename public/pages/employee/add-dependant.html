@@ -1,0 +1,59 @@
+<div class="panel panel-default empData">
+    <div class="panel-heading"><h2 class="panel-title font16">New Dependant Information<a class="btn btn-link pull-right" href="" ng-click="back()" ng-bind="backText? backText: 'Back'"></a></h2></div>
+    <div class="panel-body">
+        <form class="col-sm-12" name="form">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Dependant Information</h3></div>
+                    <div class="panel-body">
+                         <div data-ng-include="'pages/message-alert-modal.html'"></div>
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>First Name:</span></td><td><input class="form-control" ng-model="dependant.firstName" type="text" required ng-required="true"/> </td></tr>
+                            <tr><td><span>Middle Name:</span></td><td><input class="form-control" ng-model="dependant.middleName" type="text"/></td></tr>
+                            <tr><td><span>Last Name:</span></td><td><input class="form-control" ng-model="dependant.lastName" type="text" required ng-required="true"/> </td></tr>
+                            <tr><td><span>Date of Birth:</span></td><td>
+                                <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="dependant.dob" is-open="depdob" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock">
+                                <button type="button" class="btn btn-default" ng-click="open($event, 'depdob')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </td></tr>
+                            <tr><td><span>Gender:</span></td><td><select required id="gender" ng-model="dependant.gender" ng-options="i for i in constants.gender track by i" class="form-control"></select></td></tr>
+                            <tr><td><span>Relationship:</span></td><td><select required ng-model="dependant.relationship" ng-options="i for i in constants.relationships track by i" class="form-control"></select></td></tr>
+                            <tr><td><span>Street:</span></td><td><input class="form-control" ng-model="dependant.street" type="text"/> </td></tr>
+                            <tr><td><span>City:</span></td><td><input class="form-control" ng-model="dependant.city" type="text"/> </td></tr>
+                            <tr><td><span>State:</span></td><td><input class="form-control" ng-model="dependant.state" type="text"/> </td></tr>
+                            <tr><td><span>Zip Code:</span></td><td><input class="form-control" ng-model="dependant.zipCode" type="text"/> </td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Insurance Coverage</h3></div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive">
+                            <tr><td><span>Policy Number:</span></td><td><input class="form-control" ng-model="dependant.policyNumber" type="text" required ng-required="true"/> </td></tr>
+                            <tr><td><span>Effective Date:</span></td><td>
+                                <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="dependant.effectiveDate" is-open="depeff" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock">
+                                <button type="button" class="btn btn-default" ng-click="open($event, 'depeff')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </td></tr>
+                            <tr><td><span>End Date:</span></td><td>
+                                <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" ng-model="dependant.endDate" name="endDate" is-open="depend" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn unblock">
+                                <button type="button" class="btn btn-default" ng-click="open($event, 'depend')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </td></tr>
+                        </table>
+                        <div class="form-group">
+                            <div align="center">
+                                <input value="{{savingdependant? 'Saving Details':'Save Details'}}" ng-disabled="form.$invalid || savingdependant"class="btn btn-default" type="button" ng-click="saveData()" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

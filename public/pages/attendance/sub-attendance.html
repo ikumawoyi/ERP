@@ -1,0 +1,33 @@
+﻿<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Attendance Time-In</h3></div>
+    <div class="panel-body">
+        <div>
+            <details ng-repeat="(status, emp) in att" ng-if="emp.length > 0" ng-open="{{att[status].length > 0}}">
+                <summary class="kra-area-header" ng-bind="'Status: '+ (status == 'N/A'? 'Pending': status)"></summary>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="header-bg">
+                            <td style="padding-top:0; text-align:-webkit-center" width="4%"></td>
+                            <td width="10%" style="padding-top:0;padding-bottom:0;">ID</td>
+                            <td style="padding-top:0;padding-bottom:0;">Name</td>
+                            <td style="padding-top:0;padding-bottom:0;">Department</td>
+                            <td style="padding-top:0;padding-bottom:0;">Time In</td>
+                            <td style="padding-top:0;padding-bottom:0;">Lateness(Min)</td>
+                            <td><span></span></td>
+                        </tr>
+                    </thead>
+                    <tr ng-class="{'late':sub.status == 'late', 'ontime':sub.status == 'On Time','absent':sub.status == 'Absent', 'pending':sub.status == 'N/A', 'clickable': sub.status != 'On Time' && sub.status != 'On Leave' && sub._id}"
+                        class="attStatus" ng-repeat="sub in emp" ng-click="sub.status != 'On Time' && sub.status != 'On Leave' && sub._id ? pardonSub(sub): noop();">
+                        <td width="4%" ng-bind="$index"></td>
+                        <td ng-bind="sub.employeeId"></td>
+                        <td ng-bind="sub.name"></td>
+                        <td ng-bind="sub.department"></td>
+                        <td ng-bind="sub.time?sub.time: 'NA'"></td>
+                        <td ng-bind="sub.lateness"></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </details>
+        </div>
+    </div>
+</div>

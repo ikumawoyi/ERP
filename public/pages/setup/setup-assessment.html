@@ -1,0 +1,52 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Self Assessment Questions</h3></div>
+    <div class="panel-body">
+        <p>Add questions to be included when employees are performing self assessment.
+        For questions that are career related select the 'is career' checkbox to ensure theses questions are grouped are the bottom of the questions</p>
+        <hr/>
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr class="header-bg"><td></td><td>Question</td><td style="min-width: 75px;max-width: 75px;">Is Career</td><td class="editCol"></td></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ax in assessmentQs">
+                    <td>{{$index + 1}}.</td>
+                    <td>{{ax.question}}</td>
+                    <td>{{ax.isCareer? 'Yes': 'No'}}</td>
+                    <td class="editCol">
+                        <span class="glyphicon glyphicon-pencil" title="Edit Question" ng-click="editAssessment(ax)"></span>
+                        <span class="glyphicon glyphicon-trash" title="Delete Question" ng-click="deleteAssessment(ax)"></span>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot ng-if="!assessmentQs || assessmentQs.length <= 0">
+                <tr>
+                    <td colspan="4" class="text-center">No self assessment questions.</td>
+                </tr>
+            </tfoot>
+        </table>
+        <hr />
+        <div ng-include="'pages/assessment-question.html'"></div>
+    </div>
+</div>
+<script id="pages/assessment-question.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">New Assessment Question</h3></div>
+        <div class="panel-body">
+            <form name="appForm">
+                <div class="form-group">
+                    <label for="question">Quetion<span>(one at a time)</span></label>
+                    <textarea rows="4" style="resize: none;" ng-model="newAssess.question" class="form-control emoData" id="question" placeholder="Enter question here"></textarea>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input ng-model="newAssess.isCareer" type="checkbox"> Is career question?
+                    </label>
+                </div>
+                <button type="button" class="btn btn-default" ng-disabled="!newAssess.question || newAssess.question.length < 6" ng-click="submitAction(newAssess)">{{savingAssess?'Saving Question':'Save Question'}}</button>
+                <button type="button" class="btn btn-default" ng-disabled="!newAssess.question" ng-click="clearInput()">Clear Question</button>
+            </form>
+        </div>
+    </div>
+</script>

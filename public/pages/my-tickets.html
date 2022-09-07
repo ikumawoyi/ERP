@@ -1,0 +1,110 @@
+﻿
+<div ng-include="'pages/my-ticket-list.html'"></div>
+<script type="text/ng-template" id="pages/my-ticket-list.html">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Assets Tickets</h3></div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead class="header-bg">
+                    <tr>
+                        <th>Date</th>
+                        <th>Code</th>
+                        <th>Type</th>
+                        <th>Details</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <!--<th>Replies</th>-->
+                    </tr>
+                </thead>
+                <tbody ng-if="(assign.tickets.length + support.tickets.length) > 0">
+                    <tr ng-if="assign.tickets.length > 0"><td class="header-bg" colspan="7" ng-bind="'Raised for assets'"></td></tr>
+                    <tr ng-repeat="ticket in assign.tickets" ng-click="viewTicket(ticket, true)" class="clickable">
+                        <td ng-bind="ticket.date | date:'shortDate'"></td>
+                        <td ng-bind="ticket.code"></td>
+                        <td ng-bind="ticket.type.name"></td>
+                        <td ng-bind="ticket.description"></td>
+                        <td ng-bind="ticket.priority"></td>
+                        <td ng-bind="ticket.status"></td>
+                        <!--<td ng-bind="ticket.subDetails.length"></td>-->
+                    </tr>
+                    <tr ng-if="support.tickets.length > 0"><td class="header-bg" colspan="7" ng-bind="'Requests for assets you maintain'"></td></tr>
+                    <tr ng-repeat="ticket in support.tickets" class="clickable" ng-click="viewTicket(ticket)">
+                        <td ng-bind="ticket.date | date:'mediumDate'"></td>
+                        <td ng-bind="ticket.code"></td>
+                        <td ng-bind="ticket.type.name"></td>
+                        <td ng-bind="ticket.description"></td>
+                        <td ng-bind="ticket.priority"></td>
+                        <td ng-bind="ticket.status"></td>
+                        <!--<td ng-if="ticket.subDetails.length > 0">ticket.subDetails<span ng-click="viewTicket(asset)" class="btn btn-link" ng-bind=""></span></td>-->
+                        <!--<td ng-bind="ticket.subDetails.length"></td>-->
+                    </tr>
+                </tbody>
+                <tfoot ng-if="!assign.tickets.length && !support.tickets.length">
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No Tickets Found
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script id="pages/asset-view-ticket.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title"><span ng-bind="'Support Ticket for '"></span><span class="text-bold" ng-bind="ticket.asset.description || ticket.asset.code"></span> <a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="newTicForm">
+                <table class="table table-bordered">
+                    <thead class="header-bg">
+                        <tr><th colspan="5">Details</th></tr>
+                        <tr><th>Type</th><th>Code</th><th>Serial #</th><th>Priority</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td ng-bind="ticket.type.name"></td>
+                            <td ng-bind="ticket.code"></td>
+                            <td ng-bind="ticket.asset.serial"></td>
+                            <td ng-bind="ticket.priority"></td>
+                            <td ng-bind="ticket.status"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td>Asset</td>
+                        <td><input class="form-control" ng-model="ticket.asset.description" type="text" ng-disabled="true" /></td>
+                    </tr>
+                    <tr>
+                        <td>Location</td>
+                        <td><input class="form-control" ng-model="ticket.location.name" type="text" ng-disabled="true" /></td>
+                    </tr>
+                    <tr>
+                        <td>Complaint</td>
+                        <td><textarea ng-model="ticket.description" class="form-control empData" rows="3" ng-disabled="true"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Reply</td>
+                        <td><textarea ng-model="ticket.reply" class="form-control empData" ng-disabled="ticket.status == 'Closed'" ng-required="true" rows="3" placeholder="reply asset ticket"></textarea></td>
+                    </tr>
+                    </thead>
+                    <tfoot ng-if="ticket.status != 'Closed' && showReply">
+                    <tr>
+                        <td colspan="2" class="text-center"><button ng-click="submitReply()" ng-disabled="newTicForm.$invalid || submittingTicket" class="btn btn-default" ng-bind="submittingTicket? 'Submitting Reply': 'Reply Complaint'">Submit</button></td>
+                    </tr>
+                    </tfoot>
+                    <tfoot ng-if="ticket.status == 'Closed'">
+                    <tr>
+                        <td>Reply Date</td>
+                        <td ng-bind="ticket.replyDate| date: 'short'"></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>
+

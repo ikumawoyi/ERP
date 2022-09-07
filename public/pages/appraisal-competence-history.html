@@ -1,0 +1,117 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Employees' Goal Performance Chart</h3></div>
+    <div class="panel-body">
+        <!--<span>view completed self assessment report for each employee.</span>-->
+        <table class="table">
+            <thead>
+                <tr style="border-bottom:1px solid grey">
+                    <td colspan="2" style="vertical-align:middle;" class="text-right">
+                        <label class="control-label">Select Employee:</label>
+                    </td>
+                    <td colspan="2">
+                        <select style="width: 228px;" ng-required="true" ng-model="sel" ng-options="getName(i.employee) for i in data" class="form-control"></select>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+        <div ng-if="sel" ng-include="'pages/performance-row.html'"></div>
+        <div ng-if="!sel" class="text-center">
+            <span><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></span>
+        </div>        
+    </div>
+</div>
+
+<div>
+    <canvas id="line" class="chart chart-line" data="chartData"
+            labels="labels" legend="true" series="series"
+            click="onClick"></canvas> 
+</div>
+
+<script type="text/ng-template" id="pages/performance-row.html">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td colspan="5">
+                    <div class="pull-left">
+                        <div class="pull-left" style="margin: 5px"><img ng-src="img/{{sel.employee.employeeId}}.jgp" width="112" height="113"></div>
+                        <div class="pull-right" style="margin: 5px; height: 113px;">
+                            <div><font face="Tahoma" size="6" ng-bind="getName(sel.employee)"></font></div>
+                            <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="sel.employee.designation"></font></div>
+                            <div><font face="Tahoma" style="font-size: 12.5pt" ng-bind="sel.employee.department.name" color="#333333"></font></div>
+                            <div><font face="Tahoma" ng-if="sel.kra.text" style="vertical-align:-webkit-baseline-middle;font-size: 24px" ; color="{{scoring[sel.kra.text] || '#333333'}}" ng-bind="sel.kra.text + ' Performance'"></font></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="header-bg">
+                <td>Period</td>
+                <td>Score</td>
+                <td>Text</td>
+                <td>Year</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="p in sel.periods | orderBy:'-year' track by $index" class="clickable" ng-click="showDetails(p)">
+                <td ng-init="p.employee = sel.employee" ng-bind="p.period.name + ' '+ p.period.year "></td>
+                <td ng-bind="p.data[0].score"></td>
+                <td ng-bind="p.data[0].text"></td>
+                <td ng-bind="p.period.year"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr ng-if="sel.periods && !sel.periods.length"><td colspan="4" class="text-center">No records to display</td></tr>
+            <tr ng-if="!sel.periods || !data">
+                <td colspan="4" class="text-center">
+                    <span><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</script>
+<script type="text/ng-template" id="pages/appraisal-performance-details.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading"><h3 class="panel-title">KRA Performance History<a class="btn btn-link pull-right" href="" ng-click="back()">Back</a></h3></div>
+        <div class="panel-body" ng-init="reArrange(data.data[0])">
+            <div class="row">
+                <div class="pull-left">
+                    <div class="pull-left" style="margin: 5px"><img src="images/profile.png" width="112" height="113"></div>
+                    <div class="pull-right" style="margin: 5px; height: 113px;">
+                        <div><font face="Tahoma" size="6" ng-bind="getName(data.employee)"></font></div>
+                        <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="data.employee.designation"></font></div>
+                        <div><font face="Tahoma" style="font-size: 12.5pt" ng-bind="data.employee.department.name" color="#333333"></font></div>
+                        <div><font face="Tahoma" style="vertical-align:-webkit-baseline-middle;font-size: 24px" ; color="{{scoring[data.data[0].text]|| '#333333'}}" ng-bind="data.data[0].text + ' Performance'"></font></div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <table class="table table-bordered">
+                <thead><tr class="header-bg"><td style="padding:12px;font-size: 15px;" ng-bind="'KRA Category' + (data.kra.score?', Ratings, ':'') + ' and Achievements'"></td></tr></thead>
+                <tbody>
+                    <tr ng-repeat="(area,kras) in keys">
+                        <td>
+                            <div style="color:#336699;font-weight:bold;">
+                                <span style="color:#336699;font-weight:bold;font-size:22px" ng-bind="area + ':'"></span> <br />
+                                <div ng-repeat="item in kras" ng-init="ind = $index;item.includeArc = false; ">
+                                    <p style="color:GrayText;margin: 4px auto;border-top: 1px solid #eee;border-bottom: 1px solid #eee;" ng-bind="item.details.kra"></p>
+                                    <p style="margin: 5px; color:black;">
+                                        <span ng-bind="item.scoring.text"></span>
+                                    </p>
+                                    <p style="font-size:12px;color:maroon;margin: 7px auto;border-bottom: 1px solid #eee;" ng-if="item.achievement" ng-bind="item.achievement"></p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center">
+                            <span class="col-sm-4" ng-bind="'Date : '+ (data.data[0].date|date:'mediumDate')"></span>
+                            <span class="col-sm-4" ng-bind="'By : '+ data.data[0].list[0].scoring.by"></span>
+                            <span class="col-sm-4" ng-bind="'Period: ' + data.period.name + ' ' + data.period.year"></span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</script>

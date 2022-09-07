@@ -1,0 +1,73 @@
+<script type="text/ng-template" id="pages/confirmation-new.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Initiate New Confirmation Appraisal<button type="button" class="close" ng-click="back()">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>>
+            <form name="iniConfirm">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th width="30%">Select Employee:</th>
+                            <td><select ng-focus="isLeft = false" ng-required="true" ng-model="selectEmp" ng-options="(i.firstName +' '+ i.lastName) for i in unconfirmed|orderBy:['firstName','lastName'] track by i._id" class="form-control"></select></td>
+                        </tr>
+                        <tr>
+                            <th>Reviewer(s):</th>
+                            <td>
+                                <ul class="kra-list" style="height: 425px;">
+                                    <li ng-repeat="i in employees|orderBy:['firstName','lastName'] track by i._id" ng-class="{'selectedSub':selectEmp.appraisers.indexOf(i._id) > -1}" ng-if="i._id != selectEmp._id">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-checked="selectEmp.appraisers.indexOf(i._id) > -1 && i._id != selectEmp._id" ng-click="toggleSelection(i._id)"><span ng-bind="i.firstName +' '+ i.lastName"></span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div align="center"><button type="button" class="btn btn-default" ng-disabled="iniConfirm.$invalid ||selectEmp.appraisers.length == 0 || savingCon" ng-click="initiateCon()">{{savingCon?'Initiating Confirmation':'Initiate Confirmation'}}</button></div>
+
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="pages/confirmation-ulist.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Initiated Confirmation Appraisal<a class="btn btn-link pull-right" href="" ng-bind="'Initiate New'" ng-click="startIni()"></a></h3></div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="header-bg">
+                        <th></th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Date hired</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="emp in initiated">
+                        <td ng-bind="$index + 1"></td>
+                        <td ng-bind="emp.firstName + ' ' + emp.lastName"></td>
+                        <td ng-bind="emp.designation"></td>
+                        <td ng-bind="emp.department.name"></td>
+                        <td ng-bind="emp.hired| date:'mediumDate'">Date hired</td>
+                    </tr>
+                </tbody>
+                <tfoot ng-if="!initiated.length">
+                    <tr> <td colspan="6" class="text-center">No confirmation information setup</td> </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+</script>
+<!--<div ng-include="'pages/confirmation-new.html'"></div>-->
+<div ng-include="'pages/confirmation-ulist.html'"></div>

@@ -1,0 +1,60 @@
+
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Employees' Self Assessment</h3></div>
+    <div class="panel-body">
+        <table class="table table-bordered table-condensed table-striped table-responsive table-hover">
+            <thead><tr class="header-bg"><th width="10px"></th><th width="25%">Name</th><th width="25%">Department</th><th width="25%">Date Completed</th><th>Photo</th></tr> </thead>
+           
+            <tbody><tr ng-click="app.assessment.date?showDetails(app):showError('assessment')" ng-repeat="app in data track by app._id"><td ng-bind="$index + 1"></td><td ng-bind="app.employee.firstName + ' '+ app.employee.lastName"></td><td ng-bind="app.employee.department.name"></td><td ng-bind="app.assessment.date? (app.assessment.date | date: 'mediumDate') : 'Not Completed'"></td><td width="60px" style="width:60px; max-width:60px;"><img class="img-thumbnail" ng-src="img/{{app.employee.employeeId}}.jpg" style="height: 60px;"></td></tr></tbody>
+            <tfoot>
+                <tr ng-if="data && !data.length"><td colspan="5" class="text-center">No records to display</td></tr>
+                <tr ng-if="!data">
+                    <td colspan="5" class="text-center">
+                        <span><img style="width: 50px; vertical-align: -webkit-baseline-middle;" src="../images/Floating rays.gif" alt="loading data" /></span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<script id="pages/appraisal-assessment-details.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Assessment Report <span ng-bind="'for ' + getPeriodName(data.period)"></span><a class="btn btn-link pull-right" href="" ng-click="back()">Back</a></h3></div>
+        <div class="panel-body">
+            <div class="pull-left">
+                <div class="pull-left" style="margin: 5px"><img ng-src="img/{{data.employee.employeeId}}.jpg" width="112" height="113"></div>
+                <div class="pull-right" style="margin: 5px; height: 113px;">
+                    <div><font face="Tahoma" size="6" ng-bind="getName(data.employee)"></font></div>
+                    <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="data.employee.designation"></font></div>
+                    <div><font face="Tahoma" style="font-size: 12.5pt" ng-bind="data.employee.department.name" color="#333333"></font></div>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-bordered" style="border: none;">
+                    <tbody>
+                        <tr ng-repeat="ax in data.assessment.list">
+                            <td colspan="2" style="border-right: none;border-left: none;" ng-if="!ax.question.isCareer">
+                                <span ng-bind="($index + 1) + '. ' + ax.question.text +'.'"></span><br>
+                                <span style="font-weight:bold;font-style:italic; color: #000011; margin-left: 10px" ng-bind="ax.answer"></span>
+                            </td>
+                            <td colspan="2" style="border-right: none;border-left: none;padding: 0;" ng-if="ax.question.isCareer">
+                                <table class="table table-bordered" ng-init="part = ax.answer.split(':$:')">
+                                    <tr class="header-bg" ng-init="col = ['a) Currently','b) 3 years from now','c) Long-term career objectives']">
+                                        <td colspan="{{part.length}}" ng-bind="($index + 1) + '. ' + ax.question.text +'.'"></td>
+                                    </tr>
+                                    <tr>
+                                        <td ng-repeat="p in part track by $index">
+                                            <em ng-bind="col[$index]"></em><br>
+                                            <span style="font-weight:bold;font-style:italic; color: #000011; margin-left: 10px" ng-bind="p"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,19 @@
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Performance Competence Question</h3></div>
+    <div class="panel-body">
+        <div data-ng-include="'pages/message-alert-modal.html'"></div>
+        <div class="restrict">
+            <span>Setup performance categories and questions. To edit or delete a category, right click on it and select the appropriate action</span>
+            <tabset>
+                <tab ng-repeat="cat in competenceCatsWithQuest | orderBy : '_id'" context-menu="catMenu" heading="{{$index + 1}}. {{cat.header}}{{cat.weight?('('+cat.weight+')'):''}}">
+                    <div class="competenceDetails">
+                        <p ng-repeat="quest in cat.questions"
+                           context-menu="subMenu"><label ><span>{{$index+1}}) </span>{{quest.name}}:</label> <span>{{quest.description}}</span></p>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+        <div  class="col-lg-6" ng-include="'pages/setup/edit-competence.html'"></div>
+        <div  class="col-lg-6" ng-include="'pages/setup//manage-competence-category.html'"></div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Cash Request<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+    <div class="panel-body">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Expense Information</h3></div>
+            <div class="panel-body">
+                <div data-ng-include="'pages/message-alert-modal.html'"></div>
+                <table class="table table-responsive">
+                    <tr><td>Brief Description:</td><td ng-bind="req.description"></td></tr>
+                    <tr><td>Amount (&#x20A6):</td><td ng-bind="req.amount | currency: '\u20A6': 2"></td></tr>
+                    <tr><td>Date:</td><td ng-bind="req.incurred | date:'yyyy MMM dd'"></td></tr>
+                    <tr><td>Date of Reimbursement:<td ng-bind="req.disbursed|date:'yyyy MMM dd'"></td></tr>
+                    <tr><td>Payment To:</td><td ng-bind="req.payTo"></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Requester's Notes</h3></div>
+            <div class="panel-body">
+                <p ng-bind="req.requesterNotes"></p>
+            </div>
+        </div>
+        <div class="panel panel-default" ng-if="'Pre-ApprovalAwaiting PD\'s Approval'.indexOf(req.status) >= 0 && (user.info.isAdmin || user.tasks.canCas)">
+            <div class="panel-heading"><h3 class="panel-title">Add Remark</h3></div>
+            <div class="panel-body">
+                <textarea class="form-control extra" style="resize: none;" rows="7" cols="20" ng-model="req.pdNotes"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div align="center">
+                <input value="Approve Request" ng-if="'Pre-ApprovalAwaiting PD\'s Approval'.indexOf(req.status) >= 0" class="btn btn-default" type="button" ng-click="pdapprove()" >
+                <input value="Decline Request" ng-if="'Cash ReleasedRetiredDisapproved'.indexOf(req.status) == -1 " class="btn btn-default" type="button" ng-click="pddecline()">
+            </div>
+        </div>
+    </div>
+</div>

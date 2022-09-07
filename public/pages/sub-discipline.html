@@ -1,0 +1,131 @@
+<div class="panel panel-default kra-settings margin10top">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Subordinates Disciplinary Actions
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="header-bg">
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Issued On</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="i in subdiscs" class="clickable" ng-dblclick="viewResponse(i)">
+                    <td ng-bind="getName(i.employee)"></td>
+                    <td ng-bind="i.subject"></td>
+                    <td ng-bind="i.status"></td>
+                    <td ng-bind="i.issued| date:'mediumDate'"></td>
+                </tr>
+            </tbody>
+            <tfoot ng-if="!subdiscs.length">
+                <tr><td colspan="5" class="text-center"> No queries issued to subordinates</td></tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div ng-include="'pages/new-query-form.html'"></div>
+
+<script type="text/ng-template" id="pages/sub-discipline-details.html">
+    <div class="panel panel-default kra-settings margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Subordinates Disciplinary Action Detail<button type="button" class="close" ng-click="back()">
+    <span aria-hidden="true">x</span><span class="sr-only">Close</span>
+</button></h3></div>
+        <div class="panel-body">
+            <div class="row">
+
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td colspan="2">
+                            <div class="pull-left">
+                                <div class="pull-left" style="margin: 5px"><img src="img/{{qr.employee.employeeId}}.jpg" width="112" height="113"></div>
+                                <div class="pull-right" style="margin: 5px; height: 113px;">
+                                    <div><font face="Tahoma" size="6" ng-bind="getName(qr.employee)"></font></div>
+                                    <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="qr.employee.designation"></font></div>
+                                    <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="qr.employee.department.name"></font></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr><th colspan="2" class="header-bg">Query Details</th></tr>
+                </thead>
+                <tbody>
+                    <tr> <th>Subject</th><td ng-bind="qr.subject"></td></tr>
+                    <tr><th>Description</th><td><p ng-bind="qr.description"></p></td></tr>
+                    <tr> <th>Date Issued</th> <td ng-bind="qr.issued|date:'mediumDate'"></td> </tr>
+                    <tr> <th>Reply Before</th> <td ng-bind="qr.reply|date:'mediumDate'"></td> </tr>
+                    <tr> <th>Status</th> <td ng-bind="qr.status"></td></tr>
+                </tbody>
+                <tfoot>
+                    <tr><td colspan="2" ng-if="!qr.replyText" class="text-center"><label>Employee yet to respond to query.</label></td></tr>
+                    <tr><td colspan="2" ng-if="qr.replyText"><p ng-bind="qr.replyText"></p></td></tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="pages/new-query-form.html">
+    <div class="panel panel-default kra-settings margin10top" style="max-width:600px;">
+        <div class="panel-heading">
+            <h3 class="panel-title"> New Query</h3>
+        </div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="iniConfirm">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th width="30%">Select Employee:</th>
+                            <td>
+                                <select ng-focus="isLeft = false" ng-required="true" ng-model="query.employee" ng-options="(i.firstName +' '+ i.lastName) for i in employees|orderBy:['firstName','lastName'] track by i._id" class="form-control"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>CC:</th>
+                            <td>
+                                <ul class="kra-list" style="height: 150px;">
+                                    <li ng-repeat="i in employees|orderBy:['firstName','lastName'] track by i._id" ng-class="{'selectedSub':query.copied.indexOf(i._id) > -1}" ng-if="i._id != query.employee._id">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-checked="query.copied.indexOf(i._id) > -1 && i._id != selectEmp._id" ng-click="toggleSelection(i._id)">
+                                                <span ng-bind="i.firstName +' '+ i.lastName"></span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Subject:</th>
+                            <td><input type="text" class="form-control" ng-model="query.subject" placeholder="Query Subject" ng-required="true" /></td>
+                        </tr>
+                        <tr>
+                            <th>Reply Before:</th>
+                            <td>
+                                <input type="text" class="form-control unblock" placeholder="Reply Before" datepicker-popup="dd MMM yyyy" ng-model="query.reply" is-open="eduend" close-text="Close" />
+                                <span class="input-group-btn unblock">
+                                    <button type="button" class="btn btn-default" ng-click="open($event, 'eduend')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2" class="header-bg">Query Description:</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><textarea style="resize:vertical;" type="text" class="form-control" ng-model="query.description" ng-required="true" placeholder="Query Description" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div align="center"><button type="button" class="btn btn-default" ng-disabled="iniConfirm.$invalid ||selectEmp.appraisers.length == 0 || savingCon" ng-click="sendQuery()" ng-bind="savingCon?'Sending Query':'Send Query'"></button></div>
+
+        </div>
+    </div>
+</script>

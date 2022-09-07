@@ -1,0 +1,230 @@
+﻿<div ng-include="'pages/my-asset-list.html'"></div>
+
+<script type="text/ng-template" id="pages/my-asset-list.html">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">My Assets</h3></div>
+        <div class="panel-body" style="padding-right: 5px;">
+            <table class="table table-bordered table-condensed">
+                <thead class="header-bg">
+                    <tr>
+                        <th>Type</th>
+                        <th>Code</th>
+                        <th>Manufacturer</th>
+                        <th>Serial #</th>
+                        <th>Tickets</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody ng-if="(assign.assets.length + support.assets.length) > 0">
+                    <tr ng-if="assign.assets.length > 0"><td class="header-bg" colspan="7" ng-bind="'Assigned for use'"></td></tr>
+                    <tr ng-repeat="asset in assign.assets">
+                        <td ng-bind="asset.type.name"></td>
+                        <td ng-bind="asset.code">Code</td>
+                        <td ng-bind="asset.manufacturer"></td>
+                        <td ng-bind="asset.serial"></td>
+                        <td ng-bind="asset.tickets.length"></td>
+                        <td ng-bind="asset.status"></td>
+                        <td><span ng-if="asset.state == 'Faulty'" class="text-red">Ticket Submitted</span><a ng-if="asset.state != 'Faulty'" class="btn btn-link" ng-bind="'Complain'" ng-click="openNewTicket(asset)">complain</a></td>
+                    </tr>
+                    <tr ng-if="support.assets.length > 0"><td class="header-bg" colspan="7" ng-bind="'Assigned for maintenance'"></td></tr>
+                    <tr ng-repeat="asset in support.assets">
+                        <td ng-bind="asset.type.name"></td>
+                        <td ng-bind="asset.code">Code</td>
+                        <td ng-bind="asset.manufacturer"></td>
+                        <td ng-bind="asset.serial"></td>
+                        <td ng-bind="asset.tickets.length"></td>
+                        <td ng-bind="asset.status"></td>
+                        <td><span ng-if="asset.state == 'Faulty'">Support Required</span><a ng-if="asset.state != 'Faulty'" class="btn btn-link" ng-click="viewAsset(asset)">View Details</a></td>
+                    </tr>
+                </tbody>
+                <tfoot ng-if="!assign.assets.length && !support.assets.length">
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No Assets Found
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script id="pages/asset-new-ticket.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">New Support Ticket<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="newTicForm">
+                <table class="table table-bordered">
+                    <thead class="header-bg">
+                        <tr><th colspan="2">Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Asset Type</td>
+                            <td><input class="form-control" ng-model="ticket.type.name" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input class="form-control" ng-model="ticket.asset.description" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td>Code</td>
+                            <td><input class="form-control" ng-model="ticket.code" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td><input class="form-control" ng-model="ticket.location.name" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td>Serial #</td>
+                            <td><input class="form-control" ng-model="ticket.asset.serial" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr ng-if="ticket.asset.lastRepaired">
+                            <td>Last Repaired</td>
+                            <td><input class="form-control" ng-model="ticket.asset.lastRepaired" type="date" ng-disabled="true" /></td>
+                        </tr>
+                        <tr><td><span>Priority:</span></td><td><select required ng-model="ticket.priority" name="level" ng-options="i for i in globals.constants.suppriority track by i" class="form-control"></select></td></tr>
+                        <tr>
+                            <td>Description</td>
+                            <td><textarea ng-model="ticket.description" class="form-control empData" rows="6" placeholder="describe the problem here"></textarea></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-center"><button ng-click="submitTicket()" ng-disabled="newTickForm.$invalid || submittingTicket" class="btn btn-default" ng-bind="submittingTicket? 'Submitting Asset': 'Submit Complaint'">Submit</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script id="pages/asset-details-support.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">New Support Ticket<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body">
+            <div data-ng-include="'pages/message-alert-modal.html'"></div>
+            <form name="newTicForm">
+                <table class="table table-bordered">
+                    <thead class="header-bg">
+                        <tr><th colspan="2">Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Asset Type</td>
+                            <td><input class="form-control" ng-model="ticket.type.name" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input class="form-control" ng-model="ticket.asset.description" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td>Code</td>
+                            <td><input class="form-control" ng-model="ticket.code" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td><input class="form-control" ng-model="ticket.location.name" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td>Serial #</td>
+                            <td><input class="form-control" ng-model="ticket.asset.serial" type="text" ng-disabled="true" /></td>
+                        </tr>
+                        <tr ng-if="ticket.asset.lastRepaired">
+                            <td>Last Repaired</td>
+                            <td><input class="form-control" ng-model="ticket.asset.lastRepaired" type="date" ng-disabled="true" /></td>
+                        </tr>
+                        <tr><td><span>Priority:</span></td><td><select required ng-model="ticket.priority" name="level" ng-options="i for i in globals.constants.suppriority track by i" class="form-control"></select></td></tr>
+                        <tr>
+                            <td>Description</td>
+                            <td><textarea ng-model="ticket.description" class="form-control empData" rows="6" placeholder="describe the problem here"></textarea></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-center"><button ng-click="submitTicket()" ng-disabled="newTickForm.$invalid || submittingTicket" class="btn btn-default" ng-bind="submittingTicket? 'Submitting Asset': 'Submit Complaint'">Submit</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script id="pages/asset-details-view.html" type="text/ng-template">
+    <div class="panel panel-default margin10top">
+        <div class="panel-heading"><h3 class="panel-title">Asset Details<a class="btn btn-link pull-right" href="" ng-click="back()">{{backText? backText: 'Back'}}</a></h3></div>
+        <div class="panel-body">
+            <form name="newTicForm">
+                <table class="table table-bordered" ng-if="asset">
+                    <thead class="header-bg">
+                        <tr><th colspan="2">Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Asset Type</td>
+                            <td ng-bind="asset.type.name"></td>
+                        </tr>
+                        <tr>
+                            <td>Code</td>
+                            <td ng-bind="asset.code"></td>
+                        </tr>
+                        <tr ng-if="asset.description">
+                            <td>Description</td>
+                            <td ng-bind="asset.description"></td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td ng-bind="asset.location.name"></td>
+                        </tr>
+                        <tr ng-if="asset.displayName">
+                            <td>Display Name</td>
+                            <td ng-bind="asset.displayName"></td>
+                        </tr>
+                        <tr>
+                            <td>Serial #</td>
+                            <td ng-bind="asset.serial"></td>
+                        </tr>
+                        <tr ng-if="asset.lastRepaired">
+                            <td>Last Repaired</td>
+                            <td><input class="form-control" ng-model="ticket.asset.lastRepaired" type="date" ng-disabled="true" /></td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td ng-bind="asset.status"></td>
+                        </tr>
+                        <tr>
+                            <td>State</td>
+                            <td ng-bind="asset.state"></td>
+                        </tr>
+                        <tr ng-if="false && asset.tickets.length > 0">
+                            <td colspan="2">
+                                <table>
+                                    <tr ng-repeat="a in asset.tickets">
+                                        <td ng-bind="date"></td><td></td><td></td><td></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr ng-if="asset.assigned.length > 0">
+                            <td colspan="2">
+                                <table class="table table-bordered">
+                                    <tr class="header-bg"><th colspan="3">Assigned To:</th></tr>
+                                    <tr ng-repeat="a in asset.assigned">
+                                        <td ng-bind="a.firstName + ' ' + a.lastName"></td>
+                                        <td ng-bind="a.designation"></td>
+                                        <td ng-bind="a.department.name"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>                   
+                </table>
+                <p ng-if="!asset" class="text-center"><span>Getting asset details...</span></p>
+            </form>
+        </div>
+    </div>
+</script>

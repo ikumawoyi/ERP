@@ -1,0 +1,14 @@
+<div class="panel panel-default cashlist">
+    <div class="panel-heading"><h3 class="panel-title">Previous Requests<a class="btn btn-link pull-right" href="" ng-click="back()">Close</a></h3></div>
+    <div class="panel-body">
+        <accordion close-others="true">
+            <accordion-group ng-repeat="(key, dg) in reqs" heading="{{key}}" is-open="why">
+                <table class="table table-bordered table-responsive cashlist">
+                    <thead><tr class=""><th></th><th>Ref.#</th><th>Requester</th><th>Description</th><th>Incurred</th><th ng-if="'Cash ReleasedRetired'.indexOf(key)>=0">Disbursed</th><th>Amount (&#x20A6)</th><th>Status</th></tr></thead>
+                    <tbody><tr ng-repeat="req in dg"><td></td><td ng-bind="req.referenceNumber"></td><td ng-bind="req.requester"></td><td ng-bind="req.description"></td><td ng-bind="req.incurred|date:'yyyy MMM dd'"></td><td ng-if="'Cash ReleasedRetired'.indexOf(key)>=0" ng-bind="req.disbursed|date:'yyyy MMM dd'"></td><td ng-bind="req.amount| currency: '\u20A6': 2"></td><td ng-bind="req.status"></td></tr></tbody>
+                </table>
+            </accordion-group>
+        </accordion>
+        <p align="center" ng-if="!reqs || reqs.length>0">No requests found</p>
+    </div>
+</div>

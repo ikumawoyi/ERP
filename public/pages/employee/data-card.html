@@ -1,0 +1,69 @@
+
+<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h2 class="panel-title">My Data Card</h2></div>
+    <div class="panel-body">
+        <div style="display: inline-block">
+            <div class="pull-left">
+                <div class="pull-left" style="margin: 5px"><img src="img/{{employee.employeeId}}.jpg" width="112" height="113"></div>
+                <div class="pull-right" style="margin: 5px; height: 113px;">
+                    <div><font face="Tahoma" size="6" ng-bind="employee.firstName + ' ' + employee.lastName"></font></div>
+                    <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="employee.designation"></font></div>
+                    <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="employee.department.name"></font></div>
+                    <!--<div style="vertical-align: bottom"><font face="Tahoma" color="#666666" size="1">Change Picture</font></div>-->
+                </div>
+            </div>
+    </div>
+        <div class="panel panel-default margin10top">
+            <div class="panel-heading"><h2 class="panel-title">Employment Information</h2></div>
+            <div class="panel-body">
+                <table class="table table-bordered table-condensed table-responsive" ng-init="columns = [{}]">
+                    <tbody>
+                    <tr><th width="50%">Employee ID:</th><td>{{employee.employeeId}}</td></tr>
+                    <tr><th>Hired On:</th><td>{{employee.hired | date: 'd MMM yyyy'}}</td></tr>
+                    <tr><th>Present Posting:</th><td>{{employee.designation}}</td></tr>
+                    <tr><th>Department:</th><td>{{employee.department.name}}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+<div class="panel panel-default margin10top" ng-if="employee.experiences.length > 0">
+    <div class="panel-heading"><h2 class="panel-title">Experience Information</h2></div>
+    <div class="panel-body">
+        <table class="table table-bordered table-condensed table-responsive">
+            <thead class="header-bg">
+            <tr><th width="25%" ng-repeat="col in ['Employer','Designation','Start Date','End Date']">{{col}}</th></tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="exp in employee.experiences">
+                <td>{{exp.employer}}</td>
+                <td>{{exp.designation}}</td>
+                <td>{{exp.startDate | date: 'd MMM yyyy'}}</td>
+                <td>{{exp.endDate | date: 'd MMM yyyy'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+        <div class="panel panel-default margin10top" ng-if="employee.educations.length > 0 || employee.skills.length > 0">
+            <div class="panel-heading"><h2 class="panel-title">Education Information</h2></div>
+            <div class="panel-body">
+                <table class="table table-bordered table-condensed table-responsive" ng-if="employee.educations.length > 0">
+                    <thead class="header-bg">
+                        <tr><th width="25%" ng-repeat="col in ['School', 'Qualification','Major','Grade']">{{col}}</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="ed in employee.educations"><td ng-repeat="col in ['school', 'qualification','major','grade']">{{ed[col]}}</td></tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-condensed table-responsive" ng-if="employee.skills.length > 0">
+                    <thead class="header-bg">
+                        <tr><th width="25%" ng-repeat="col in ['Skill Name', 'Type','Skill Level','Date Achieved']">{{col}}</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="sk in employee.skills"><td ng-repeat="col in ['name', 'type','level']">{{sk[col]}}</td><td>{{sk.date | date: 'd MMM yyyy'}}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>

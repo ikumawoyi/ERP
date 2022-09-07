@@ -1,0 +1,101 @@
+<div class="panel panel-default kra-settings margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Performance Competence Appraisal for {{sub.emp.name}}<a class="btn btn-link pull-right" href="" ng-click="back()">Back</a></h3></div>
+    <div class="panel-body">
+        <div ng-if="!sub.appraised">            
+            <div class="row">
+                <div class="pull-left">
+                    <div class="pull-left" style="margin: 5px"><img ng-src="{{imageURL}}" width="112" height="113"></div>
+                    <div class="pull-right" style="margin: 5px; height: 113px;">
+                        <div><font face="Tahoma" size="6" ng-bind="sub.emp.name"></font></div>
+                        <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="sub.emp.desig"></font></div>
+                        <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="sub.emp.dept"></font></div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="" ng-class="{forward: direction, backward:!direction,longStage: longStage}">
+                <ul class="nav rc-nav-wizard">
+                    <li ng-repeat="(area,kras) in sub.competence" style="float:left;" ng-class="{active: tab[area].active}">
+                        <a ng-class="{active : tab[area].active}">
+                            <span class="badge" ng-bind="$index + 1"></span>
+                            <span ng-bind="area"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div data-ng-include="'pages/message-alert-modal.html'"></div>
+                <div ng-repeat="(area,kras) in sub.competence" ng-if="tab[area].active">
+                    <div class="panel panel-default kra-settings margin10top">
+                        <div class="panel-heading"><h3 class="panel-title" ng-bind="'Rate '+ area"></h3></div>
+                        <div class="panel-body">
+                            <span ng-bind="$next"></span>
+                            <form name="subForm">
+                                <div style="color:#336699;font-weight:bold;">
+                                    <div ng-repeat="item in kras" style="border-bottom:1px solid #DDD;" ng-init="ind = $index;item.includeArc = false;">
+                                        <p style="margin:2px;"><label><span ng-bind="$index + 1 + ') '"></span><span ng-bind="item.details.name"></span></label><br /><span style="color:#06060A;" ng-bind="item.details.description"></span></p>
+                                        <p style="margin: 2px 4px;">
+                                            <label ng-repeat="g in globals.constants.appLevels" class="radio-inline">
+                                                <input type="radio" ng-required="true" ng-model="$parent.sub.competence[area][ind].scoring.text" value="{{g}}"> <span ng-bind="g"></span>
+                                            </label>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                            <p class="text-center" ng-if="!savingSubComp">
+                                <button type="button" ng-if="!$first" class="btn btn-danger" ng-click="nav(area,subForm, false)">Back</button>
+                                <button type="button" ng-if="!$last" class="btn btn-success" ng-disabled="subForm.$invalid || savingSubComp" ng-click="nav(area,subForm, true)">Next</button>
+                                <button type="button" ng-if="$last" class="btn btn-success" ng-disabled="subForm.$invalid || savingSubComp" ng-click="ss(area,subForm, false)">Submit</button>
+                            </p>
+                            <p ng-if="savingSubComp"><a class="btn btn-default">Submitting Appraisal</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="sub.appraised">
+            <div class="row">
+                <div class="pull-left">
+                    <div class="pull-left" style="margin: 5px"><img ng-src="{{imageURL}}" width="112" height="113"></div>
+                    <div class="pull-right" style="margin: 5px; height: 113px;">
+                        <div><font face="Tahoma" size="6" ng-bind="sub.emp.name"></font></div>
+                        <div><font face="Tahoma" size="3" color="#CCCCCC" ng-bind="sub.emp.desig"></font></div>
+                        <div><font face="Tahoma" style="font-size: 12.5pt" color="#333333" ng-bind="sub.emp.dept"></font></div>
+                        <div><font face="Tahoma" style="vertical-align:-webkit-baseline-middle;font-size: 24px" ; color="{{getScoring(sub.text)}}" ng-bind="sub.text + ' Performance'"></font></div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <table class="table table-bordered">
+                    <tr ng-repeat="(area,kras) in sub.competence">
+                        <td ng-bind="area"></td>
+                        <td ng-bind="sub.more[area]"></td>
+                    </tr>
+                </table>
+                <table  ng-repeat="(area,kras) in sub.competence" class="table table-bordered">
+                    <thead><tr class="header-bg"><td style="padding:12px;font-size: 15px;" ng-bind="area + ' ratings'"></td></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div style="color:#336699;font-weight:bold;">
+                                    <div ng-repeat="item in kras">
+                                        <p style="margin:2px;"><label><span ng-bind="$index + 1 + ') '"></span><span ng-bind="item.details.name"></span></label>: <span ng-bind="item.details.description"></span></p>
+                                        <p style="margin: 5px; color:black;padding-left: 13px;">
+                                            <span ng-bind="item.scoring.text">{{}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class=" row">
+                    <span class="col-sm-4" ng-bind="'Date : ' + sub.date|date:'mediumDate'">{{}}</span>
+                    <span class="col-sm-4" ng-bind="'By ' + sub.by"></span>
+                    <span class="col-sm-4" ng-bind="sub.text + ' Performance'"></span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

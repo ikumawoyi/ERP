@@ -1,0 +1,46 @@
+﻿<div class="panel panel-default margin10top">
+    <div class="panel-heading"><h3 class="panel-title">Attendance Records<span class="pull-right" style="font-weight:bold" ng-bind="'Date Shown: '+ (ftx | date: 'fullDate')"></span></h3></div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr ng-if="true">
+                    <td colspan="5">
+                        <table class="table" style="margin-bottom: 0;">
+                            <tr>
+                                <th width="40%" class="text-right">Select Date:</th>
+                                <td>
+                                    <input type="text" class="form-control unblock" datepicker-popup="dd MMM yyyy" style="width:115px;" ng-model="ft.d" name="date" is-open="dateopened" ng-required="true" close-text="Close" ng-disabled="loadingData" />
+                        <span class="input-group-btn unblock" ng-hide="loadingData">
+                            <button type="button" class="btn btn-default" ng-click="open($event, 'dateopened')"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                                    <img style="width: 20px; vertical-align: -webkit-baseline-middle;" src="../../images/Floating%20rays.gif" alt="loading data" ng-show="starting || loadingData" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="attStatus-header-bg">
+                    <th width="10px"></th>
+                    <td style="padding-top:0;padding-bottom:0;">Name</td>
+                    <td style="padding-top:0;padding-bottom:0;">Department In</td>
+                    <td style="padding-top:0;padding-bottom:0;">Time In</td>
+                    <td style="padding-top:0;padding-bottom:0;">Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-class="{'late':sub.status == 'Late', 'ontime':sub.status == 'On Time','absent':sub.status == 'Absent', 'pending':sub.status == 'N/A'}" class="attStatus" ng-repeat="sub in attds">
+                    <td><a class="btn btn-link" ng-if="sub.status != 'On Time'" ng-click="pardon(sub)" ng-bind="'edit'"></a></td>
+                    <td ng-bind="sub.name| date:'mediumDate'"></td>
+                    <td ng-bind="sub.department"></td>
+                    <td ng-bind="sub.time?sub.time: 'NA'"></td>
+                    <td ng-bind="sub.status"></td>
+                </tr>
+            </tbody>
+            <tfoot ng-if="!attds.length">
+                <tr>
+                    <td style="padding-top:0;padding-bottom:0;" colspan="4" ng-bind="'No Attendance date found for date'"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
