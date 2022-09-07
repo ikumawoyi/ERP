@@ -1,7 +1,7 @@
 
 //#region Self Assessment Evaluation
 exports.getSelfAssessment = function (req, res) {
-    var data = {
+     var data = {
         isOpen: false,
         completed: false,
         assessments: [],
